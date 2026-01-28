@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+<h2>Login</h2>
+<form id="loginForm">
+    <input type="email" name="email" placeholder="Email" required><br>
+    <input type="password" name="password" placeholder="Contraseña" required><br>
+    <button type="submit">Entrar</button>
+</form>
+
+<div id="message"></div>
+
+<script>
+const form = document.getElementById('loginForm');
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+        const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const json = await res.json();
+        document.getElementById('message').innerText = json.message;
+        if(res.ok){
+            console.log(json.user);
+        }
+    } catch (err) {
+        document.getElementById('message').innerText = 'Error en login';
+        console.error(err);
+    }
+});
+</script>
+</body>
+</html>
