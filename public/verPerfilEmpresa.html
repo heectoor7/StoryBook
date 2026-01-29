@@ -31,18 +31,26 @@
             const res = await fetch('/api/company/profile', {
                 headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
             });
-            
+
+            if (res.status === 404) {
+                // Perfil no existe: redirigir a la página de crear/editar perfil
+                window.location.href = '/company_edit_profile.html';
+                return;
+            }
+
             if (!res.ok) throw new Error('No autorizado');
-            
-            const company = await res.json();
-            displayProfile(company);
+
+            const data = await res.json();
+            const company = data.company || data;
+            displayProfile(company, data.email);
+
         } catch (e) {
             console.error(e);
             document.getElementById('profileContent').innerHTML = '<p class="error">Error al cargar el perfil</p>';
         }
     });
 
-    function displayProfile(company) {
+    function displayProfile(company, email) {
         const content = `
             <div class="profile-info">
                 <div class="info-group">
@@ -51,7 +59,7 @@
                 </div>
                 <div class="info-group">
                     <label>Email:</label>
-                    <p>${company.email || 'N/A'}</p>
+                    <p>${email || 'N/A'}</p>
                 </div>
                 <div class="info-group">
                     <label>Teléfono:</label>
@@ -61,13 +69,21 @@
                     <label>Descripción:</label>
                     <p>${company.description || 'N/A'}</p>
                 </div>
+                <div class="info-group">
+                    <label>Dirección:</label>
+                    <p>${company.address || 'N/A'}</p>
+                </div>
+                <div class="info-group">
+                    <label>Ciudad:</label>
+                    <p>${company.city || 'N/A'}</p>
+                </div>
             </div>
         `;
         document.getElementById('profileContent').innerHTML = content;
     }
 
     document.getElementById('editButton').addEventListener('click', function() {
-        window.location.href = '/company_edit_profile.php';
+        window.location.href = '/company_edit_profile.html';
     });
 
     document.getElementById('backButton').addEventListener('click', function() {

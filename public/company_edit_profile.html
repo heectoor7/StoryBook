@@ -31,6 +31,16 @@
                 <textarea id="description" name="description" rows="4"></textarea>
             </div>
 
+            <div class="form-group">
+                <label for="address">Dirección:</label>
+                <input type="text" id="address" name="address">
+            </div>
+
+            <div class="form-group">
+                <label for="city">Ciudad:</label>
+                <input type="text" id="city" name="city">
+            </div>
+
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 <button type="button" id="cancelButton" class="btn btn-secondary">Cancelar</button>
@@ -62,6 +72,8 @@
             document.getElementById('email').value = company.email || '';
             document.getElementById('phone').value = company.phone || '';
             document.getElementById('description').value = company.description || '';
+            document.getElementById('address').value = company.address || '';
+            document.getElementById('city').value = company.city || '';
         } catch (e) {
             console.error(e);
             showMessage('Error al cargar el perfil', 'error');
@@ -76,7 +88,9 @@
             name: document.getElementById('name').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
-            description: document.getElementById('description').value
+            description: document.getElementById('description').value,
+            address: document.getElementById('address').value,
+            city: document.getElementById('city').value
         };
 
         try {
@@ -93,7 +107,7 @@
             if (!res.ok) throw new Error('Error al guardar');
 
             showMessage('Perfil actualizado correctamente', 'success');
-            setTimeout(() => window.location.href = '/company_profile.php', 1500);
+            setTimeout(() => window.location.href = '/verPerfilEmpresa.html', 1500);
         } catch (e) {
             console.error(e);
             showMessage('Error al guardar los cambios', 'error');
