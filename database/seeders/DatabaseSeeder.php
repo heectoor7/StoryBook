@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             CompanySeeder::class,
             UserSeeder::class,
+            FollowerSeeder::class,
             CategorySeeder::class,
             ServiceSeeder::class,
             PostSeeder::class
