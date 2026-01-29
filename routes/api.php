@@ -54,4 +54,5 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::post('/services', [ServiceController::class, 'store']);
+    Route::get('/services', [ServiceController::class, 'index']);
 });
