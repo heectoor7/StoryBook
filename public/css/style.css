@@ -5,37 +5,69 @@
     font-family: Arial, sans-serif;
 }
 
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+:root {
+    --sidebar-width: 250px;
+    --header-height: 100px;
+}
+
 /* Layout */
 body {
-    display: flex;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 /* Sidebar */
 .sidebar {
-    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
     background: linear-gradient(0deg,rgba(0, 255, 250, 1) 0%, rgba(17, 24, 39, 1) 100%);
     color: white;
     padding: 20px;
-}
-
-/* Main */
-.main {
-    flex: 1;
-    display: flex;
-    background-color: #152b39;
-    flex-direction: column;
+    z-index: 1000;
+    overflow: auto;
 }
 
 /* Header */
 .main .header {
-    height: 100px;
+    position: fixed;
+    top: 0;
+    left: var(--sidebar-width);
+    right: 0;
+    height: var(--header-height);
     background-color: #152b39;
     color: white;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid rgba(0,0,0,0.5);
+    z-index: 999;
+    padding: 0 16px;
+}
+
+/* Main */
+.main {
+    margin-left: var(--sidebar-width);
+    margin-top: var(--header-height);
+    min-height: calc(100vh - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    background-color: #152b39;
+    overflow: hidden;
+}
+
+/* Content scrollable area */
+.content {
+    padding: 20px;
+    color: #ffffff;
+    overflow: auto;
+    height: calc(100vh - var(--header-height));
 }
 
 /* Botón personalizado */
@@ -48,6 +80,43 @@ body {
 .btn.btn-register:hover {
     background-color: #029a96;
 }
+
+/* Sidebar navigation buttons */
+.sidebar-brand img { display:block; margin:0 auto 8px; }
+.sidebar-nav { text-align: center; }
+.sidebar-btn {
+    background-color: #03bab6;
+    color: #052023;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 20px;
+    font-size: 1rem;
+    width: 70%;
+    display: inline-block;
+    box-shadow: 0 6px 14px rgba(3,186,182,0.14);
+}
+.sidebar-btn:hover { background-color: #02a9a0; }
+
+.sidebar-links { margin-top: 14px; }
+.sidebar-item {
+    display: block;
+    width: 100%;
+    background: transparent;
+    color: rgba(255,255,255,0.9);
+    border: none;
+    padding: 10px 0;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+.sidebar-item:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+}
+
+.sidebar button:focus { outline: none; box-shadow: none; }
+
 
 /* Content */
 .content {

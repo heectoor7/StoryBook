@@ -53,5 +53,33 @@ Route::middleware('auth:sanctum')->group(function () {
         return response()->json($posts);
     });
 
+    // Services from companies that the authenticated user follows
+    Route::get('/user/followed-companies-services', function (Request $request) {
+        $user = $request->user();
+        $companyIds = \DB::table('followers')->where('user_id', $user->id)->pluck('company_id');
+
+        if ($companyIds->isEmpty()) {
+            return response()->json([]);
+        }
+
+        $services = App\Models\Service::with(['company','category'])
+            ->whereIn('company_id', $companyIds)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function($s) {
+                return [
+                    'id' => $s->id,
+                    'company_id' => $s->company_id,
+                    'company_name' => $s->company->name ?? null,
+                    'category' => $s->category->name ?? null,
+                    'name' => $s->name,
+                    'description' => $s->description,
+                    'price' => $s->price,
+                ];
+            });
+
+        return response()->json($services);
+    });
+
     Route::post('/services', [ServiceController::class, 'store']);
 });
