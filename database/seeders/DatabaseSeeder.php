@@ -12,7 +12,10 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             AdminSeeder::class,
             CompanySeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            CategorySeeder::class,
+            ServiceSeeder::class,
+            PostSeeder::class
         ]);
     }
 }
