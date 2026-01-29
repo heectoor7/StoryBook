@@ -35,6 +35,20 @@ form.addEventListener('submit', async (e) => {
 
         const json = await res.json();
         document.getElementById('message').innerText = json.message;
+
+        // Si el backend devuelve un token, guardarlo y redirigir según rol
+        if (json.token) {
+            localStorage.setItem('auth_token', json.token);
+            localStorage.setItem('user', JSON.stringify(json.user));
+
+            if (json.role === 'admin') {
+                window.location.href = '/index_admin.php';
+            } else if (json.role === 'company') {
+                window.location.href = '/index_comany.php';
+            } else {
+                window.location.href = '/index_user.php';
+            }
+        }
     } catch (err) {
         document.getElementById('message').innerText = 'Error en registro';
         console.error(err);

@@ -30,8 +30,19 @@ form.addEventListener('submit', async (e) => {
 
         const json = await res.json();
         document.getElementById('message').innerText = json.message;
-        if(res.ok){
-            console.log(json.user);
+        if (res.ok && json.token) {
+            // Guardar token y usuario en localStorage
+            localStorage.setItem('auth_token', json.token);
+            localStorage.setItem('user', JSON.stringify(json.user));
+
+            // Redirigir según rol
+            if (json.role === 'admin') {
+                window.location.href = '/index_admin.php';
+            } else if (json.role === 'company') {
+                window.location.href = '/index_comany.php';
+            } else {
+                window.location.href = '/index_user.php';
+            }
         }
     } catch (err) {
         document.getElementById('message').innerText = 'Error en login';

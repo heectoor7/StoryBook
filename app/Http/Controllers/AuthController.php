@@ -29,9 +29,25 @@ class AuthController extends Controller
         $role = Role::where('name', $request->role)->firstOrFail(); // ← Falla si no existe
         $user->roles()->attach($role->id);
 
+        // Iniciar sesión y generar token para APIs (Sanctum)
+        Auth::login($user);
+        $user->load('roles');
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        // Determinar rol principal con prioridad admin > company > user
+        if ($user->roles->contains('name', 'admin')) {
+            $mainRole = 'admin';
+        } elseif ($user->roles->contains('name', 'company')) {
+            $mainRole = 'company';
+        } else {
+            $mainRole = 'user';
+        }
+
         return response()->json([
             'message' => 'Usuario registrado correctamente',
-            'user' => $user
+            'user' => $user,
+            'role' => $mainRole,
+            'token' => $token
         ]);
     }
 
@@ -45,11 +61,22 @@ class AuthController extends Controller
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
+            $user->load('roles');
             $token = $user->createToken('auth_token')->plainTextToken;
+
+            // Determinar rol principal (admin > company > user)
+            if ($user->roles->contains('name', 'admin')) {
+                $role = 'admin';
+            } elseif ($user->roles->contains('name', 'company')) {
+                $role = 'company';
+            } else {
+                $role = 'user';
+            }
 
             return response()->json([
                 'message' => 'Login correcto',
                 'user' => $user,
+                'role' => $role,
                 'token' => $token
             ]);
         } else {

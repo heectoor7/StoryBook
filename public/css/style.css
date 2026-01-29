@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Layout */
+body {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: linear-gradient(0deg,rgba(0, 255, 250, 1) 0%, rgba(17, 24, 39, 1) 100%);
+    color: white;
+    padding: 20px;
+}
+
+/* Main */
+.main {
+    flex: 1;
+    display: flex;
+    background-color: #152b39;
+    flex-direction: column;
+}
+
+/* Header */
+.main .header {
+    height: 100px;
+    background-color: #152b39;
+    color: white;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    border-bottom: 1px solid black;
+}
+
+/* Botón personalizado */
+.btn.btn-register {
+    background-color: #03bab6;
+    color: white;
+    border: none;
+}
+
+.btn.btn-register:hover {
+    background-color: #029a96;
+}
+
+/* Content */
+.content {
+    padding: 20px;
+    color: #ffffff;
+}
+
+/* ================================================= 
+                 MODAL REGISTRO 
+ ================================================= */
+
+ /* Fondo difuminado */
+.modal-backdrop.show {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+/* Modal cuadrado */
+.modal-square {
+    width: 400px;     /* ancho */
+    height: 400px;    /* alto igual que ancho */
+    background-color: #152b39;
+    color: white;
+    border-radius: 16px;
+    border: none;
+    padding: 20px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.modal-title {
+    color: #03bab6;
+    font-weight: bold;
+}
+
+/* Inputs */
+.modal-square input {
+    background-color: #0f1f2a;
+    border: 1px solid #03bab6;
+    color: white;
+}
+
+.modal-square input::placeholder {
+    color: #aaa;
+}
+
+/* Botón principal */
+.modal-square .btn-primary {
+    background-color: #03bab6;
+    border: none;
+}
+
+.modal-square .btn-primary:hover {
+    background-color: #029a96;
+}
+
+/* Animación suave al abrir */
+.modal.fade .modal-dialog {
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1);
+}
