@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - StoryBook</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Perfil de la Empresa</h1>
+        
+        <div id="profileContent" class="profile-card">
+            <div class="loading">Cargando perfil...</div>
+        </div>
+
+        <button id="editButton" class="btn btn-primary">Editar Perfil</button>
+        <button id="backButton" class="btn btn-secondary">Volver</button>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+        const token = localStorage.getItem('auth_token');
+        
+        if (!token) {
+            window.location.href = '/login.php';
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/company/profile', {
+                headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+            });
+            
+            if (!res.ok) throw new Error('No autorizado');
+            
+            const company = await res.json();
+            displayProfile(company);
+        } catch (e) {
+            console.error(e);
+            document.getElementById('profileContent').innerHTML = '<p class="error">Error al cargar el perfil</p>';
+        }
+    });
+
+    function displayProfile(company) {
+        const content = `
+            <div class="profile-info">
+                <div class="info-group">
+                    <label>Nombre de la Empresa:</label>
+                    <p>${company.name || 'N/A'}</p>
+                </div>
+                <div class="info-group">
+                    <label>Email:</label>
+                    <p>${company.email || 'N/A'}</p>
+                </div>
+                <div class="info-group">
+                    <label>Teléfono:</label>
+                    <p>${company.phone || 'N/A'}</p>
+                </div>
+                <div class="info-group">
+                    <label>Descripción:</label>
+                    <p>${company.description || 'N/A'}</p>
+                </div>
+            </div>
+        `;
+        document.getElementById('profileContent').innerHTML = content;
+    }
+
+    document.getElementById('editButton').addEventListener('click', function() {
+        window.location.href = '/company_edit_profile.php';
+    });
+
+    document.getElementById('backButton').addEventListener('click', function() {
+        window.history.back();
+    });
+    </script>
+</body>
+</html>
