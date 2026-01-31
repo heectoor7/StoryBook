@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/stylePrueba.css">
+    <!-- Head: Título y estilos de la página -->
+    <title>Inicio User</title>
+    <!-- Styles para stories y UI relacionada -->
+    <style>
+    /* Stories styles: circular small story UI (tipo Instagram) */
+    .stories-section { border-bottom: 1px solid #eee; padding-bottom: 12px; margin-bottom: 18px; }
+    .stories-list { display:flex; gap:16px; overflow-x:auto; padding:8px 4px; align-items:center; }
+
+    .story-pill { width:86px; flex:0 0 auto; text-align:center; }
+    .story-circle { width:72px; height:72px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; padding:4px; box-sizing:content-box; }
+    /* ring / gradient border like stories */
+    .story-circle { background: linear-gradient(135deg,#f6d365,#fda085); }
+    .story-inner { width:100%; height:100%; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#052023; color:#fff; font-weight:700; font-size:1.1rem; }
+
+    .story-label { display:block; margin-top:6px; font-size:0.8rem; color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    /* small responsive tweaks */
+    @media (max-width: 480px) {
+        .story-pill { width:70px; }
+        .story-circle { width:60px; height:60px; }
+        .story-inner { font-size:1rem; }
+    }
+    </style>
+</head>
+<body>
+<!-- Left sidebar removed — layout uses primary header and top-nav instead --> 
+
+    <!-- Main: Contenedor principal (header + contenido dinámico) -->
+    <div class="main">
+
+        <!-- Primary header: logo / search / profile -->
+        <header class="primary-header d-flex align-items-center">
+            <div class="d-flex align-items-center">
+                <button id="navToggleBtn" class="btn btn-toggle me-2" aria-label="Toggle nav">☰</button>
+                <img src="assets/img/storybookLOGO.png" alt="Logo" style="height:36px;">
+            </div>
+
+            <div class="d-flex align-items-center">
+                <input type="text" class="form-control search-input me-2" placeholder="Buscar servicio...">
+            </div>
+
+            <div>
+                <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Mi perfil</button>
+                <button id="logoutBtn" class="btn btn-logout">Cerrar sesión</button>
+            </div>
+        </header>
+
+        <!-- Top navigation (ocultable) -->
+        <nav class="top-nav" id="topNav">
+            <button class="nav-btn" data-action="inicio">Inicio</button>
+            <button class="nav-btn" data-action="reservas">Reservas</button>
+            <button class="nav-btn" data-action="servicios">Servicios</button>
+            <button class="nav-btn" data-action="ayuda">Ayuda</button>
+            <button class="nav-btn" data-action="configuracion">Configuración</button>
+        </nav>
+
+        <main class="content p-3">
+            <!-- Section: Stories (carrusel tipo Instagram) -->
+            <section class="stories-section">
+                <h5 class="mb-2">Stories</h5>
+                <div id="storiesContainer" class="stories-list">
+                    <p class="text-muted">Cargando stories...</p>
+                </div>
+            </section>
+
+            <!-- Section: Services (en Inicio muestra servicios de empresas que sigues) -->
+            <section class="services-section">
+                <h4 class="mb-3">Servicios de empresas que sigues</h4>
+                <div id="servicesContainer" class="row">
+                    <p class="text-muted">Cargando servicios...</p>
+                </div>
+            </section>
+
+            <!-- Section: Reservas (mis reservas del usuario) -->
+            <section class="reservas-section">
+                <h4 class="mb-3">Mis Reservas</h4>
+                <div id="reservasContainer" class="row">
+                    <p class="text-muted">Cargando reservas...</p>
+                </div>
+            </section>
+
+            <!-- Section: Posts (muestra posts de empresas que sigues) -->
+            <section class="posts-section">
+                <h4 class="mb-4">Posts de empresas que sigues</h4>
+                <div id="postsContainer" class="row">
+                    <p class="text-muted">Cargando posts...</p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script>
+    // Script: comprobar autenticación y mostrar id de usuario
+    document.addEventListener('DOMContentLoaded', async function() {
+        const h3 = document.getElementById('userTitle');
+        const token = localStorage.getItem('auth_token');
+        if (!token) { h3.innerText += ' (no autenticado)'; return; }
+        try {
+            const res = await fetch('/api/me', {
+                headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+            });
+            if (!res.ok) { h3.innerText += ' (no autenticado)'; return; }
+            const user = await res.json();
+            h3.innerText += user && user.id ? ' ' + user.id : ' (sin id)';
+        } catch (e) {
+            console.error(e);
+            h3.innerText += ' (error)';
+        }
+    });
+    </script>
+
+    <script>
+    // Script principal: cargar posts, stories y servicios (solo empresas seguidas para Inicio)
+    async function loadFollowedPosts(token) {
+      const t = typeof token !== 'undefined' ? token : localStorage.getItem('auth_token');
+      const storiesContainer = document.getElementById('storiesContainer');
+      const postsContainer = document.getElementById('postsContainer');
+      if (!t) {
+        storiesContainer.innerHTML = '<p class="text-muted">No autenticado</p>';
+        postsContainer.innerHTML = '<p class="text-muted">No autenticado</p>';
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/user/followed-companies-posts', {
+          headers: { 'Authorization': 'Bearer ' + t, 'Accept': 'application/json' }
+        });
+
+        if (!res.ok) {
+          storiesContainer.innerHTML = '<p class="text-muted">Error al cargar stories</p>';
+          postsContainer.innerHTML = '<p class="text-muted">Error al cargar posts</p>';
+          return;
+        }
+
+        const posts = await res.json();
+        const stories = posts.filter(p => p.is_story);
+        const regular = posts.filter(p => !p.is_story);
+
+        // Render stories (small, horizontal)
+        if (stories.length === 0) {
+          storiesContainer.innerHTML = '<p class="text-muted">No hay stories</p>';
+          window.storiesData = [];
+        } else {
+          window.storiesData = stories;
+          storiesContainer.innerHTML = stories.map((s, i) => `
+            <div class="story-pill">
+                <div class="story-circle" role="button" onclick="openStoriesModal(${i})" title="${s.company_name}">
+                    <div class="story-inner">${(s.company_name||'').charAt(0).toUpperCase()}</div>
+                </div>
+                <small class="story-label">${s.company_name}</small>
+            </div>
+          `).join('');
+        }
+
+        // Render regular posts (grid)
+        if (regular.length === 0) {
+          postsContainer.innerHTML = '<p class="text-muted">No hay posts disponibles</p>';
+        } else {
+          postsContainer.innerHTML = regular.map(post => `
+            <div class="col-md-6 col-lg-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="card-title mb-0">${post.company_name}</h5>
+                        </div>
+                        <p class="card-text flex-grow-1">${post.content}</p>
+                        <div class="mt-2">
+                            <small class="text-muted d-block">Publicado: ${new Date(post.created_at).toLocaleDateString()}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          `).join('');
+        }
+
+      } catch (e) {
+        console.error(e);
+        storiesContainer.innerHTML = '<p class="text-danger">Error al cargar stories</p>';
+        postsContainer.innerHTML = '<p class="text-danger">Error al cargar posts</p>';
+      }
+    }
+
+    async function loadFollowedServices(token) {
+      const t = typeof token !== 'undefined' ? token : localStorage.getItem('auth_token');
+      const servicesContainer = document.getElementById('servicesContainer');
+      servicesContainer.innerHTML = '<p class="text-muted">Cargando servicios...</p>';
+      try {
+        const res = await fetch('/api/user/followed-companies-services', {
+          headers: t ? { 'Authorization': 'Bearer ' + t, 'Accept': 'application/json' } : { 'Accept': 'application/json' }
+        });
+        if (!res.ok) {
+          servicesContainer.innerHTML = '<p class="text-muted">Error al cargar servicios</p>';
+          return;
+        }
+        const services = await res.json();
+        if (!Array.isArray(services) || services.length === 0) {
+          servicesContainer.innerHTML = '<p class="text-muted">No hay servicios de las empresas que sigues</p>';
+          return;
+        }
+        servicesContainer.innerHTML = services.map(s => `
+          <div class="col-md-6 col-lg-4 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <h5 class="card-title mb-0">${s.name}</h5>
+                  <small class="text-muted">${s.category ?? ''}</small>
+                </div>
+                <p class="card-text text-truncate">${s.description ?? ''}</p>
+                <div class="mt-2 d-flex justify-content-between align-items-center">
+                  <small class="text-muted">${s.company_name ?? ''}</small>
+                  <strong>${s.price ? '$' + parseFloat(s.price).toFixed(2) : ''}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error(err);
+        servicesContainer.innerHTML = '<p class="text-danger">Error al cargar servicios</p>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      const token = localStorage.getItem('auth_token');
+
+      // Mostrar la vista de Inicio por defecto al cargar la página
+      document.querySelectorAll('main.content section').forEach(s => {
+        s.style.display = (s.classList.contains('stories-section') || s.classList.contains('posts-section') || s.classList.contains('services-section')) ? '' : 'none';
+      });
+      document.getElementById('userTitle').innerText = 'Página del usuario';
+
+      if (!token) return;
+
+      await Promise.all([loadFollowedPosts(token), loadFollowedServices(token)]);
+    });
+    </script>
+
+<!-- Bootstrap bundle (asegurar disponible para modal) -->
+<script src="js/bootstrap.bundle.js"></script>
+
+<!-- Stories modal (visualizador de stories) -->
+<div class="modal fade" id="storiesModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-body text-center">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <small id="storyCompany" class="fw-bold"></small>
+          <small><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></small>
+        </div>
+        <div id="storyContent" style="max-height:70vh; overflow:auto; text-align:left;">
+          <!-- El contenido de la story se insertará aquí -->
+        </div>
+        <div class="mt-2 text-start"><small id="storyMeta" class="text-muted"></small></div>
+        <div class="progress mt-2" style="height:4px;">
+          <div id="storyProgress" class="progress-bar" role="progressbar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Script: Lógica del modal de stories
+(function(){
+  const STORY_DURATION = 5000; // 5 segundos
+  let storyModalEl = document.getElementById('storiesModal');
+  let storyModal = null;
+  if (storyModalEl && window.bootstrap) storyModal = new bootstrap.Modal(storyModalEl);
+
+  let currentStoryIndex = 0;
+  let storyTimer = null;
+  let progressInterval = null;
+
+  function escapeHtml(unsafe) {
+    if (!unsafe) return '';
+    return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+  }
+
+  window.openStoriesModal = function(index) {
+    if (!window.storiesData || window.storiesData.length === 0) return;
+    currentStoryIndex = index;
+    showStory(currentStoryIndex);
+    if (storyModal) storyModal.show();
+  }
+
+  function showStory(idx) {
+    clearTimers();
+    const s = window.storiesData[idx];
+    const companyEl = document.getElementById('storyCompany');
+    const contentEl = document.getElementById('storyContent');
+    const metaEl = document.getElementById('storyMeta');
+    const progress = document.getElementById('storyProgress');
+
+    companyEl.innerText = s.company_name || '';
+    // Insertar contenido formateado, preservando saltos de línea
+    const safe = escapeHtml(s.content || '');
+    contentEl.innerHTML = '<div style="padding:12px; font-size:1.25rem; line-height:1.4;">' + safe.replace(/\n/g, '<br>') + '</div>';
+    metaEl.innerText = s.expires_at ? 'Expira: ' + new Date(s.expires_at).toLocaleString() : '';
+    progress.style.width = '0%';
+
+    const start = Date.now();
+    progressInterval = setInterval(() => {
+      const pct = Math.min(100, (Date.now() - start) / STORY_DURATION * 100);
+      progress.style.width = pct + '%';
+    }, 100);
+
+    storyTimer = setTimeout(() => {
+      nextStory();
+    }, STORY_DURATION);
+  }
+
+  function nextStory() {
+    if (!window.storiesData) return;
+    if (currentStoryIndex + 1 >= window.storiesData.length) {
+      // cerrar modal al terminar
+      if (storyModal) storyModal.hide();
+    } else {
+      currentStoryIndex++;
+      showStory(currentStoryIndex);
+    }
+  }
+
+  function prevStory() {
+    if (!window.storiesData) return;
+    if (currentStoryIndex - 1 < 0) return;
+    currentStoryIndex--;
+    showStory(currentStoryIndex);
+  }
+
+  function clearTimers() {
+    if (storyTimer) { clearTimeout(storyTimer); storyTimer = null; }
+    if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
+  }
+
+  if (storyModalEl) {
+    storyModalEl.addEventListener('hidden.bs.modal', clearTimers);
+    // avanzar al click en la mitad derecha, retroceder en la mitad izquierda
+    storyModalEl.addEventListener('click', function(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      if (x > rect.width / 2) nextStory(); else prevStory();
+    });
+  }
+})();
+</script>
+
+<script>
+// Navegación asíncrona: al pulsar botones del sidebar se actualiza solo el main
+(function(){
+  function showOnlySection(className) {
+    document.querySelectorAll('main.content section').forEach(s => {
+      s.style.display = s.classList.contains(className) ? '' : 'none';
+    });
+  }
+
+  function showMultipleSections(classes) {
+    document.querySelectorAll('main.content section').forEach(s => {
+      s.style.display = classes.some(c => s.classList.contains(c)) ? '' : 'none';
+    });
+  }
+
+  // Cargar servicios de las empresas que sigues (usado en Inicio)
+  async function loadFollowedServices(token) {
+    const t = typeof token !== 'undefined' ? token : localStorage.getItem('auth_token');
+    const servicesContainer = document.getElementById('servicesContainer');
+    servicesContainer.innerHTML = '<p class="text-muted">Cargando servicios...</p>';
+    console.debug('[debug] loadFollowedServices token=', !!t);
+    try {
+      const res = await fetch('/api/user/followed-companies-services', {
+        headers: t ? { 'Authorization': 'Bearer ' + t, 'Accept': 'application/json' } : { 'Accept': 'application/json' }
+      });
+      console.debug('[debug] services response', res.status, res.ok);
+      if (!res.ok) {
+        const text = await res.text().catch(() => 'no body');
+        console.warn('[debug] services error body:', text);
+        servicesContainer.innerHTML = '<p class="text-muted">Error al cargar servicios (ver consola)</p>';
+        return;
+      }
+      const services = await res.json();
+      console.debug('[debug] services json length=', Array.isArray(services) ? services.length : 'not array', services);
+      if (!Array.isArray(services) || services.length === 0) {
+        servicesContainer.innerHTML = '<p class="text-muted">No hay servicios de las empresas que sigues. Si crees que esto es un error, comprueba que sigues a empresas o revisa la consola para detalles.</p>';
+        return;
+      }
+      servicesContainer.innerHTML = services.map(s => `
+        <div class="col-md-6 col-lg-4 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <h5 class="card-title mb-0">${s.name}</h5>
+                <small class="text-muted">${s.category ?? ''}</small>
+              </div>
+              <p class="card-text text-truncate">${s.description ?? ''}</p>
+              <div class="mt-2 d-flex justify-content-between align-items-center">
+                <small class="text-muted">${s.company_name ?? ''}</small>
+                <strong>${s.price ? '$' + parseFloat(s.price).toFixed(2) : ''}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    } catch (err) {
+      console.error('[debug] loadFollowedServices exception', err);
+      servicesContainer.innerHTML = '<p class="text-danger">Error al cargar servicios (ver consola)</p>';
+    }
+  }
+
+  // Cargar reservas del usuario autenticado
+  async function loadUserBookings(token) {
+    const t = typeof token !== 'undefined' ? token : localStorage.getItem('auth_token');
+    const reservasContainer = document.getElementById('reservasContainer');
+    reservasContainer.innerHTML = '<p class="text-muted">Cargando reservas...</p>';
+    if (!t) { reservasContainer.innerHTML = '<p class="text-muted">No autenticado</p>'; return; }
+
+    try {
+      const res = await fetch('/api/user/bookings', {
+        headers: { 'Authorization': 'Bearer ' + t, 'Accept': 'application/json' }
+      });
+      console.debug('[debug] bookings response', res.status, res.ok);
+      if (!res.ok) { reservasContainer.innerHTML = '<p class="text-muted">Error al cargar reservas</p>'; return; }
+      const bookings = await res.json();
+      console.debug('[debug] bookings json length=', Array.isArray(bookings) ? bookings.length : 'not array', bookings);
+      if (!Array.isArray(bookings) || bookings.length === 0) {
+        reservasContainer.innerHTML = '<p class="text-muted">No tienes reservas</p>'; return;
+      }
+
+      reservasContainer.innerHTML = bookings.map(b => `
+        <div class="col-12 mb-2">
+          <div class="card">
+            <div class="card-body d-flex justify-content-between align-items-center">
+              <div>
+                <div><strong>${b.service_name ?? 'Servicio'}</strong> <small class="text-muted">- ${b.company_name ?? ''}</small></div>
+                <div><small class="text-muted">Fecha: ${b.date} &nbsp; Hora: ${b.time}</small></div>
+              </div>
+              <div><span class="badge bg-secondary">${b.status}</span></div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    } catch (err) {
+      console.error('[debug] loadUserBookings exception', err);
+      reservasContainer.innerHTML = '<p class="text-danger">Error al cargar reservas (ver consola)</p>';
+    }
+  }
+
+  // Cargar todos los servicios (usado cuando el usuario pulsa el botón "Servicios")
+  async function loadServices() {
+    const token = localStorage.getItem('auth_token');
+    const servicesContainer = document.getElementById('servicesContainer');
+    servicesContainer.innerHTML = '<p class="text-muted">Cargando servicios...</p>';
+    try {
+      const res = await fetch('/api/services', {
+        headers: token ? { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' } : { 'Accept': 'application/json' }
+      });
+      if (!res.ok) { servicesContainer.innerHTML = '<p class="text-muted">Error al cargar servicios</p>'; return; }
+      const services = await res.json();
+      if (!services.length) { servicesContainer.innerHTML = '<p class="text-muted">No hay servicios</p>'; return; }
+      servicesContainer.innerHTML = services.map(s => `
+        <div class="col-md-6 col-lg-4 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <h5 class="card-title mb-0">${s.name}</h5>
+                <small class="text-muted">${s.category ?? ''}</small>
+              </div>
+              <p class="card-text text-truncate">${s.description ?? ''}</p>
+              <div class="mt-2 d-flex justify-content-between align-items-center">
+                <small class="text-muted">${s.company_name ?? ''}</small>
+                <strong>${s.price ? '$' + parseFloat(s.price).toFixed(2) : ''}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    } catch (err) {
+      console.error(err);
+      servicesContainer.innerHTML = '<p class="text-danger">Error al cargar servicios</p>';
+    }
+  }
+
+  function showPlaceholder(action) {
+    // crear sección placeholder si no existe
+    let ph = document.getElementById('placeholderSection');
+    if (!ph) {
+      ph = document.createElement('section');
+      ph.id = 'placeholderSection';
+      ph.className = 'placeholder-section';
+      ph.innerHTML = '<h4 id="placeholderTitle"></h4><p id="placeholderText">Contenido dinámico</p>';
+      document.querySelector('main.content').prepend(ph);
+    }
+    document.getElementById('placeholderTitle').innerText = action === 'reservas' ? 'Reservas' : action === 'ayuda' ? 'Ayuda' : action === 'configuracion' ? 'Configuración' : action;
+    document.getElementById('placeholderText').innerText = 'Contenido de la sección "' + action + '".';
+    // ocultar otras secciones y mostrar el placeholder
+    document.querySelectorAll('main.content section').forEach(s => s.style.display = 'none');
+    ph.style.display = '';
+  }
+
+  document.querySelectorAll('[data-action]').forEach(btn => {
+    btn.addEventListener('click', async function(e) {
+      const action = this.dataset.action;
+      if (action === 'servicios') {
+        await loadServices();
+        showOnlySection('services-section');
+        document.getElementById('userTitle').innerText = 'Todos los servicios';
+      } else if (action === 'inicio') {
+        const token = localStorage.getItem('auth_token');
+        await Promise.all([loadFollowedPosts(token), loadFollowedServices(token)]);
+        showMultipleSections(['stories-section','posts-section','services-section']);
+        document.getElementById('userTitle').innerText = 'Página del usuario';
+      } else if (action === 'reservas') {
+        const token = localStorage.getItem('auth_token');
+        await loadUserBookings(token);
+        showOnlySection('reservas-section');
+        document.getElementById('userTitle').innerText = 'Mis Reservas';
+      } else {
+        showPlaceholder(action);
+        document.getElementById('userTitle').innerText = this.innerText;
+      }
+    });
+  });
+
+  // Logout handler: revocar token en servidor y eliminar localmente
+  document.getElementById('logoutBtn')?.addEventListener('click', async function() {
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      try {
+        await fetch('/api/logout', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' } });
+      } catch (e) {
+        console.warn('Logout API call failed', e);
+      }
+    }
+    localStorage.removeItem('auth_token');
+    window.location.href = '/index.html';
+  });
+})();
+</script>
+
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container">
+    <img src="assets/img/storybookLOGO.png" alt="Logo" style="height:28px;">
+    <div class="footer-links">
+      <a href="#">Inicio</a>
+      <a href="#">Reservas</a>
+      <a href="#">Servicios</a>
+      <a href="#">Ayuda</a>
+      <a href="#">Configuración</a>
+    </div>
+    <small>© 2026 StoryBook. All rights reserved.</small>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -9,7 +9,18 @@ class CategorySeeder extends Seeder
 {
     public function run()
     {
-        $categories = ['Plumbing', 'Electrical', 'Cleaning', 'IT Support', 'Design', 'Marketing'];
+        $categories = [
+            'Peluquería',
+            'Taller Mecánico',
+            'Restaurante',
+            'Gimnasio',
+            'Veterinaria',
+            'Panadería',
+            'Librería',
+            'Floristería',
+            'Fotografía',
+            'Spa y Bienestar'
+        ];
 
         foreach ($categories as $name) {
             Category::firstOrCreate(['name' => $name]);

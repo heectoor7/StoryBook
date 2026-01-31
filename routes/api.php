@@ -81,5 +81,57 @@ Route::middleware('auth:sanctum')->group(function () {
         return response()->json($services);
     });
 
+    // All services (public to authenticated users)
+    Route::get('/services', function (Request $request) {
+        $services = App\Models\Service::with(['company','category'])
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function($s) {
+                return [
+                    'id' => $s->id,
+                    'company_id' => $s->company_id,
+                    'company_name' => $s->company->name ?? null,
+                    'category' => $s->category->name ?? null,
+                    'name' => $s->name,
+                    'description' => $s->description,
+                    'price' => $s->price,
+                ];
+            });
+
+        return response()->json($services);
+    });
+
+    // Bookings for authenticated user
+    Route::get('/user/bookings', function (Request $request) {
+        $user = $request->user();
+        $bookings = App\Models\Booking::with(['service.company'])
+            ->where('user_id', $user->id)
+            ->orderBy('date', 'asc')
+            ->orderBy('time', 'asc')
+            ->get()
+            ->map(function($b){
+                return [
+                    'id' => $b->id,
+                    'service_id' => $b->service_id,
+                    'service_name' => $b->service->name ?? null,
+                    'company_name' => $b->service->company->name ?? null,
+                    'date' => $b->date,
+                    'time' => $b->time,
+                    'status' => $b->status
+                ];
+            });
+
+        return response()->json($bookings);
+    });
+
+    // Logout: eliminar token actual
+    Route::post('/logout', function (Request $request) {
+        if ($request->user()) {
+            $token = $request->user()->currentAccessToken();
+            if ($token) $token->delete();
+        }
+        return response()->json(['message' => 'Logout correcto']);
+    });
+
     Route::post('/services', [ServiceController::class, 'store']);
 });

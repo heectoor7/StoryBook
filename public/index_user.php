@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/stylePrueba.css">
+    <!-- Head: Título y estilos de la página -->
     <title>Inicio User</title>
+    <!-- Styles para stories y UI relacionada -->
     <style>
     /* Stories styles: circular small story UI (tipo Instagram) */
     .stories-section { border-bottom: 1px solid #eee; padding-bottom: 12px; margin-bottom: 18px; }
@@ -25,187 +27,135 @@
         .story-circle { width:60px; height:60px; }
         .story-inner { font-size:1rem; }
     }
+
+    /* Services horizontal scroll */
+    #servicesContainer {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        gap: 16px;
+        padding: 12px 0;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #servicesContainer::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    #servicesContainer::-webkit-scrollbar-track {
+        background: rgba(255,255,255,0.05);
+        border-radius: 4px;
+    }
+
+    #servicesContainer::-webkit-scrollbar-thumb {
+        background: rgba(16,185,129,0.5);
+        border-radius: 4px;
+    }
+
+    #servicesContainer::-webkit-scrollbar-thumb:hover {
+        background: rgba(16,185,129,0.7);
+    }
+
+    #servicesContainer .col-md-6,
+    #servicesContainer .col-lg-4 {
+        flex: 0 0 320px !important;
+        max-width: 320px !important;
+        width: 320px !important;
+    }
+
+    #servicesContainer .card {
+        height: 100%;
+        min-height: 200px;
+    }
     </style>
 </head>
 <body>
-<!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-brand text-center mb-3">
-            <img src="assets/img/storybookLOGO.png" alt="Logo" style="max-width:160px;">
-        </div>
+<!-- Left sidebar removed — layout uses primary header and top-nav instead --> 
 
-        <nav class="sidebar-nav">
-            <button class="btn sidebar-btn">Inicio</button>
-            <div class="sidebar-links mt-3">
-                <button class="sidebar-item">Reservas</button>
-                <button class="sidebar-item">Servicios</button>
-                <button class="sidebar-item">Ayuda</button>
-                <button class="sidebar-item">Configuración</button>
-            </div>
-        </nav>
-    </aside> 
-
-    <!-- Main -->
+    <!-- Main: Contenedor principal (header + contenido dinámico) -->
     <div class="main">
 
-        <header class="header d-flex justify-content-between align-items-center p-3">
-            <h3 class="m-0">StoryBook</h3><p id="userTitle">Página del usuario</p>
+        <!-- Primary header: logo / search / profile -->
+        <header class="primary-header d-flex align-items-center">
+            <div class="d-flex align-items-center">
+                <img src="assets/img/storybookLOGO.png" alt="Logo" style="height:160px;">
+            </div>
 
             <div class="d-flex align-items-center">
+                <input type="text" class="form-control search-input me-2" placeholder="Search service...">
+            </div>
 
-                <input type="text" class="form-control me-2" placeholder="Buscar...">
-                <button class="btn btn-outline-primary me-2" data-bs-toggle="modal"
-                    data-bs-target="#loginModal">Mi perfil</button>
-
+            <div>
+                <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#loginModal">My Profile</button>
+                <button id="logoutBtn" class="btn btn-logout">Log out</button>
             </div>
         </header>
 
+        <!-- Top navigation (ocultable) -->
+        <nav class="top-nav" id="topNav">
+            <button class="nav-btn me-3" data-action="inicio">Home</button>
+            <button class="nav-btn me-3" data-action="publicaciones">Publications</button>
+            <button class="nav-btn me-3" data-action="servicios">Services</button>
+            <button class="nav-btn me-3" data-action="ayuda">Help</button>
+            <button class="nav-btn" data-action="configuracion">Settings</button>
+        </nav>
+
         <main class="content p-3">
+            <!-- Section: Stories (carrusel tipo Instagram) -->
             <section class="stories-section">
-                <h5 class="mb-2">Stories</h5>
                 <div id="storiesContainer" class="stories-list">
-                    <p class="text-muted">Cargando stories...</p>
+                    <p class="text-muted">Loading stories...</p>
                 </div>
             </section>
 
+            <!-- Section: Services (en Inicio muestra servicios de empresas que sigues) -->
             <section class="services-section">
-                <h4 class="mb-3">Servicios de empresas que sigues</h4>
+                <h4 class="mb-3">Services from companies you follow</h4>
                 <div id="servicesContainer" class="row">
-                    <p class="text-muted">Cargando servicios...</p>
+                    <p class="text-muted">Loading services...</p>
                 </div>
             </section>
 
-            <section class="posts-section">
-                <h4 class="mb-4">Posts de empresas que sigues</h4>
-                <div id="postsContainer" class="row">
-                    <p class="text-muted">Cargando posts...</p>
+            <!-- Section: Reservas (mis reservas del usuario) -->
+            <section class="reservas-section">
+                <h4 class="mb-3">My Reservations</h4>
+                <div id="reservasContainer" class="row">
+                    <p class="text-muted">Loading reservations...</p>
                 </div>
+            </section>
+
+            <!-- Section: Posts (muestra posts de empresas que sigues) -->
+            <section class="posts-section">
+                <h4 class="mb-4">Posts from companies you follow</h4>
+                <div id="postsContainer" class="row">
+                    <p class="text-muted">Loading posts...</p>
+                </div>
+            </section>
+
+            <!-- CONTENIDO TEMPORAL PARA PRUEBAS DE SCROLL -->
+            <section style="padding: 50px 0;">
+                <div class="card mb-4" style="min-height: 200px;"><div class="card-body"><h5>Contenido de prueba 1</h5><p>Haz scroll hacia abajo para ver el efecto de auto-hide en el nav superior.</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></div></div>
+                <div class="card mb-4" style="min-height: 200px;"><div class="card-body"><h5>Contenido de prueba 2</h5><p>Cuando hagas scroll hacia abajo, el nav se ocultará automáticamente.</p><p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p></div></div>
+                <div class="card mb-4" style="min-height: 200px;"><div class="card-body"><h5>Contenido de prueba 3</h5><p>Cuando hagas scroll hacia arriba, el nav reaparecerá.</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p></div></div>
+                <div class="card mb-4" style="min-height: 200px;"><div class="card-body"><h5>Contenido de prueba 4</h5><p>También puedes mover el ratón a la parte superior de la pantalla para mostrar el nav.</p><p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p></div></div>
+                <div class="card mb-4" style="min-height: 200px;"><div class="card-body"><h5>Contenido de prueba 5</h5><p>Este contenido asegura que la página sea lo suficientemente larga.</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p></div></div>
+                <div class="card mb-4" style="min-height: 200px;"><div class="card-body"><h5>Contenido de prueba 6</h5><p>Más contenido para hacer scroll...</p><p>Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p></div></div>
+                <div class="card mb-4" style="min-height: 200px;"><div class="card-body"><h5>Contenido de prueba 7</h5><p>Continúa haciendo scroll...</p><p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p></div></div>
+                <div class="card mb-4" style="min-height: 200px;"><div class="card-body"><h5>Contenido de prueba 8</h5><p>Ya casi...</p><p>Sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p></div></div>
+                <div class="card mb-4" style="min-height: 200px;"><div class="card-body"><h5>Contenido de prueba 9</h5><p>Un poco más...</p><p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p></div></div>
+                <div class="card mb-4" style="min-height: 200px;"><div class="card-body"><h5>Contenido de prueba 10</h5><p>¡Final del contenido de prueba!</p><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p></div></div>
+                <div class="card mb-4" style="min-height: 200px;"><div class="card-body"><h5>Contenido extra 11</h5><p>Asegurando scroll suficiente...</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></div></div>
+                <div class="card mb-4" style="min-height: 200px;"><div class="card-body"><h5>Contenido extra 12</h5><p>Más contenido para garantizar scroll...</p><p>Duis aute irure dolor in reprehenderit in voluptate velit esse.</p></div></div>
             </section>
         </main>
     </div>
-    <script>
-    document.addEventListener('DOMContentLoaded', async function() {
-        const h3 = document.getElementById('userTitle');
-        const token = localStorage.getItem('auth_token');
-        if (!token) { h3.innerText += ' (no autenticado)'; return; }
-        try {
-            const res = await fetch('/api/me', {
-                headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
-            });
-            if (!res.ok) { h3.innerText += ' (no autenticado)'; return; }
-            const user = await res.json();
-            h3.innerText += user && user.id ? ' ' + user.id : ' (sin id)';
-        } catch (e) {
-            console.error(e);
-            h3.innerText += ' (error)';
-        }
-    });
-    </script>
-
-    <script>
-            document.addEventListener('DOMContentLoaded', async function() {
-            const token = localStorage.getItem('auth_token');
-            if (!token) return;
-
-            try {
-                const res = await fetch('/api/user/followed-companies-posts', {
-                headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
-                });
-                if (!res.ok) throw new Error('Error al cargar posts');
-                
-                const posts = await res.json();
-                const storiesContainer = document.getElementById('storiesContainer');
-                const container = document.getElementById('postsContainer');
-
-                const stories = posts.filter(p => p.is_story);
-                const regular = posts.filter(p => !p.is_story);
-
-                // Render stories (small, horizontal)
-                if (stories.length === 0) {
-                    storiesContainer.innerHTML = '<p class="text-muted">No hay stories</p>';
-                } else {
-                    // Guardar stories globalmente para el modal
-                    window.storiesData = stories;
-                    storiesContainer.innerHTML = stories.map((s, i) => `
-                        <div class="story-pill">
-                            <div class="story-circle" role="button" onclick="openStoriesModal(${i})" title="${s.company_name}">
-                                <div class="story-inner">${(s.company_name||'').charAt(0).toUpperCase()}</div>
-                            </div>
-                            <small class="story-label">${s.company_name}</small>
-                        </div>
-                    `).join('');
-                }
-
-                // Render regular posts (grid)
-                if (regular.length === 0) {
-                    container.innerHTML = '<p class="text-muted">No hay posts disponibles</p>';
-                    return;
-                }
-
-                container.innerHTML = regular.map(post => `
-                <div class="col-md-6 col-lg-4 mb-3">
-                    <div class="card h-100">
-                        <div class="card-body d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h5 class="card-title mb-0">${post.company_name}</h5>
-                            </div>
-                            <p class="card-text flex-grow-1">${post.content}</p>
-                            <div class="mt-2">
-                                <small class="text-muted d-block">Publicado: ${new Date(post.created_at).toLocaleDateString()}</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                `).join('');
-
-                // Cargar servicios de las empresas seguidas
-                try {
-                    const sres = await fetch('/api/user/followed-companies-services', {
-                        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
-                    });
-                    const servicesContainer = document.getElementById('servicesContainer');
-                    if (!sres.ok) {
-                        servicesContainer.innerHTML = '<p class="text-muted">Error al cargar servicios</p>';
-                    } else {
-                        const services = await sres.json();
-                        if (!services.length) {
-                            servicesContainer.innerHTML = '<p class="text-muted">No hay servicios</p>';
-                        } else {
-                            servicesContainer.innerHTML = services.map(s => `
-                                <div class="col-md-6 col-lg-4 mb-3">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h5 class="card-title mb-0">${s.name}</h5>
-                                                <small class="text-muted">${s.category ?? ''}</small>
-                                            </div>
-                                            <p class="card-text text-truncate">${s.description}</p>
-                                            <div class="mt-2 d-flex justify-content-between align-items-center">
-                                                <small class="text-muted">${s.company_name ?? ''}</small>
-                                                <strong>${s.price ? '$' + parseFloat(s.price).toFixed(2) : ''}</strong>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('');
-                        }
-                    }
-                } catch (err) {
-                    console.error(err);
-                    const servicesContainer = document.getElementById('servicesContainer');
-                    servicesContainer.innerHTML = '<p class="text-danger">Error al cargar servicios</p>';
-                }
-            } catch (e) {
-                console.error(e);
-                document.getElementById('postsContainer').innerHTML = '<p class="text-danger">Error al cargar posts</p>';
-            }
-            });
-        </script>
 
 <!-- Bootstrap bundle (asegurar disponible para modal) -->
 <script src="js/bootstrap.bundle.js"></script>
 
-<!-- Stories modal -->
+<!-- Stories modal (visualizador de stories) -->
 <div class="modal fade" id="storiesModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
     <div class="modal-content bg-dark text-white">
@@ -226,88 +176,26 @@
   </div>
 </div>
 
-<script>
-(function(){
-  const STORY_DURATION = 5000; // 5 segundos
-  let storyModalEl = document.getElementById('storiesModal');
-  let storyModal = null;
-  if (storyModalEl && window.bootstrap) storyModal = new bootstrap.Modal(storyModalEl);
+<!-- Footer -->
+<footer class="site-footer">
+  <div class="container">
+    <img src="assets/img/storybookLOGO.png" alt="Logo" style="height:160px;">
+    <div class="footer-links">
+      <a href="#" data-action="inicio">Home</a>
+      <a href="#" data-action="publicaciones">Publications</a>
+      <a href="#" data-action="servicios">Services</a>
+      <a href="#" data-action="ayuda">Help</a>
+      <a href="#" data-action="configuracion">Settings</a>
+    </div>
+    <small>© 2026 StoryBook. All rights reserved.</small>
+  </div>
+</footer>
 
-  let currentStoryIndex = 0;
-  let storyTimer = null;
-  let progressInterval = null;
+<!-- Scripts externos modulares -->
+<script src="js/user/user-auth.js"></script>
+<script src="js/user/user-content.js"></script>
+<script src="js/user/stories-modal.js"></script>
+<script src="js/user/user-navigation.js"></script>
 
-  function escapeHtml(unsafe) {
-    if (!unsafe) return '';
-    return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
-  }
-
-  window.openStoriesModal = function(index) {
-    if (!window.storiesData || window.storiesData.length === 0) return;
-    currentStoryIndex = index;
-    showStory(currentStoryIndex);
-    if (storyModal) storyModal.show();
-  }
-
-  function showStory(idx) {
-    clearTimers();
-    const s = window.storiesData[idx];
-    const companyEl = document.getElementById('storyCompany');
-    const contentEl = document.getElementById('storyContent');
-    const metaEl = document.getElementById('storyMeta');
-    const progress = document.getElementById('storyProgress');
-
-    companyEl.innerText = s.company_name || '';
-    // Insertar contenido formateado, preservando saltos de línea
-    const safe = escapeHtml(s.content || '');
-    contentEl.innerHTML = '<div style="padding:12px; font-size:1.25rem; line-height:1.4;">' + safe.replace(/\n/g, '<br>') + '</div>';
-    metaEl.innerText = s.expires_at ? 'Expira: ' + new Date(s.expires_at).toLocaleString() : '';
-    progress.style.width = '0%';
-
-    const start = Date.now();
-    progressInterval = setInterval(() => {
-      const pct = Math.min(100, (Date.now() - start) / STORY_DURATION * 100);
-      progress.style.width = pct + '%';
-    }, 100);
-
-    storyTimer = setTimeout(() => {
-      nextStory();
-    }, STORY_DURATION);
-  }
-
-  function nextStory() {
-    if (!window.storiesData) return;
-    if (currentStoryIndex + 1 >= window.storiesData.length) {
-      // cerrar modal al terminar
-      if (storyModal) storyModal.hide();
-    } else {
-      currentStoryIndex++;
-      showStory(currentStoryIndex);
-    }
-  }
-
-  function prevStory() {
-    if (!window.storiesData) return;
-    if (currentStoryIndex - 1 < 0) return;
-    currentStoryIndex--;
-    showStory(currentStoryIndex);
-  }
-
-  function clearTimers() {
-    if (storyTimer) { clearTimeout(storyTimer); storyTimer = null; }
-    if (progressInterval) { clearInterval(progressInterval); progressInterval = null; }
-  }
-
-  if (storyModalEl) {
-    storyModalEl.addEventListener('hidden.bs.modal', clearTimers);
-    // avanzar al click en la mitad derecha, retroceder en la mitad izquierda
-    storyModalEl.addEventListener('click', function(e) {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      if (x > rect.width / 2) nextStory(); else prevStory();
-    });
-  }
-})();
-</script>
 </body>
 </html>

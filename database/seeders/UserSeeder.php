@@ -12,10 +12,18 @@ class UserSeeder extends Seeder
     {
         $userRole = Role::where('name', 'user')->first();
 
-        // Crear 10 usuarios normales de ejemplo
-        for ($i = 1; $i <= 10; $i++) {
+        // Crear 20 usuarios normales con nombres realistas
+        $users = [
+            'Ana García', 'Carlos Martínez', 'Laura Fernández', 'Javier López',
+            'María Sánchez', 'Pedro Rodríguez', 'Carmen Pérez', 'Miguel González',
+            'Isabel Romero', 'David Ruiz', 'Lucía Díaz', 'Antonio Moreno',
+            'Sara Muñoz', 'Francisco Álvarez', 'Elena Jiménez', 'José Hernández',
+            'Paula Torres', 'Manuel Ramírez', 'Cristina Vázquez', 'Alberto Castro'
+        ];
+
+        for ($i = 1; $i <= 20; $i++) {
             $user = User::create([
-                'name' => "Usuario $i",
+                'name' => $users[$i - 1],
                 'email' => "user$i@storybook.com",
                 'password' => bcrypt('123456')
             ]);

@@ -16,14 +16,14 @@ class FollowerSeeder extends Seeder
             return;
         }
 
-        // Seleccionar usuarios con rol 'user'
+        // Seleccionar usuarios con rol 'user' (excluir admin)
         $users = User::whereHas('roles', function($q) {
             $q->where('name', 'user');
         })->get();
 
         foreach ($users as $user) {
-            // Cada usuario seguirá entre 1 y 5 empresas aleatorias
-            $count = rand(1, min(5, $companies->count()));
+            // Cada usuario seguirá entre 3 y 7 empresas aleatorias
+            $count = rand(3, min(7, $companies->count()));
             $targets = $companies->random($count);
 
             foreach ($targets as $company) {

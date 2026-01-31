@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
+    // comments table only stores created_at explicitly in migration, disable automatic timestamps
+    public $timestamps = false;
+
     protected $fillable = [
         'post_id',
         'user_id',

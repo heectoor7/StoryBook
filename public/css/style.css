@@ -1,3 +1,6 @@
+/* =========================
+   RESET & BASE
+========================= */
 * {
     margin: 0;
     padding: 0;
@@ -10,117 +13,218 @@ html, body {
     overflow: hidden;
 }
 
+/* =========================
+   VARIABLES
+========================= */
 :root {
     --sidebar-width: 250px;
     --header-height: 100px;
+
+    /* Fondos */
+    --bg-app: #0E1111;
+    --bg-sidebar: #070A0A;
+    --bg-header: #070A0A;
+    --bg-main: #0E1111;
+    --bg-card: #141A1A;
+    --bg-hover: #1C2424;
+
+    /* Texto */
+    --text-primary: #F1F5F4;
+    --text-secondary: #C7D0CE;
+    --text-muted: #9AA6A4;
+
+    /* Color principal (verde esmeralda) */
+    --primary: #10B981;
+    --primary-hover: #059669;
+
+    /* Acento (ámbar elegante) */
+    --accent: #F59E0B;
+
+    /* Estados */
+    --success: #22C55E;
+    --error: #EF4444;
+
+    /* Bordes */
+    --border: #1F2A2A;
 }
 
-/* Layout */
+
+/* =========================
+   BODY
+========================= */
 body {
     min-height: 100vh;
+    background-color: var(--bg-app);
+    color: var(--text-primary);
 }
 
-/* Sidebar */
+/* =========================
+   SIDEBAR
+========================= */
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
     width: var(--sidebar-width);
-    background: linear-gradient(0deg,rgba(0, 255, 250, 1) 0%, rgba(17, 24, 39, 1) 100%);
-    color: white;
+    background-color: var(--bg-sidebar);
+    color: var(--text-secondary);
     padding: 20px;
     z-index: 1000;
     overflow: auto;
+    border-right: 1px solid var(--border);
 }
 
-/* Header */
+.sidebar-brand img {
+    display: block;
+    margin: 0 auto 12px;
+}
+
+/* Botón principal (Inicio) */
+.sidebar-nav {
+    text-align: center;
+}
+
+.sidebar-btn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    width: 70%;
+    display: inline-block;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+    cursor: pointer;
+}
+
+.sidebar-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Links */
+.sidebar-links {
+    margin-top: 16px;
+}
+
+.sidebar-item {
+    display: block;
+    width: 100%;
+    background: transparent;
+    color: var(--text-secondary);
+    border: none;
+    padding: 10px 0;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    border-radius: 8px;
+}
+
+.sidebar-item:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.sidebar button:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* Logout */
+.sidebar-bottom {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    text-align: center;
+}
+
+.sidebar-bottom .btn-logout {
+    background-color: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.sidebar-bottom .btn-logout:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--error);
+}
+
+/* =========================
+   HEADER
+========================= */
 .main .header {
     position: fixed;
     top: 0;
     left: var(--sidebar-width);
     right: 0;
     height: var(--header-height);
-    background-color: #152b39;
-    color: white;
+    background-color: var(--bg-header);
+    color: var(--text-primary);
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    border-bottom: 1px solid rgba(0,0,0,0.5);
+    border-bottom: 1px solid var(--border);
     z-index: 999;
     padding: 0 16px;
 }
 
-/* Main */
+/* =========================
+   MAIN
+========================= */
 .main {
     margin-left: var(--sidebar-width);
     margin-top: var(--header-height);
     min-height: calc(100vh - var(--header-height));
     display: flex;
     flex-direction: column;
-    background-color: #152b39;
+    background-color: var(--bg-main);
     overflow: hidden;
 }
 
-/* Content scrollable area */
+/* =========================
+   CONTENT
+========================= */
 .content {
     padding: 20px;
-    color: #ffffff;
+    color: var(--text-primary);
     overflow: auto;
     height: calc(100vh - var(--header-height));
 }
 
-/* Botón personalizado */
+/* =========================
+   BOTONES
+========================= */
 .btn.btn-register {
-    background-color: #03bab6;
-    color: white;
+    background-color: var(--accent);
+    color: #020617;
     border: none;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 .btn.btn-register:hover {
-    background-color: #029a96;
+    background-color: #EAB308;
 }
 
-/* Sidebar navigation buttons */
-.sidebar-brand img { display:block; margin:0 auto 8px; }
-.sidebar-nav { text-align: center; }
-.sidebar-btn {
-    background-color: #03bab6;
-    color: #052023;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 20px;
-    font-size: 1rem;
-    width: 70%;
-    display: inline-block;
-    box-shadow: 0 6px 14px rgba(3,186,182,0.14);
-}
-.sidebar-btn:hover { background-color: #02a9a0; }
-
-.sidebar-links { margin-top: 14px; }
-.sidebar-item {
-    display: block;
-    width: 100%;
-    background: transparent;
-    color: rgba(255,255,255,0.9);
-    border: none;
-    padding: 10px 0;
-    text-align: center;
-    cursor: pointer;
-    font-size: 0.95rem;
-}
-.sidebar-item:hover {
-    color: #fff;
-    background: rgba(255,255,255,0.03);
-    border-radius: 8px;
+/* =========================
+   CARDS (opcional pero recomendado)
+========================= */
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.2s ease;
 }
 
-.sidebar button:focus { outline: none; box-shadow: none; }
-
-
-/* Content */
-.content {
-    padding: 20px;
-    color: #ffffff;
+.card:hover {
+    background-color: var(--bg-hover);
+    transform: translateY(-2px);
 }
-

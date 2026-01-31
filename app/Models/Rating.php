@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rating extends Model
 {
+    // ratings table has no timestamps
+    public $timestamps = false;
+
     protected $fillable = [
         'user_id',
         'company_id',
