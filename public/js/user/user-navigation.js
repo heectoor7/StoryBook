@@ -5,58 +5,45 @@
 
 (function(){
     // Variables globales
-    let lastScrollTop = 0;
-    let ticking = false;
-    let topNav = null;
-    const scrollThreshold = 100; // píxeles antes de activar el hide
+    const navbar = document.getElementById('navegacion');
+    const navbarIndicator = document.getElementById('barra_indicador');
+    let timeout;
     
-    function handleScroll() {
-        if (!topNav) return;
-        
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // Solo ocultar si hacemos scroll hacia abajo y hemos pasado el threshold
-        if (scrollTop > lastScrollTop && scrollTop > scrollThreshold) {
-            // Scrolling down - ocultar nav
-            if (!topNav.classList.contains('nav-hidden')) {
-                topNav.classList.add('nav-hidden');
-            }
-        } else if (scrollTop < lastScrollTop) {
-            // Scrolling up - mostrar nav
-            if (topNav.classList.contains('nav-hidden')) {
-                topNav.classList.remove('nav-hidden');
-            }
-        }
-        
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-        ticking = false;
+    // Mostrar la barra de navegación
+    function showNavbar() {
+        if (navbar) navbar.style.transform = 'translateY(0)';
+        if (navbarIndicator) navbarIndicator.style.display = 'none';
+    }
+    
+    // Ocultar la barra de navegación
+    function hideNavbar() {
+        if (navbar) navbar.style.transform = 'translateY(-100%)';
+        if (navbarIndicator) navbarIndicator.style.display = 'block';
     }
     
     function initScrollBehavior() {
-        topNav = document.getElementById('topNav');
-        
-        if (!topNav) {
-            console.error('❌ topNav no encontrado!');
+        if (!navbar || !navbarIndicator) {
+            console.error('❌ navbar o navbarIndicator no encontrados!');
             return;
         }
         
-        // Optimizar con requestAnimationFrame
-        window.addEventListener('scroll', function() {
-            if (!ticking) {
-                window.requestAnimationFrame(handleScroll);
-                ticking = true;
+        // Detectar el movimiento del mouse
+        window.addEventListener('mousemove', function(e) {
+            clearTimeout(timeout);
+            
+            // Si el cursor está cerca de la parte superior de la ventana, mostramos la barra de navegación
+            if (e.clientY < 50) {
+                showNavbar();
             }
-        }, { passive: true });
+            
+            // Si el cursor se aleja de la parte superior, la ocultamos después de 1 segundos
+            timeout = setTimeout(function() {
+                hideNavbar();
+            }, 1000);
+        });
         
-        // Detectar mouse cerca de la parte superior
-        document.addEventListener('mousemove', function(e) {
-            // Si el mouse está en los primeros 150px desde arriba, mostrar nav
-            if (e.clientY < 150) {
-                if (topNav && topNav.classList.contains('nav-hidden')) {
-                    topNav.classList.remove('nav-hidden');
-                }
-            }
-        }, { passive: true });
+        // Mostrar la barra de navegación cuando se haga clic en el indicador
+        navbarIndicator.addEventListener('click', showNavbar);
     }
 
     //

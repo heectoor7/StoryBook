@@ -68,11 +68,19 @@
 
         if (companyEl) companyEl.innerText = s.company_name || '';
         
-        // Insertar contenido formateado, preservando saltos de línea
+        // Insertar contenido formateado con imagen si existe
         if (contentEl) {
             const safe = escapeHtml(s.content || '');
-            contentEl.innerHTML = '<div style="padding:12px; font-size:1.25rem; line-height:1.4;">' + 
-                                 safe.replace(/\n/g, '<br>') + '</div>';
+            let html = '';
+            
+            if (s.image) {
+                html += `<img src="${s.image}" alt="${s.company_name}" style="width:100%;max-height:400px;object-fit:cover;border-radius:8px;margin-bottom:12px;">`;
+            }
+            
+            html += '<div class="story-content-wrapper">' + 
+                    safe.replace(/\n/g, '<br>') + '</div>';
+            
+            contentEl.innerHTML = html;
         }
         
         if (metaEl) {

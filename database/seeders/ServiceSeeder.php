@@ -18,101 +18,101 @@ class ServiceSeeder extends Seeder
             return;
         }
 
-        // Servicios específicos por empresa
+        // Specific services by company
         $servicesData = [
-            'Peluquería Carmen' => [
-                'category' => 'Peluquería',
+            'Carmen\'s Hair Salon' => [
+                'category' => 'Hair Salon',
                 'services' => [
-                    ['name' => 'Corte de pelo mujer', 'description' => 'Corte profesional adaptado a tu estilo', 'price' => 25.00],
-                    ['name' => 'Corte de pelo hombre', 'description' => 'Corte clásico o moderno', 'price' => 18.00],
-                    ['name' => 'Tinte completo', 'description' => 'Coloración completa con productos de calidad', 'price' => 45.00],
-                    ['name' => 'Mechas balayage', 'description' => 'Técnica moderna de iluminación capilar', 'price' => 65.00],
-                    ['name' => 'Tratamiento de keratina', 'description' => 'Alisado y nutrición profunda', 'price' => 80.00]
+                    ['name' => 'Women\'s Haircut', 'description' => 'Professional cut adapted to your style', 'price' => 25.00],
+                    ['name' => 'Men\'s Haircut', 'description' => 'Classic or modern cut', 'price' => 18.00],
+                    ['name' => 'Full Color', 'description' => 'Complete coloring with quality products', 'price' => 45.00],
+                    ['name' => 'Balayage Highlights', 'description' => 'Modern hair lighting technique', 'price' => 65.00],
+                    ['name' => 'Keratin Treatment', 'description' => 'Straightening and deep nourishment', 'price' => 80.00]
                 ]
             ],
-            'Taller Paco' => [
-                'category' => 'Taller Mecánico',
+            'Pete\'s Auto Repair' => [
+                'category' => 'Auto Repair',
                 'services' => [
-                    ['name' => 'Cambio de aceite', 'description' => 'Cambio de aceite y filtro', 'price' => 45.00],
-                    ['name' => 'Revisión completa', 'description' => 'Revisión de todos los sistemas del vehículo', 'price' => 75.00],
-                    ['name' => 'Cambio de pastillas de freno', 'description' => 'Sustitución de pastillas delanteras o traseras', 'price' => 90.00],
-                    ['name' => 'Alineación y equilibrado', 'description' => 'Ajuste de neumáticos para mejor conducción', 'price' => 55.00],
-                    ['name' => 'Cambio de batería', 'description' => 'Instalación de batería nueva', 'price' => 120.00]
+                    ['name' => 'Oil Change', 'description' => 'Oil and filter change', 'price' => 45.00],
+                    ['name' => 'Complete Inspection', 'description' => 'Review of all vehicle systems', 'price' => 75.00],
+                    ['name' => 'Brake Pad Replacement', 'description' => 'Front or rear pad replacement', 'price' => 90.00],
+                    ['name' => 'Wheel Alignment', 'description' => 'Tire adjustment for better driving', 'price' => 55.00],
+                    ['name' => 'Battery Replacement', 'description' => 'New battery installation', 'price' => 120.00]
                 ]
             ],
-            'Restaurante El Rincón' => [
-                'category' => 'Restaurante',
+            'The Corner Restaurant' => [
+                'category' => 'Restaurant',
                 'services' => [
-                    ['name' => 'Menú del día', 'description' => 'Primer plato, segundo, postre y bebida', 'price' => 12.50],
-                    ['name' => 'Menú degustación', 'description' => '5 platos especiales del chef', 'price' => 35.00],
-                    ['name' => 'Paella valenciana (2 pers)', 'description' => 'Paella tradicional para dos personas', 'price' => 28.00],
-                    ['name' => 'Reserva sala privada', 'description' => 'Espacio privado para eventos (consumición aparte)', 'price' => 50.00]
+                    ['name' => 'Daily Menu', 'description' => 'Appetizer, main course, dessert and drink', 'price' => 12.50],
+                    ['name' => 'Tasting Menu', 'description' => '5 special chef dishes', 'price' => 35.00],
+                    ['name' => 'Paella (2 people)', 'description' => 'Traditional paella for two', 'price' => 28.00],
+                    ['name' => 'Private Room Reservation', 'description' => 'Private space for events (consumption aside)', 'price' => 50.00]
                 ]
             ],
-            'Gimnasio FitLife' => [
-                'category' => 'Gimnasio',
+            'FitLife Gym' => [
+                'category' => 'Gym',
                 'services' => [
-                    ['name' => 'Matrícula mensual', 'description' => 'Acceso ilimitado al gimnasio durante un mes', 'price' => 35.00],
-                    ['name' => 'Matrícula trimestral', 'description' => 'Acceso ilimitado durante 3 meses', 'price' => 90.00],
-                    ['name' => 'Clase de spinning', 'description' => 'Sesión individual de spinning', 'price' => 8.00],
-                    ['name' => 'Clase de yoga', 'description' => 'Sesión de yoga guiada', 'price' => 10.00],
-                    ['name' => 'Entrenamiento personal', 'description' => 'Sesión 1h con entrenador personal', 'price' => 40.00]
+                    ['name' => 'Monthly Membership', 'description' => 'Unlimited gym access for one month', 'price' => 35.00],
+                    ['name' => 'Quarterly Membership', 'description' => 'Unlimited access for 3 months', 'price' => 90.00],
+                    ['name' => 'Spinning Class', 'description' => 'Individual spinning session', 'price' => 8.00],
+                    ['name' => 'Yoga Class', 'description' => 'Guided yoga session', 'price' => 10.00],
+                    ['name' => 'Personal Training', 'description' => '1h session with personal trainer', 'price' => 40.00]
                 ]
             ],
-            'Veterinaria San Francisco' => [
-                'category' => 'Veterinaria',
+            'St. Francis Veterinary' => [
+                'category' => 'Veterinary',
                 'services' => [
-                    ['name' => 'Consulta general', 'description' => 'Revisión veterinaria completa', 'price' => 30.00],
-                    ['name' => 'Vacunación', 'description' => 'Vacuna obligatoria o recomendada', 'price' => 25.00],
-                    ['name' => 'Desparasitación', 'description' => 'Tratamiento antiparasitario interno y externo', 'price' => 20.00],
-                    ['name' => 'Esterilización', 'description' => 'Cirugía de esterilización (perro/gato)', 'price' => 150.00],
-                    ['name' => 'Urgencia 24h', 'description' => 'Atención veterinaria urgente', 'price' => 80.00]
+                    ['name' => 'General Consultation', 'description' => 'Complete veterinary checkup', 'price' => 30.00],
+                    ['name' => 'Vaccination', 'description' => 'Required or recommended vaccine', 'price' => 25.00],
+                    ['name' => 'Deworming', 'description' => 'Internal and external antiparasitic treatment', 'price' => 20.00],
+                    ['name' => 'Spay/Neuter', 'description' => 'Spay/neuter surgery (dog/cat)', 'price' => 150.00],
+                    ['name' => '24h Emergency', 'description' => 'Urgent veterinary care', 'price' => 80.00]
                 ]
             ],
-            'Panadería La Espiga' => [
-                'category' => 'Panadería',
+            'The Golden Wheat Bakery' => [
+                'category' => 'Bakery',
                 'services' => [
-                    ['name' => 'Barra de pan', 'description' => 'Pan fresco del día', 'price' => 0.80],
-                    ['name' => 'Croissant', 'description' => 'Croissant de mantequilla', 'price' => 1.20],
-                    ['name' => 'Tarta personalizada', 'description' => 'Tarta decorada para eventos (1kg)', 'price' => 25.00],
-                    ['name' => 'Bandeja de bollería', 'description' => '12 piezas variadas de bollería', 'price' => 15.00]
+                    ['name' => 'Bread Loaf', 'description' => 'Fresh bread of the day', 'price' => 0.80],
+                    ['name' => 'Croissant', 'description' => 'Butter croissant', 'price' => 1.20],
+                    ['name' => 'Custom Cake', 'description' => 'Decorated cake for events (1kg)', 'price' => 25.00],
+                    ['name' => 'Pastry Tray', 'description' => '12 assorted pastry pieces', 'price' => 15.00]
                 ]
             ],
-            'Librería Cervantes' => [
-                'category' => 'Librería',
+            'Cervantes Bookstore' => [
+                'category' => 'Bookstore',
                 'services' => [
-                    ['name' => 'Libro bestseller', 'description' => 'Últimas novedades editoriales', 'price' => 18.00],
-                    ['name' => 'Material escolar completo', 'description' => 'Kit básico para curso escolar', 'price' => 35.00],
-                    ['name' => 'Cómic/Manga', 'description' => 'Ediciones de cómics y manga', 'price' => 12.00],
-                    ['name' => 'Tarjeta regalo', 'description' => 'Tarjeta regalo por valor elegido', 'price' => 20.00]
+                    ['name' => 'Bestseller Book', 'description' => 'Latest publishing releases', 'price' => 18.00],
+                    ['name' => 'Complete School Supplies', 'description' => 'Basic kit for school year', 'price' => 35.00],
+                    ['name' => 'Comic/Manga', 'description' => 'Comic and manga editions', 'price' => 12.00],
+                    ['name' => 'Gift Card', 'description' => 'Gift card for chosen amount', 'price' => 20.00]
                 ]
             ],
-            'Floristería Jardín' => [
-                'category' => 'Floristería',
+            'Garden Florist' => [
+                'category' => 'Florist',
                 'services' => [
-                    ['name' => 'Ramo de rosas (12 uds)', 'description' => 'Docena de rosas frescas', 'price' => 30.00],
-                    ['name' => 'Centro de mesa', 'description' => 'Arreglo floral decorativo', 'price' => 25.00],
-                    ['name' => 'Planta de interior', 'description' => 'Planta natural en maceta decorativa', 'price' => 18.00],
-                    ['name' => 'Decoración floral boda', 'description' => 'Servicio completo de decoración floral', 'price' => 350.00]
+                    ['name' => 'Rose Bouquet (12 pcs)', 'description' => 'Dozen fresh roses', 'price' => 30.00],
+                    ['name' => 'Centerpiece', 'description' => 'Decorative floral arrangement', 'price' => 25.00],
+                    ['name' => 'Indoor Plant', 'description' => 'Natural plant in decorative pot', 'price' => 18.00],
+                    ['name' => 'Wedding Floral Decoration', 'description' => 'Complete floral decoration service', 'price' => 350.00]
                 ]
             ],
-            'Estudio Foto Luz' => [
-                'category' => 'Fotografía',
+            'Light Photography Studio' => [
+                'category' => 'Photography',
                 'services' => [
-                    ['name' => 'Sesión retrato individual', 'description' => 'Sesión de fotos profesional 1h', 'price' => 80.00],
-                    ['name' => 'Sesión familiar', 'description' => 'Reportaje familiar 2h + 20 fotos editadas', 'price' => 150.00],
-                    ['name' => 'Book fotográfico', 'description' => 'Sesión profesional con 30 fotos editadas', 'price' => 200.00],
-                    ['name' => 'Fotografía de boda', 'description' => 'Cobertura completa del evento', 'price' => 800.00]
+                    ['name' => 'Individual Portrait Session', 'description' => '1h professional photo session', 'price' => 80.00],
+                    ['name' => 'Family Session', 'description' => '2h family shoot + 20 edited photos', 'price' => 150.00],
+                    ['name' => 'Photo Book', 'description' => 'Professional session with 30 edited photos', 'price' => 200.00],
+                    ['name' => 'Wedding Photography', 'description' => 'Complete event coverage', 'price' => 800.00]
                 ]
             ],
-            'Spa Relax Center' => [
-                'category' => 'Spa y Bienestar',
+            'Relax Spa Center' => [
+                'category' => 'Spa & Wellness',
                 'services' => [
-                    ['name' => 'Masaje relajante 60min', 'description' => 'Masaje completo de relajación', 'price' => 45.00],
-                    ['name' => 'Tratamiento facial', 'description' => 'Limpieza e hidratación facial profunda', 'price' => 50.00],
-                    ['name' => 'Masaje con piedras calientes', 'description' => 'Terapia con piedras volcánicas', 'price' => 65.00],
-                    ['name' => 'Circuito spa 2h', 'description' => 'Acceso a jacuzzi, sauna y baño turco', 'price' => 35.00],
-                    ['name' => 'Bono 4 sesiones', 'description' => 'Bono mensual de masajes relajantes', 'price' => 130.00]
+                    ['name' => 'Relaxing Massage 60min', 'description' => 'Full relaxation massage', 'price' => 45.00],
+                    ['name' => 'Facial Treatment', 'description' => 'Deep facial cleansing and hydration', 'price' => 50.00],
+                    ['name' => 'Hot Stone Massage', 'description' => 'Volcanic stone therapy', 'price' => 65.00],
+                    ['name' => 'Spa Circuit 2h', 'description' => 'Access to jacuzzi, sauna and Turkish bath', 'price' => 35.00],
+                    ['name' => '4 Session Pass', 'description' => 'Monthly pass for relaxing massages', 'price' => 130.00]
                 ]
             ]
         ];
@@ -131,12 +131,13 @@ class ServiceSeeder extends Seeder
                 continue;
             }
 
-            foreach ($data['services'] as $serviceData) {
+            foreach ($data['services'] as $index => $serviceData) {
                 Service::create([
                     'company_id' => $company->id,
                     'category_id' => $category->id,
                     'name' => $serviceData['name'],
                     'description' => $serviceData['description'],
+                    'image' => 'https://picsum.photos/seed/service' . $company->id . $index . '/400/300',
                     'price' => $serviceData['price']
                 ]);
             }

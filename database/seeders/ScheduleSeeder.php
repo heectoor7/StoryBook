@@ -18,7 +18,7 @@ class ScheduleSeeder extends Seeder
             return;
         }
 
-        $days = ['LUN','MAR','MIE','JUE','VIE','SAB','DOM'];
+        $days = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
 
         foreach ($companies as $company) {
             // cada empresa tendrá horarios para 5-7 días

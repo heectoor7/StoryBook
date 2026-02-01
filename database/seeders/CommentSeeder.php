@@ -12,12 +12,12 @@ class CommentSeeder extends Seeder
 {
     public function run()
     {
-        // Solo usuarios normales pueden comentar (no admin ni empresas)
+        // Only regular users can comment (not admin or companies)
         $users = User::whereHas('roles', function($q) {
             $q->where('name', 'user');
         })->get();
 
-        // Solo posts normales (no stories)
+        // Only regular posts (not stories)
         $posts = Post::where('is_story', false)->get();
 
         if ($users->isEmpty() || $posts->isEmpty()) {
@@ -25,25 +25,25 @@ class CommentSeeder extends Seeder
         }
 
         $commentTexts = [
-            '¡Excelente servicio! Muy recomendable.',
-            'Me encanta, volveré sin duda. 😊',
-            'Muy buena atención al cliente.',
-            '¡Genial! Justo lo que necesitaba.',
-            'Totalmente recomendado.',
-            '¡Qué buena experiencia!',
-            'Muchas gracias, todo perfecto.',
-            'Me ha gustado mucho, repetiré seguro.',
-            '¡Fantástico! Superó mis expectativas.',
-            'Excelente profesionalidad.',
-            'Muy satisfecho con el resultado.',
-            'Gran calidad-precio.',
-            '¡Me encanta este sitio!',
-            'Servicio rápido y eficiente.',
-            'Muy buena relación calidad-precio.',
-            'Lo recomendaré a mis amigos.',
-            '¡Increíble! No puedo estar más contento.',
-            'Atención excepcional.',
-            'Volveré pronto, sin duda.'
+            'Excellent service! Highly recommended.',
+            'Love it, will definitely come back. 😊',
+            'Very good customer service.',
+            'Great! Just what I needed.',
+            'Totally recommended.',
+            'What a great experience!',
+            'Thank you very much, everything perfect.',
+            'I really liked it, will repeat for sure.',
+            'Fantastic! Exceeded my expectations.',
+            'Excellent professionalism.',
+            'Very satisfied with the result.',
+            'Great quality-price ratio.',
+            'I love this place!',
+            'Fast and efficient service.',
+            'Very good value for money.',
+            'Will recommend to my friends.',
+            'Amazing! Couldn\'t be happier.',
+            'Exceptional service.',
+            'Will be back soon, no doubt.'
         ];
 
         // Cada post recibe entre 0 y 5 comentarios

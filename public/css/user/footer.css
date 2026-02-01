@@ -1,0 +1,42 @@
+/* =========================================================
+   footer.css - Estilos del footer
+========================================================= */
+
+/* =========================
+   FOOTER (SIEMPRE AL FINAL)
+========================= */
+.site-footer {
+  background: var(--bg-header);
+  color: var(--text-muted);
+  padding: 36px 20px;
+  margin-top: 28px;
+  border-top: 1px solid var(--border);
+
+  /* Evitar que se encoja */
+  flex-shrink: 0;
+  
+  /* Centrar todo el contenido */
+  text-align: center;
+}
+
+.site-footer .container {
+  text-align: center;
+}
+
+.site-footer .footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+
+.site-footer .footer-links a {
+  color: rgba(255,255,255,0.6);
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+.site-footer .footer-links a:hover {
+  color: var(--primary);
+}

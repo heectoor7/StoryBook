@@ -10,16 +10,16 @@ class CategorySeeder extends Seeder
     public function run()
     {
         $categories = [
-            'Peluquería',
-            'Taller Mecánico',
-            'Restaurante',
-            'Gimnasio',
-            'Veterinaria',
-            'Panadería',
-            'Librería',
-            'Floristería',
-            'Fotografía',
-            'Spa y Bienestar'
+            'Hair Salon',
+            'Auto Repair',
+            'Restaurant',
+            'Gym',
+            'Veterinary',
+            'Bakery',
+            'Bookstore',
+            'Florist',
+            'Photography',
+            'Spa & Wellness'
         ];
 
         foreach ($categories as $name) {

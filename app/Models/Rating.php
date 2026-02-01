@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rating extends Model
 {
-    // ratings table has no timestamps
-    public $timestamps = false;
+    // ratings table only has created_at, no updated_at
+    const UPDATED_AT = null;
 
     protected $fillable = [
         'user_id',
-        'company_id',
-        'rating'
+        'service_id',
+        'rating',
+        'comment',
+        'created_at'
     ];
 
     public function user()
@@ -20,8 +22,8 @@ class Rating extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function company()
+    public function service()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Service::class);
     }
 }

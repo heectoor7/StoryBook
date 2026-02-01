@@ -17,136 +17,136 @@ class PostSeeder extends Seeder
             return;
         }
 
-        // Contenidos realistas para cada tipo de empresa
+        // Realistic content for each type of company
         $contents = [
-            'Peluquería Carmen' => [
+            'Carmen\'s Hair Salon' => [
                 'posts' => [
-                    '¡Nuevo servicio de mechas balayage! 💇‍♀️ Reserva tu cita y luce un cabello radiante.',
-                    'Este mes tenemos descuentos especiales en tratamientos de keratina. ¡No te lo pierdas!',
-                    'Gracias a todas nuestras clientas por confiar en nosotros. ❤️ ¡Os esperamos!',
-                    '¿Ya has probado nuestro nuevo servicio de manicura y pedicura? ¡Te encantará!'
+                    'New balayage highlights service! 💇‍♀️ Book your appointment and get radiant hair.',
+                    'This month we have special discounts on keratin treatments. Don\'t miss it!',
+                    'Thank you to all our clients for trusting us. ❤️ We look forward to seeing you!',
+                    'Have you tried our new manicure and pedicure service yet? You\'ll love it!'
                 ],
                 'stories' => [
-                    '✨ Hoy: Corte + Peinado = €35',
-                    '¡Mira este antes y después! 😍',
-                    'Abrimos hasta las 20:00h'
+                    '✨ Today: Cut + Style = $35',
+                    'Look at this before and after! 😍',
+                    'Open until 8:00 PM'
                 ]
             ],
-            'Taller Paco' => [
+            'Pete\'s Auto Repair' => [
                 'posts' => [
-                    'Revisión completa de tu vehículo antes del verano. ¡Viaja seguro! 🚗',
-                    'Oferta especial: Cambio de aceite + filtro por solo €45.',
-                    'Recordatorio: La ITV está cerca. Agenda tu cita con nosotros.',
-                    '¿Problemas con los frenos? Ven a vernos, revisión gratuita.'
+                    'Complete vehicle inspection before summer. Travel safe! 🚗',
+                    'Special offer: Oil change + filter for only $45.',
+                    'Reminder: Inspection time is near. Schedule your appointment with us.',
+                    'Brake problems? Come see us, free inspection.'
                 ],
                 'stories' => [
-                    '⚠️ Promoción flash: 20% dto',
-                    'Abierto sábados por la mañana',
-                    'Nuevo servicio de diagnosis'
+                    '⚠️ Flash sale: 20% off',
+                    'Open Saturday mornings',
+                    'New diagnostic service'
                 ]
             ],
-            'Restaurante El Rincón' => [
+            'The Corner Restaurant' => [
                 'posts' => [
-                    '¡Hoy menú especial de mariscos! 🦐 Ven a disfrutar con tu familia.',
-                    'Nueva carta de vinos de la región. ¡Ven a probarlos! 🍷',
-                    'Gracias por vuestras reseñas. ¡Sois los mejores!',
-                    'Reserva tu mesa para el fin de semana. ¡Te esperamos!'
+                    'Today\'s special seafood menu! 🦐 Come enjoy with your family.',
+                    'New regional wine list. Come try them! 🍷',
+                    'Thank you for your reviews. You\'re the best!',
+                    'Reserve your table for the weekend. We look forward to seeing you!'
                 ],
                 'stories' => [
-                    '🍝 Plato del día: Paella Valenciana',
-                    'Mesa disponible a las 14:00',
-                    'Postre casero: Tarta de queso'
+                    '🍝 Dish of the day: Valencian Paella',
+                    'Table available at 2:00 PM',
+                    'Homemade dessert: Cheesecake'
                 ]
             ],
-            'Gimnasio FitLife' => [
+            'FitLife Gym' => [
                 'posts' => [
-                    'Nuevas clases de spinning todos los lunes y miércoles. 🚴‍♂️',
-                    '¡Únete este mes y llévate una semana gratis! 💪',
-                    'Consejos: Hidrátate bien durante tu entrenamiento.',
-                    'Nuestros entrenadores están aquí para ayudarte a conseguir tus objetivos.'
+                    'New spinning classes every Monday and Wednesday. 🚴‍♂️',
+                    'Join this month and get a free week! 💪',
+                    'Tips: Stay well hydrated during your workout.',
+                    'Our trainers are here to help you achieve your goals.'
                 ],
                 'stories' => [
-                    '🏋️ Clase de yoga en 30 min',
-                    'Inscripciones abiertas',
-                    '¡Feliz viernes! #MotivaciónFitLife'
+                    '🏋️ Yoga class in 30 min',
+                    'Registration open',
+                    'Happy Friday! #FitLifeMotivation'
                 ]
             ],
-            'Veterinaria San Francisco' => [
+            'St. Francis Veterinary' => [
                 'posts' => [
-                    'Recuerda: las vacunas de tu mascota son importantes. 🐕',
-                    '¿Tu gato tiene pulgas? Tenemos el tratamiento perfecto.',
-                    'Servicio de urgencias 24h. Estamos para cuidar de ellos. 🐾',
-                    'Consejos: Cepilla los dientes de tu perro regularmente.'
+                    'Remember: your pet\'s vaccinations are important. 🐕',
+                    'Does your cat have fleas? We have the perfect treatment.',
+                    '24h emergency service. We\'re here to take care of them. 🐾',
+                    'Tips: Brush your dog\'s teeth regularly.'
                 ],
                 'stories' => [
-                    '🐈 Campaña de esterilización',
-                    'Descuento en consultas hoy',
-                    'Nuevos productos en tienda'
+                    '🐈 Sterilization campaign',
+                    'Discount on consultations today',
+                    'New products in store'
                 ]
             ],
-            'Panadería La Espiga' => [
+            'The Golden Wheat Bakery' => [
                 'posts' => [
-                    'Pan recién horneado a las 7:00 de la mañana. ¡Ven por el tuyo! 🍞',
-                    'Este fin de semana: Roscón de Reyes especial.',
-                    'Nueva variedad: Pan integral con semillas. ¡Pruébalo!',
-                    'Gracias por elegirnos cada día. ❤️'
+                    'Freshly baked bread at 7:00 AM. Come get yours! 🍞',
+                    'This weekend: Special Three Kings Cake.',
+                    'New variety: Whole wheat bread with seeds. Try it!',
+                    'Thank you for choosing us every day. ❤️'
                 ],
                 'stories' => [
-                    '🥐 Croissants recién hechos',
-                    'Quedan 10 barras de pan',
-                    'Mañana: Pan de pueblo'
+                    '🥐 Fresh croissants',
+                    '10 bread loaves left',
+                    'Tomorrow: Country bread'
                 ]
             ],
-            'Librería Cervantes' => [
+            'Cervantes Bookstore' => [
                 'posts' => [
-                    'Nuevos libros de bestsellers internacionales. ¡Ven a descubrirlos! 📚',
-                    '20% de descuento en material escolar todo el mes.',
-                    'Club de lectura: Próxima reunión el viernes a las 18:00.',
-                    '¿Buscas un regalo? Tenemos tarjetas regalo disponibles.'
+                    'New international bestseller books. Come discover them! 📚',
+                    '20% off school supplies all month.',
+                    'Book club: Next meeting Friday at 6:00 PM.',
+                    'Looking for a gift? We have gift cards available.'
                 ],
                 'stories' => [
-                    '📖 Libro recomendado del día',
-                    'Firma de autor este sábado',
-                    'Nuevos cómics disponibles'
+                    '📖 Book of the day',
+                    'Author signing this Saturday',
+                    'New comics available'
                 ]
             ],
-            'Floristería Jardín' => [
+            'Garden Florist' => [
                 'posts' => [
-                    'Ramos de rosas frescas para ese día especial. 🌹',
-                    'Decoración floral para bodas y eventos. ¡Contáctanos!',
-                    'Plantas de interior: perfectas para tu hogar. 🌿',
-                    'San Valentín se acerca... ¡Haz tu pedido con antelación!'
+                    'Fresh rose bouquets for that special day. 🌹',
+                    'Floral decoration for weddings and events. Contact us!',
+                    'Indoor plants: perfect for your home. 🌿',
+                    'Valentine\'s Day is coming... Place your order in advance!'
                 ],
                 'stories' => [
-                    '🌸 Flores del día: Tulipanes',
-                    'Oferta: 3x2 en plantas',
-                    'Centro de mesa disponible'
+                    '🌸 Flowers of the day: Tulips',
+                    'Offer: 3 for 2 on plants',
+                    'Centerpiece available'
                 ]
             ],
-            'Estudio Foto Luz' => [
+            'Light Photography Studio' => [
                 'posts' => [
-                    'Sesión de fotos para familias con 20% de descuento. 📸',
-                    '¿Boda a la vista? Consulta nuestros paquetes especiales.',
-                    'Book fotográfico profesional. ¡Reserva tu sesión!',
-                    'Gracias por confiar en nosotros para capturar vuestros momentos.'
+                    'Family photo sessions with 20% discount. 📸',
+                    'Wedding coming up? Check out our special packages.',
+                    'Professional photo book. Book your session!',
+                    'Thank you for trusting us to capture your moments.'
                 ],
                 'stories' => [
-                    '📷 Sesión de hoy: Bebé recién nacido',
-                    'Disponibilidad para este sábado',
-                    'Mira este resultado 😍'
+                    '📷 Today\'s session: Newborn baby',
+                    'Availability for this Saturday',
+                    'Look at this result 😍'
                 ]
             ],
-            'Spa Relax Center' => [
+            'Relax Spa Center' => [
                 'posts' => [
-                    'Masaje relajante de 60 minutos por solo €45. 💆‍♀️',
-                    'Tratamiento facial con productos naturales. ¡Te encantará!',
-                    'Bono mensual: 4 sesiones por el precio de 3.',
-                    '¿Estrés? Ven a desconectar con nosotros.'
+                    '60-minute relaxing massage for only $45. 💆‍♀️',
+                    'Facial treatment with natural products. You\'ll love it!',
+                    'Monthly package: 4 sessions for the price of 3.',
+                    'Stressed? Come disconnect with us.'
                 ],
                 'stories' => [
-                    '🧘‍♀️ Sesión de meditación a las 18h',
-                    'Hueco disponible esta tarde',
-                    'Nuevo tratamiento corporal'
+                    '🧘‍♀️ Meditation session at 6 PM',
+                    'Spot available this afternoon',
+                    'New body treatment'
                 ]
             ]
         ];
@@ -160,22 +160,24 @@ class PostSeeder extends Seeder
 
             $data = $contents[$companyName];
 
-            // Crear publicaciones normales (con fechas diferentes)
+            // Create regular posts (with different dates)
             foreach ($data['posts'] as $index => $content) {
                 Post::create([
                     'company_id' => $company->id,
                     'content' => $content,
+                    'image' => 'https://picsum.photos/seed/' . $company->id . $index . '/800/600',
                     'is_story' => false,
                     'expires_at' => null,
                     'created_at' => Carbon::now()->subDays(rand(1, 30))->subHours(rand(0, 23))
                 ]);
             }
 
-            // Crear historias (expiran en 24 horas)
+            // Create stories (expire in 24 hours)
             foreach ($data['stories'] as $index => $content) {
                 Post::create([
                     'company_id' => $company->id,
                     'content' => $content,
+                    'image' => 'https://picsum.photos/seed/story' . $company->id . $index . '/600/800',
                     'is_story' => true,
                     'expires_at' => Carbon::now()->addHours(rand(12, 24)),
                     'created_at' => Carbon::now()->subHours(rand(1, 12))

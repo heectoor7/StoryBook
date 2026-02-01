@@ -1,0 +1,25 @@
+/* =========================================================
+   responsive.css - Media queries y adaptaciones móviles
+========================================================= */
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .top-nav {
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  .top-nav:not(.hidden) {
+    max-height: 240px;
+  }
+
+  .primary-header .search-input {
+    display: none;
+  }
+
+  .content {
+    padding: 18px;
+  }
+}

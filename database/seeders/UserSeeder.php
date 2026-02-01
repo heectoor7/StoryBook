@@ -12,13 +12,13 @@ class UserSeeder extends Seeder
     {
         $userRole = Role::where('name', 'user')->first();
 
-        // Crear 20 usuarios normales con nombres realistas
+        // Create 20 regular users with realistic names
         $users = [
-            'Ana García', 'Carlos Martínez', 'Laura Fernández', 'Javier López',
-            'María Sánchez', 'Pedro Rodríguez', 'Carmen Pérez', 'Miguel González',
-            'Isabel Romero', 'David Ruiz', 'Lucía Díaz', 'Antonio Moreno',
-            'Sara Muñoz', 'Francisco Álvarez', 'Elena Jiménez', 'José Hernández',
-            'Paula Torres', 'Manuel Ramírez', 'Cristina Vázquez', 'Alberto Castro'
+            'Emma Johnson', 'Michael Smith', 'Olivia Williams', 'James Brown',
+            'Sophia Jones', 'William Davis', 'Ava Miller', 'Robert Wilson',
+            'Isabella Moore', 'David Taylor', 'Mia Anderson', 'John Thomas',
+            'Charlotte Jackson', 'Daniel White', 'Amelia Harris', 'Joseph Martin',
+            'Emily Thompson', 'Matthew Garcia', 'Harper Martinez', 'Christopher Robinson'
         ];
 
         for ($i = 1; $i <= 20; $i++) {
