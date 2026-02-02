@@ -11,10 +11,12 @@ return new class extends Migration
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('company_id')->constrained();
+            $table->foreignId('service_id')->constrained();
             $table->integer('rating')->check('rating >= 1 AND rating <= 5');
+            $table->text('comment')->nullable();
+            $table->timestamp('created_at')->useCurrent();
             
-            $table->unique(['user_id', 'company_id']);
+            $table->unique(['user_id', 'service_id']);
         });
     }
 

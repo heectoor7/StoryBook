@@ -11,8 +11,8 @@ class Service extends Model
         'category_id',
         'name',
         'description',
-        'price',
-        'image'
+        'image',
+        'price'
     ];
 
     public function company()

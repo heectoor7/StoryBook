@@ -1,0 +1,110 @@
+/* =========================================================
+   header.css - Estilos para header y navegación
+========================================================= */
+
+/* =========================
+   HEADER PRINCIPAL (FIJO)
+========================= */
+.primary-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--primary-header-height);
+  background-color: var(--bg-header);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1200;
+}
+
+.primary-header img {
+  height: 36px;
+}
+
+.primary-header .search-input {
+  width: 650px;
+  max-width: 650px;
+}
+
+.primary-header .btn-toggle {
+  background: transparent;
+  color: var(--primary);
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.primary-header .btn-logout {
+  margin-left: 8px;
+}
+
+/* =========================
+   TOP NAV (FIJO)
+========================= */
+.top-nav {
+  position: fixed;
+  top: var(--primary-header-height);
+  left: 0;
+  right: 0;
+  height: var(--top-nav-height);
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  z-index: 1100;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, max-height 0.18s ease;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.top-nav.nav-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.top-nav.hidden {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.top-nav .nav-btn {
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.top-nav .nav-btn:hover {
+  background: #028a887f;
+  color: var(--text-primary);
+}
+
+.top-nav .nav-btn.active {
+  color: var(--primary);
+  box-shadow: inset 0 -3px 0 var(--primary);
+}
+
+/* Logo en header y footer */
+.primary-header img,
+.site-footer img {
+  height: 160px;
+}
+
+/* Indicador de barra oculta */
+#barra_indicador {
+  display: none;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0);
+  color: white;
+  padding: 8px 20px;
+  z-index: 1200;
+}
