@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil - StoryBook</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Editar Perfil de la Empresa</h1>
+        
+        <form id="editForm" class="edit-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="logo">Foto de Perfil:</label>
+                <div class="profile-image-container">
+                    <img id="profileImagePreview" class="profile-image-preview" src="" alt="Vista previa de foto" style="max-width: 150px; max-height: 150px; border-radius: 8px; display: none;">
+                </div>
+                <input type="file" id="logo" name="logo" accept="image/*">
+                <small>Formatos: JPG, PNG, GIF (máx. 5MB)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Nombre de la Empresa:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Teléfono:</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Descripción:</label>
+                <textarea id="description" name="description" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Dirección:</label>
+                <input type="text" id="address" name="address">
+            </div>
+
+            <div class="form-group">
+                <label for="city">Ciudad:</label>
+                <input type="text" id="city" name="city">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <button type="button" id="cancelButton" class="btn btn-secondary">Cancelar</button>
+            </div>
+
+            <div id="message" class="message"></div>
+        </form>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+        const token = localStorage.getItem('auth_token');
+        
+        if (!token) {
+            window.location.href = '/login.php';
+            return;
+        }
+
+        // Cargar datos actuales del perfil
+        try {
+            const res = await fetch('/api/company/profile', {
+                headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+            });
+            
+            if (!res.ok) throw new Error('No autorizado');
+            
+            const data = await res.json();
+            const company = data.company || data;
+            const email = data.email || company.email || '';
+            
+            // Autocompletar todos los campos con los datos actuales
+            document.getElementById('name').value = company.name || '';
+            document.getElementById('email').value = email || '';
+            document.getElementById('phone').value = company.phone || '';
+            document.getElementById('description').value = company.description || '';
+            document.getElementById('address').value = company.address || '';
+            document.getElementById('city').value = company.city || '';
+            
+            // Cargar foto de perfil si existe
+            if (company.logo) {
+                const imagePreview = document.getElementById('profileImagePreview');
+                imagePreview.src = company.logo;
+                imagePreview.style.display = 'block';
+            }
+        } catch (e) {
+            console.error('Error al cargar el perfil:', e);
+            showMessage('Error al cargar el perfil', 'error');
+        }
+    });
+
+    // Manejar vista previa de la imagen cuando se selecciona un archivo
+    document.getElementById('logo').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Validar tamaño (máx 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showMessage('La imagen no debe superar 5MB', 'error');
+                this.value = '';
+                return;
+            }
+            
+            // Validar que sea imagen
+            if (!file.type.startsWith('image/')) {
+                showMessage('Por favor selecciona un archivo de imagen válido', 'error');
+                this.value = '';
+                return;
+            }
+            
+            // Mostrar vista previa
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imagePreview = document.getElementById('profileImagePreview');
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.getElementById('editForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const token = localStorage.getItem('auth_token');
+        
+        // Crear FormData para enviar archivo y datos
+        const formData = new FormData();
+        formData.append('name', document.getElementById('name').value);
+        formData.append('email', document.getElementById('email').value);
+        formData.append('phone', document.getElementById('phone').value);
+        formData.append('description', document.getElementById('description').value);
+        formData.append('address', document.getElementById('address').value);
+        formData.append('city', document.getElementById('city').value);
+        
+        // Agregar archivo de imagen si está seleccionado
+        const fileInput = document.getElementById('logo');
+        if (fileInput.files.length > 0) {
+            formData.append('logo', fileInput.files[0]);
+        }
+
+        try {
+            const res = await fetch('/api/company/profile', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.message || 'Error al guardar');
+            }
+
+            showMessage('Perfil actualizado correctamente', 'success');
+            setTimeout(() => window.location.href = '/perfil_company.html', 1500);
+        } catch (e) {
+            console.error(e);
+            showMessage('Error al guardar los cambios: ' + e.message, 'error');
+        }
+    });
+
+    document.getElementById('cancelButton').addEventListener('click', function() {
+        window.history.back();
+    });
+
+    function showMessage(text, type) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.textContent = text;
+        messageDiv.className = 'message ' + type;
+    }
+    </script>
+</body>
+</html>
