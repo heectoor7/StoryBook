@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
             return response()->json([]);
         }
 
-        $posts = App\Models\Post::with('company')
+        $posts = \App\Models\Post::with('company')
             ->whereIn('company_id', $companyIds)
             ->where(function($q) {
                 // incluir posts normales y stories no expiradas
