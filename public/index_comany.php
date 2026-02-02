@@ -30,7 +30,7 @@
         <header class="header" id="mainHeader">
             <h5 id="sidebarTitle">Mi Empresa</h5>
             <div class="d-flex align-items-center gap-2" id="headerActions">
-            <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#loginModal">My Profile</button>
+            <button class="btn btn-outline-primary me-2" onclick="window.location.href='perfil_company.html'">My Profile</button>
             <button id="logoutBtn" class="btn btn-logout">Log out</button>
             </div>
         </header>
