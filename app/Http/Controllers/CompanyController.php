@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Company;
 
 class CompanyController extends Controller
@@ -33,7 +34,8 @@ class CompanyController extends Controller
                 'address' => $company->address,
                 'city' => $company->city,
                 'phone' => $company->phone,
-                'verified' => $company->verified
+                'verified' => $company->verified,
+                'logo' => $company->logo
             ]
         ]);
     }
@@ -52,10 +54,11 @@ class CompanyController extends Controller
             'phone' => 'nullable|string|max:20',
             'description' => 'nullable|string',
             'address' => 'nullable|string|max:255',
-            'city' => 'nullable|string|max:100'
+            'city' => 'nullable|string|max:100',
+            'logo' => 'nullable|image|mimes:jpeg,png,gif,webp|max:5120'
         ]);
 
-        DB::transaction(function () use ($user, $validated) {
+        DB::transaction(function () use ($user, $validated, $request) {
             // actualizar email del usuario
             $user->update([
                 'email' => $validated['email']
@@ -68,6 +71,18 @@ class CompanyController extends Controller
                 'city' => $validated['city'] ?? null,
                 'phone' => $validated['phone'] ?? null
             ];
+
+            // Manejar la carga de imagen si existe
+            if ($request->hasFile('logo')) {
+                // Eliminar imagen anterior si existe
+                if ($user->company && $user->company->logo) {
+                    Storage::delete($user->company->logo);
+                }
+
+                // Guardar nueva imagen
+                $path = $request->file('logo')->store('company_profiles', 'public');
+                $companyData['logo'] = '/storage/' . $path;
+            }
 
             if ($user->company) {
                 $user->company->update($companyData);
@@ -87,7 +102,8 @@ class CompanyController extends Controller
                 'description' => $company->description,
                 'address' => $company->address,
                 'city' => $company->city,
-                'phone' => $company->phone
+                'phone' => $company->phone,
+                'logo' => $company->logo
             ],
             'email' => $user->email
         ]);

@@ -51,8 +51,13 @@
     });
 
     function displayProfile(company, email) {
+        const profileImageHtml = company.logo 
+            ? `<div class="info-group"><img src="${company.logo}" alt="Foto de perfil" class="profile-image-display" style="max-width: 200px; max-height: 200px; border-radius: 8px; margin-bottom: 20px;"></div>`
+            : '';
+        
         const content = `
             <div class="profile-info">
+                ${profileImageHtml}
                 <div class="info-group">
                     <label>Nombre de la Empresa:</label>
                     <p>${company.name || 'N/A'}</p>

@@ -10,7 +10,16 @@
     <div class="container">
         <h1>Editar Perfil de la Empresa</h1>
         
-        <form id="editForm" class="edit-form">
+        <form id="editForm" class="edit-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="logo">Foto de Perfil:</label>
+                <div class="profile-image-container">
+                    <img id="profileImagePreview" class="profile-image-preview" src="" alt="Vista previa de foto" style="max-width: 150px; max-height: 150px; border-radius: 8px; display: none;">
+                </div>
+                <input type="file" id="logo" name="logo" accept="image/*">
+                <small>Formatos: JPG, PNG, GIF (máx. 5MB)</small>
+            </div>
+
             <div class="form-group">
                 <label for="name">Nombre de la Empresa:</label>
                 <input type="text" id="name" name="name" required>
@@ -59,7 +68,7 @@
             return;
         }
 
-        // Cargar datos actuales
+        // Cargar datos actuales del perfil
         try {
             const res = await fetch('/api/company/profile', {
                 headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
@@ -67,16 +76,56 @@
             
             if (!res.ok) throw new Error('No autorizado');
             
-            const company = await res.json();
+            const data = await res.json();
+            const company = data.company || data;
+            const email = data.email || company.email || '';
+            
+            // Autocompletar todos los campos con los datos actuales
             document.getElementById('name').value = company.name || '';
-            document.getElementById('email').value = company.email || '';
+            document.getElementById('email').value = email || '';
             document.getElementById('phone').value = company.phone || '';
             document.getElementById('description').value = company.description || '';
             document.getElementById('address').value = company.address || '';
             document.getElementById('city').value = company.city || '';
+            
+            // Cargar foto de perfil si existe
+            if (company.logo) {
+                const imagePreview = document.getElementById('profileImagePreview');
+                imagePreview.src = company.logo;
+                imagePreview.style.display = 'block';
+            }
         } catch (e) {
-            console.error(e);
+            console.error('Error al cargar el perfil:', e);
             showMessage('Error al cargar el perfil', 'error');
+        }
+    });
+
+    // Manejar vista previa de la imagen cuando se selecciona un archivo
+    document.getElementById('logo').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Validar tamaño (máx 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showMessage('La imagen no debe superar 5MB', 'error');
+                this.value = '';
+                return;
+            }
+            
+            // Validar que sea imagen
+            if (!file.type.startsWith('image/')) {
+                showMessage('Por favor selecciona un archivo de imagen válido', 'error');
+                this.value = '';
+                return;
+            }
+            
+            // Mostrar vista previa
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imagePreview = document.getElementById('profileImagePreview');
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
         }
     });
 
@@ -84,33 +133,42 @@
         e.preventDefault();
         
         const token = localStorage.getItem('auth_token');
-        const formData = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            description: document.getElementById('description').value,
-            address: document.getElementById('address').value,
-            city: document.getElementById('city').value
-        };
+        
+        // Crear FormData para enviar archivo y datos
+        const formData = new FormData();
+        formData.append('name', document.getElementById('name').value);
+        formData.append('email', document.getElementById('email').value);
+        formData.append('phone', document.getElementById('phone').value);
+        formData.append('description', document.getElementById('description').value);
+        formData.append('address', document.getElementById('address').value);
+        formData.append('city', document.getElementById('city').value);
+        
+        // Agregar archivo de imagen si está seleccionado
+        const fileInput = document.getElementById('logo');
+        if (fileInput.files.length > 0) {
+            formData.append('logo', fileInput.files[0]);
+        }
 
         try {
             const res = await fetch('/api/company/profile', {
-                method: 'PUT',
+                method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,
-                    'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: formData
             });
 
-            if (!res.ok) throw new Error('Error al guardar');
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.message || 'Error al guardar');
+            }
 
             showMessage('Perfil actualizado correctamente', 'success');
-            setTimeout(() => window.location.href = '/verPerfilEmpresa.html', 1500);
+            setTimeout(() => window.location.href = '/perfil_company.html', 1500);
         } catch (e) {
             console.error(e);
-            showMessage('Error al guardar los cambios', 'error');
+            showMessage('Error al guardar los cambios: ' + e.message, 'error');
         }
     });
 
