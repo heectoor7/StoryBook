@@ -12,7 +12,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', function (Request $request) {
-        $user = $request->user()->load('roles');
+        $user = $request->user()->load(['roles', 'company']);
         return response()->json($user);
     });
 
@@ -56,6 +56,32 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/services', [ServiceController::class, 'store']);
 
+    // Rutas de perfil de empresa
     Route::get('/company/profile', [CompanyController::class, 'getProfile']);
     Route::post('/company/profile', [CompanyController::class, 'updateProfile']);
+
+    // Rutas para el panel de empresa
+    Route::prefix('company')->group(function () {
+        // Estadísticas
+        Route::get('/stats', [CompanyController::class, 'getStats']);
+        
+        // Posts y Stories
+        Route::get('/posts', [CompanyController::class, 'getPosts']);
+        Route::post('/posts', [CompanyController::class, 'createPost']);
+        Route::delete('/posts/{id}', [CompanyController::class, 'deletePost']);
+        
+        // Servicios
+        Route::get('/services', [CompanyController::class, 'getServices']);
+        Route::get('/services/{id}', [CompanyController::class, 'getService']);
+        Route::post('/services', [CompanyController::class, 'saveService']);
+        Route::put('/services/{id}', [CompanyController::class, 'saveService']);
+        Route::delete('/services/{id}', [CompanyController::class, 'deleteService']);
+        
+        // Reservas
+        Route::get('/bookings', [CompanyController::class, 'getBookings']);
+        Route::put('/bookings/{id}/status', [CompanyController::class, 'updateBookingStatus']);
+        
+        // Seguidores
+        Route::get('/followers', [CompanyController::class, 'getFollowers']);
+    });
 });

@@ -11,7 +11,8 @@ class Booking extends Model
         'service_id',
         'date',
         'time',
-        'status'
+        'status',
+        'notes'
     ];
 
     public function user()
@@ -22,5 +23,10 @@ class Booking extends Model
     public function service()
     {
         return $this->belongsTo(Service::class);
+    }
+
+    public function company()
+    {
+        return $this->hasOneThrough(Company::class, Service::class, 'id', 'id', 'service_id', 'company_id');
     }
 }
