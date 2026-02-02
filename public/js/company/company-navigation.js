@@ -25,18 +25,6 @@
     // Event listeners para los botones de navegación del sidebar
     document.addEventListener('DOMContentLoaded', function() {
         
-        // Menú: Inicio/Estadísticas
-        const menuStats = document.getElementById('menuStats');
-        if (menuStats) {
-            menuStats.addEventListener('click', async function() {
-                showOnlySection('statsSection');
-                updatePageTitle('Estadísticas');
-                if (typeof loadCompanyStats === 'function') {
-                    await loadCompanyStats();
-                }
-            });
-        }
-
         // Menú: Publicaciones
         const menuPosts = document.getElementById('menuPosts');
         if (menuPosts) {
@@ -80,15 +68,6 @@
                 showOnlySection('followersSection');
                 updatePageTitle('Mis Seguidores');
                 // Aquí puedes cargar la lista de seguidores si tienes esa funcionalidad
-            });
-        }
-
-        // Menú: Configuración
-        const menuSettings = document.getElementById('menuSettings');
-        if (menuSettings) {
-            menuSettings.addEventListener('click', function() {
-                showOnlySection('settingsSection');
-                updatePageTitle('Configuración');
             });
         }
 
@@ -174,6 +153,13 @@
 
         // Cargar información de la empresa
         loadCompanyInfo();
+
+        // Mostrar sección de publicaciones por defecto
+        showOnlySection('postsSection');
+        updatePageTitle('Mis Publicaciones');
+        if (typeof loadCompanyPosts === 'function') {
+            loadCompanyPosts();
+        }
     });
 
     // Cargar información de la empresa

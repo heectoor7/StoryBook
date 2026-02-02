@@ -15,14 +15,11 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <img id="sidebarLogo" src="assets/img/storybookLOGO.png" alt="Logo" style="width: 180px;">
-        <h3 id="sidebarTitle">Mi Empresa</h3>
         <ul id="sidebarMenu">
-            <li id="menuStats">📊 Estadísticas</li>
             <li id="menuPosts">📝 Publicaciones</li>
             <li id="menuServices">🛠️ Servicios</li>
             <li id="menuBookings">📅 Agenda</li>
             <li id="menuFollowers">👥 Seguidores</li>
-            <li id="menuSettings">⚙️ Configuración</li>
         </ul>
     </aside>
 
@@ -31,8 +28,7 @@
 
         <!-- Header -->
         <header class="header" id="mainHeader">
-            <h4 class="m-0" id="pageTitle">Estadísticas</h4>
-
+            <h5 id="sidebarTitle">Mi Empresa</h5>
             <div class="d-flex align-items-center gap-2" id="headerActions">
                 <button class="btn btn-outline-danger" id="logoutBtn">
                     Cerrar Sesión
@@ -43,18 +39,8 @@
         <!-- Contenido principal -->
         <main class="content" id="mainContent">
 
-            <!-- Sección: Estadísticas -->
-            <section id="statsSection">
-                <div class="section-header">
-                    <h5>Dashboard</h5>
-                </div>
-                <div id="companyStatsContainer">
-                    <p style="color: var(--text-secondary);">Cargando estadísticas...</p>
-                </div>
-            </section>
-
             <!-- Sección: Publicaciones -->
-            <section id="postsSection" style="display: none;">
+            <section id="postsSection">
                 <div class="section-header">
                     <h5>Mis Publicaciones</h5>
                     <button class="btn btn-primary" id="btnNewPost">
@@ -96,16 +82,6 @@
                 </div>
                 <div id="companyFollowersContainer">
                     <p style="color: var(--text-secondary);">Esta funcionalidad estará disponible próximamente.</p>
-                </div>
-            </section>
-
-            <!-- Sección: Configuración -->
-            <section id="settingsSection" style="display: none;">
-                <div class="section-header">
-                    <h5>Configuración</h5>
-                </div>
-                <div id="companySettingsContainer">
-                    <p style="color: var(--text-secondary);">Panel de configuración en desarrollo.</p>
                 </div>
             </section>
 
@@ -180,7 +156,11 @@
 
     <!-- Scripts -->
     <script src="js/bootstrap.bundle.js"></script>
-    <script src="js/company/company-content.js"></script>
+    <!-- Módulos de funcionalidad -->
+    <script src="js/company/company-posts.js"></script>
+    <script src="js/company/company-services.js"></script>
+    <script src="js/company/company-bookings.js"></script>
+    <!-- Navegación -->
     <script src="js/company/company-navigation.js"></script>
 </body>
 
