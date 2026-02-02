@@ -1,54 +1,120 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <title>Login</title>
-</head>
-<body>
-<h2>Login</h2>
-<form id="loginForm">
-    <input type="email" name="email" placeholder="Email" required><br>
-    <input type="password" name="password" placeholder="Contraseña" required><br>
-    <button type="submit">Entrar</button>
-</form>
-
-<div id="message"></div>
-
-<script>
-const form = document.getElementById('loginForm');
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-        const res = await fetch('/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-
-        const json = await res.json();
-        document.getElementById('message').innerText = json.message;
-        if (res.ok && json.token) {
-            // Guardar token y usuario en localStorage
-            localStorage.setItem('auth_token', json.token);
-            localStorage.setItem('user', JSON.stringify(json.user));
-
-            // Redirigir según rol
-            if (json.role === 'admin') {
-                window.location.href = '/index_admin.php';
-            } else if (json.role === 'company') {
-                window.location.href = '/index_comany.php';
-            } else {
-                window.location.href = '/index_user.php';
-            }
+    <style>
+        /* Estilos locales para el formulario de login */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
         }
-    } catch (err) {
-        document.getElementById('message').innerText = 'Error en login';
-        console.error(err);
-    }
-});
-</script>
+
+        #loginForm {
+            width: 100%;
+            max-width: 560px;
+            font-size: 1.125rem;
+        }
+
+        #loginForm input,
+        #loginForm select {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 1rem;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        #loginForm button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.05rem;
+            border-radius: 6px;
+        }
+
+        .bg-white {
+            background: #fff;
+        }
+
+        .shadow {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main -->
+    <div class="main">
+        <header class="header d-flex justify-content-between align-items-center p-3">
+            <h3 class="m-0">Register</h3>
+            <a href="index.html"><img src="assets/img/storybookLOGO.png" alt="logo" style="width: 200px;"></a>
+            <div class="d-flex align-items-center">
+                <a href="index.html" class="btn btn-outline-primary me-2">Volver al inicio</a>
+
+            </div>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="content p-3">
+            <div class="login-container">
+                <form id="loginForm" class="p-4 bg-white rounded shadow">
+                    <h4 class="mb-3 text-center">Crear cuenta</h4>
+                    <input type="email" name="email" placeholder="Email" required><br>
+                    <input type="password" name="password" placeholder="Contraseña" required><br>
+                    <button type="submit">Entrar</button>
+                </form>
+            </div>
+
+            <div id="message" class="mt-3 text-center"></div>
+        </main>
+
+    </div>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script>
+        const form = document.getElementById('loginForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const json = await res.json();
+                document.getElementById('message').innerText = json.message;
+                if (res.ok && json.token) {
+                    // Guardar token y usuario en localStorage
+                    localStorage.setItem('auth_token', json.token);
+                    localStorage.setItem('user', JSON.stringify(json.user));
+
+                    // Redirigir según rol
+                    if (json.role === 'admin') {
+                        window.location.href = '/index_admin.php';
+                    } else if (json.role === 'company') {
+                        window.location.href = '/index_comany.php';
+                    } else {
+                        window.location.href = '/index_user.php';
+                    }
+                }
+            } catch (err) {
+                document.getElementById('message').innerText = 'Error en login';
+                console.error(err);
+            }
+        });
+    </script>
 </body>
+
 </html>

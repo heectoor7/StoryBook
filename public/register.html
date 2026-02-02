@@ -1,59 +1,96 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Registro</title>
-</head>
-<body>
-<h2>Registro</h2>
-<form id="registerForm">
-    <input type="text" name="name" placeholder="Nombre" required><br>
-    <input type="email" name="email" placeholder="Email" required><br>
-    <input type="password" name="password" placeholder="Contraseña" required><br>
-    <select name="role">
-        <option value="user">Usuario</option>
-        <option value="company">Empresa</option>
-    </select><br>
-    <button type="submit">Registrar</button>
-</form>
 
-<div id="message"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Register</title>
+    <style>
+    /* Estilos locales para el formulario de registro */
+    .register-container { display:flex; justify-content:center; align-items:center; min-height:60vh; }
+    #registerForm { width:100%; max-width:560px; font-size:1.125rem; }
+    #registerForm input, #registerForm select { width:100%; padding:12px 14px; font-size:1rem; margin-bottom:12px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box; }
+    #registerForm button { width:100%; padding:12px; font-size:1.05rem; border-radius:6px; }
+    .bg-white { background:#fff; }
+    .shadow { box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+    </style>
+</head>
+
+<body>
+    <!-- Main -->
+    <div class="main">
+        <header class="header d-flex justify-content-between align-items-center p-3">
+            <h3 class="m-0">Register</h3>
+            <a href="index.html"><img src="assets/img/storybookLOGO.png" alt="logo" style="width: 200px;"></a>
+            <div class="d-flex align-items-center">
+                <a href="index.html" class="btn btn-outline-primary me-2">Volver al inicio</a>
+
+            </div>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="content p-3">
+            <div class="register-container">
+                <form id="registerForm" class="p-4 bg-white rounded shadow">
+                    <h4 class="mb-3 text-center">Crear cuenta</h4>
+                    <input type="text" name="name" placeholder="Nombre" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Contraseña" required>
+                    <select name="role">
+                        <option value="user">Usuario</option>
+                        <option value="company">Empresa</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary mt-2">Registrar</button>
+                </form>
+            </div>
+
+            <div id="message" class="mt-3 text-center"></div>
+        </main>
+
+    </div>
+    <script src="js/bootstrap.bundle.js"></script>
+</body>
+
+
 
 <script>
-const form = document.getElementById('registerForm');
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    const form = document.getElementById('registerForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
 
-    try {
-        const res = await fetch('/api/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
+        try {
+            const res = await fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
 
-        const json = await res.json();
-        document.getElementById('message').innerText = json.message;
+            const json = await res.json();
+            document.getElementById('message').innerText = json.message;
 
-        // Si el backend devuelve un token, guardarlo y redirigir según rol
-        if (json.token) {
-            localStorage.setItem('auth_token', json.token);
-            localStorage.setItem('user', JSON.stringify(json.user));
+            // Si el backend devuelve un token, guardarlo y redirigir según rol
+            if (json.token) {
+                localStorage.setItem('auth_token', json.token);
+                localStorage.setItem('user', JSON.stringify(json.user));
 
-            if (json.role === 'admin') {
-                window.location.href = '/index_admin.php';
-            } else if (json.role === 'company') {
-                window.location.href = '/index_comany.php';
-            } else {
-                window.location.href = '/index_user.php';
+                if (json.role === 'admin') {
+                    window.location.href = '/index_admin.php';
+                } else if (json.role === 'company') {
+                    window.location.href = '/index_comany.php';
+                } else {
+                    window.location.href = '/index_user.php';
+                }
             }
+        } catch (err) {
+            document.getElementById('message').innerText = 'Error en registro';
+            console.error(err);
         }
-    } catch (err) {
-        document.getElementById('message').innerText = 'Error en registro';
-        console.error(err);
-    }
-});
+    });
 </script>
-</body>
+
 </html>
