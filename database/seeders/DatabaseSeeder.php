@@ -16,7 +16,11 @@ class DatabaseSeeder extends Seeder
             FollowerSeeder::class,
             CategorySeeder::class,
             ServiceSeeder::class,
-            PostSeeder::class
+            PostSeeder::class,
+            BookingSeeder::class,
+            CommentSeeder::class,
+            RatingSeeder::class,
+            ScheduleSeeder::class
         ]);
     }
 }

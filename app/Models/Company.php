@@ -10,6 +10,7 @@ class Company extends Model
         'user_id',
         'name',
         'description',
+        'logo',
         'address',
         'city',
         'phone',
@@ -29,5 +30,20 @@ class Company extends Model
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function followers()
+    {
+        return $this->hasMany(Follower::class);
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
     }
 }

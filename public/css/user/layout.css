@@ -1,0 +1,43 @@
+/* =========================================================
+   layout.css - Estructura principal y contenido
+========================================================= */
+
+/* =========================
+   MAIN (CRECE PARA EMPUJAR FOOTER)
+========================= */
+.main {
+  margin-left: 0;
+  margin-top: calc(var(--primary-header-height) + var(--top-nav-height));
+  width: 100%;
+
+  /* Flex para crecer y empujar footer */
+  flex: 1 0 auto;
+
+  /* NUNCA SCROLL AQUÍ */
+  overflow: visible;
+}
+
+/* =========================
+   CONTENT (CRECE LIBRE)
+========================= */
+.content {
+  width: 100%;
+  max-width: 100%;
+  padding: 28px 40px;
+
+  /* SIN SCROLL INTERNO */
+  overflow: visible;
+}
+
+/* Bootstrap rows full width */
+.content .row {
+  margin-left: 0;
+  margin-right: 0;
+  overflow: visible;
+}
+
+.content .row > [class*="col-"] {
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow: visible;
+}

@@ -1,0 +1,105 @@
+/* =========================================================
+   responsive.css - Media queries y adaptaciones móviles para empresa
+========================================================= */
+
+@media (max-width: 992px) {
+  .bookings-list {
+    max-height: 400px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .section-header .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+    padding: 15px 8px;
+  }
+  
+  .sidebar img {
+    max-width: 50px;
+  }
+  
+  .sidebar h3 {
+    font-size: 0.7rem;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar ul li {
+    padding: 10px;
+    font-size: 1.2rem;
+    justify-content: center;
+  }
+  
+  .sidebar ul li span {
+    display: none;
+  }
+  
+  .main-container {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+  }
+  
+  :root {
+    --sidebar-width: 70px;
+  }
+  
+  .header h4 {
+    font-size: 1rem;
+  }
+  
+  .content {
+    padding: 20px 12px;
+  }
+  
+  /* Stack columns */
+  .row > [class*="col-"] {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .header {
+    padding: 12px 15px;
+  }
+  
+  .header .d-flex {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .header .btn {
+    width: 100%;
+  }
+  
+  .content {
+    padding: 15px 10px;
+  }
+  
+  .section-header h5 {
+    font-size: 1.1rem;
+  }
+  
+  .card-body {
+    padding: 12px;
+  }
+  
+  .btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .bookings-list .card-body {
+    padding: 10px;
+  }
+}

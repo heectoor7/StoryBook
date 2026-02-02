@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')->constrained();
-            $table->enum('day', ['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB', 'DOM']);
+            $table->enum('day', ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']);
             $table->time('start');
             $table->time('end');
         });

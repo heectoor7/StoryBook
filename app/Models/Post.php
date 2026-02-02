@@ -9,6 +9,7 @@ class Post extends Model
     protected $fillable = [
         'company_id',
         'content',
+        'image',
         'is_story',
         'expires_at'
     ];

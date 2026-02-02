@@ -1,0 +1,172 @@
+/* =========================================================
+   sections.css - Secciones de contenido y servicios
+========================================================= */
+
+/* =========================
+   SERVICIOS / PUBLICACIONES / RESERVAS
+========================= */
+.services-section,
+.posts-section,
+.publicaciones-section,
+.reservas-section {
+  overflow: visible !important;
+  max-height: none !important;
+  margin-bottom: 48px;
+}
+
+.services-section .card,
+.posts-section .card,
+.publicaciones-section .card,
+.reservas-section .card {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.services-section h4,
+.posts-section h4,
+.publicaciones-section h4,
+.reservas-section h4 {
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+/* Listas internas */
+.services-list,
+.posts-list,
+.publicaciones-list,
+.reservas-list {
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+/* Services vertical layout - para la sección Home */
+.services-section #servicesContainer {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 16px;
+}
+
+.services-section #servicesContainer .col-md-6,
+.services-section #servicesContainer .col-lg-4 {
+  flex: 1 1 calc(33.333% - 16px);
+  max-width: calc(33.333% - 16px);
+}
+
+.services-section #servicesContainer .card {
+  height: 100%;
+  min-height: 200px;
+}
+
+/* Responsive para servicios */
+@media (max-width: 992px) {
+  .services-section #servicesContainer .col-md-6,
+  .services-section #servicesContainer .col-lg-4 {
+    flex: 1 1 calc(50% - 16px);
+    max-width: calc(50% - 16px);
+  }
+}
+
+@media (max-width: 768px) {
+  .services-section #servicesContainer .col-md-6,
+  .services-section #servicesContainer .col-lg-4 {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
+
+/* =========================
+   POSTS SECTION - CARRUSELES INDIVIDUALES POR EMPRESA
+========================= */
+.posts-section #postsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 0;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.posts-section #postsContainer .col-12 {
+  width: 100%;
+  padding: 0;
+}
+
+.posts-section .carousel-item .post-card {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.posts-section .carousel-item .post-card .card {
+  display: flex;
+  flex-direction: column;
+}
+
+.posts-section .carousel-item .post-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.posts-section .carousel-item .post-card .card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.posts-section .carousel-item .post-card .card-text {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.posts-section #postsContainer .col-md-6,
+.posts-section #postsContainer .col-lg-4 {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+}
+
+/* Responsive para posts */
+@media (max-width: 992px) {
+  .posts-section #postsContainer {
+    max-width: 450px;
+  }
+}
+
+@media (max-width: 768px) {
+  .posts-section #postsContainer {
+    max-width: 400px;
+    padding: 0 16px;
+  }
+  
+  .posts-section .carousel-item .post-card .card-text {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .posts-section #postsContainer {
+    gap: 24px;
+    max-width: 100%;
+    padding: 0 12px;
+  }
+  
+  .posts-section .carousel-item .post-card .card-body {
+    padding: 12px;
+  }
+  
+  .posts-section .carousel-item .post-card .card-text {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 2;
+  }
+}
