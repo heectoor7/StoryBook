@@ -55,11 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::post('/services', [ServiceController::class, 'store']);
-<<<<<<< HEAD
-    Route::get('/services', [ServiceController::class, 'index']);
-=======
 
     Route::get('/company/profile', [CompanyController::class, 'getProfile']);
-    Route::put('/company/profile', [CompanyController::class, 'updateProfile']);
->>>>>>> gestionarPerfil
+    Route::post('/company/profile', [CompanyController::class, 'updateProfile']);
 });
