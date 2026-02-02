@@ -76,5 +76,8 @@ Route::middleware('auth:sanctum')->group(function () {
         // Reservas
         Route::get('/bookings', [CompanyController::class, 'getBookings']);
         Route::put('/bookings/{id}/status', [CompanyController::class, 'updateBookingStatus']);
+        
+        // Seguidores
+        Route::get('/followers', [CompanyController::class, 'getFollowers']);
     });
 });

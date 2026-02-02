@@ -347,4 +347,25 @@ class CompanyController extends Controller
 
         return response()->json(['message' => 'Estado actualizado exitosamente', 'booking' => $booking]);
     }
+
+    /**
+     * Obtener seguidores de la empresa
+     */
+    public function getFollowers(Request $request)
+    {
+        $user = $request->user();
+        $company = Company::where('user_id', $user->id)->first();
+        
+        if (!$company) {
+            return response()->json(['error' => 'No se encontró empresa asociada'], 404);
+        }
+
+        $followers = \DB::table('followers')
+            ->join('users', 'followers.user_id', '=', 'users.id')
+            ->where('followers.company_id', $company->id)
+            ->select('users.id', 'users.name', 'users.email')
+            ->get();
+
+        return response()->json($followers);
+    }
 }

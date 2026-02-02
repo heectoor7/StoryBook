@@ -64,10 +64,12 @@
         // Menú: Seguidores
         const menuFollowers = document.getElementById('menuFollowers');
         if (menuFollowers) {
-            menuFollowers.addEventListener('click', function() {
+            menuFollowers.addEventListener('click', async function() {
                 showOnlySection('followersSection');
                 updatePageTitle('Mis Seguidores');
-                // Aquí puedes cargar la lista de seguidores si tienes esa funcionalidad
+                if (typeof loadCompanyFollowers === 'function') {
+                    await loadCompanyFollowers();
+                }
             });
         }
 
