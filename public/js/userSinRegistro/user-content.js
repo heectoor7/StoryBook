@@ -44,10 +44,27 @@ async function loadPublicPosts() {
 
         // Renderizar posts agrupados por empresa con carrusel horizontal tipo stories
         postsContainer.innerHTML = Object.values(postsByCompany).map((company, companyIndex) => {
+            const carouselId = `posts-carousel-${companyIndex}`;
             return `
             <div class="company-posts-section mb-4">
-                <h5 class="mb-3">${company.company_name}</h5>
-                <div class="posts-carousel-horizontal">
+                <div class="posts-header">
+                    <h5>${company.company_name}</h5>
+                    ${company.posts.length > 3 ? `
+                        <div class="carousel-nav-buttons">
+                            <button class="carousel-nav-btn prev" onclick="scrollPostsCarousel('${carouselId}', -1)">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                </svg>
+                            </button>
+                            <button class="carousel-nav-btn next" onclick="scrollPostsCarousel('${carouselId}', 1)">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+                <div class="posts-carousel-horizontal" id="${carouselId}">
                     ${company.posts.map(p => `
                         <div class="post-card-horizontal" onclick='openPostModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
                             <div class="card">
@@ -71,6 +88,18 @@ async function loadPublicPosts() {
         }
     }
 }
+
+// Función para scroll del carrusel de posts
+window.scrollPostsCarousel = function(carouselId, direction) {
+    const carousel = document.getElementById(carouselId);
+    if (!carousel) return;
+    
+    const scrollAmount = 316; // 300px de ancho + 16px de gap
+    carousel.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+    });
+};
 
 // Cargar servicios públicos aleatorios
 async function loadPublicServices() {

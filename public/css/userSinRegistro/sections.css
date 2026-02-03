@@ -109,8 +109,47 @@
   padding: 0;
 }
 
-.posts-section .company-posts-section h5 {
+.posts-section .posts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding-left: 16px;
+  padding-right: 16px;
+  margin-bottom: 12px;
+}
+
+.posts-section .company-posts-section h5 {
+  margin-bottom: 0;
+}
+
+.posts-section .carousel-nav-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.posts-section .carousel-nav-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.posts-section .carousel-nav-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: scale(1.1);
+}
+
+.posts-section .carousel-nav-btn:active {
+  transform: scale(0.95);
 }
 
 .posts-section .posts-carousel-horizontal {

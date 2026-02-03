@@ -11,12 +11,11 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 // Rutas públicas (sin autenticación)
-// Posts públicos (aleatorios)
+// Posts públicos (todas las publicaciones que no son historias)
 Route::get('/posts', function () {
     $posts = App\Models\Post::with(['company', 'comments.user'])
         ->where('is_story', false)
         ->orderBy('created_at', 'desc')
-        ->limit(20)
         ->get()
         ->map(function($p){
             return [
