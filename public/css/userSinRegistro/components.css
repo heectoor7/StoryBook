@@ -1,0 +1,273 @@
+/* =========================================================
+   components.css - Cards, botones y componentes reutilizables
+========================================================= */
+
+/* =========================
+   CARDS
+========================= */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all .2s ease;
+
+  /* EVITA SCROLL EN CARDS */
+  overflow: visible;
+}
+
+.card:hover {
+  background: var(--bg-hover);
+  transform: translateY(-2px);
+}
+
+/* =========================
+   BOTONES
+========================= */
+.btn-logout {
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  background: transparent;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-logout:hover {
+  background: rgba(255,255,255,0.04);
+  color: var(--text-primary);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #04201a;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-outline-primary {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-outline-primary:hover {
+  background: var(--primary);
+  color: #04201a;
+}
+
+/* =========================
+   CAROUSEL
+========================= */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(3, 186, 182, 0.8);
+  border-radius: 50%;
+  padding: 20px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%;
+}
+
+.post-card {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.post-card:hover {
+  transform: scale(1.01);
+}
+
+.post-card .card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.post-card .card-body {
+  padding: 12px !important;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.post-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+.post-card h5 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.post-card p {
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  flex: 1;
+}
+
+.post-card small {
+  font-size: 0.7rem;
+}
+
+/* =========================
+   SERVICE CARDS
+========================= */
+.service-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(3, 186, 182, 0.3);
+}
+
+/* =========================
+   POST MODAL - TAMAÑO REDUCIDO
+========================= */
+#postModal .modal-dialog {
+  max-width: 500px !important;
+}
+
+#postModal .modal-body {
+  padding: 1rem;
+}
+
+#postModalImage {
+  max-height: 200px !important;
+  object-fit: cover;
+}
+
+#postCommentsList {
+  max-height: 150px !important;
+}
+
+/* =========================
+   COMMENTS
+========================= */
+.comment-item {
+  background: var(--bg-hover);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+
+#postCommentInput {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+#postCommentInput:focus {
+  background: var(--bg-hover);
+  border-color: var(--primary);
+  color: var(--text-primary);
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(3, 186, 182, 0.25);
+}
+
+#postCommentsList {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+#postCommentsList::-webkit-scrollbar {
+  width: 6px;
+}
+
+#postCommentsList::-webkit-scrollbar-track {
+  background: var(--bg-card);
+  border-radius: 4px;
+}
+
+#postCommentsList::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+#postCommentsList::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
+}
+/* =========================
+   RATINGS
+========================= */
+.rating-item {
+  background: var(--bg-hover);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+
+#serviceRatingsList {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+#serviceRatingsList::-webkit-scrollbar {
+  width: 6px;
+}
+
+#serviceRatingsList::-webkit-scrollbar-track {
+  background: var(--bg-card);
+  border-radius: 4px;
+}
+
+#serviceRatingsList::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+#serviceRatingsList::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
+}
+
+#serviceRatingComment {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+#serviceRatingComment:focus {
+  background: var(--bg-hover);
+  border-color: var(--primary);
+  color: var(--text-primary);
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(3, 186, 182, 0.25);
+}
+
+.rating-star {
+  transition: all 0.2s ease;
+}
+
+.rating-star:hover {
+  transform: scale(1.1);
+}

@@ -10,6 +10,155 @@ use App\Http\Controllers\CompanyController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+// Rutas públicas (sin autenticación)
+// Posts públicos (aleatorios)
+Route::get('/posts', function () {
+    $posts = App\Models\Post::with(['company', 'comments.user'])
+        ->where('is_story', false)
+        ->orderBy('created_at', 'desc')
+        ->limit(20)
+        ->get()
+        ->map(function($p){
+            return [
+                'id' => $p->id,
+                'company_id' => $p->company_id,
+                'company_name' => $p->company->name ?? null,
+                'company_logo' => $p->company->logo ?? null,
+                'content' => $p->content,
+                'image' => $p->image,
+                'created_at' => $p->created_at,
+                'comments' => $p->comments->map(function($c) {
+                    return [
+                        'id' => $c->id,
+                        'user_name' => $c->user->name ?? 'Anonymous',
+                        'content' => $c->content,
+                        'created_at' => $c->created_at
+                    ];
+                })
+            ];
+        });
+
+    return response()->json($posts);
+});
+
+// Servicios públicos (aleatorios)
+Route::get('/services', function (Request $request) {
+    $search = $request->query('q');
+    
+    $query = App\Models\Service::with(['company','category']);
+    
+    if ($search) {
+        $query->where(function($q) use ($search) {
+            $q->where('name', 'LIKE', '%' . $search . '%')
+              ->orWhere('description', 'LIKE', '%' . $search . '%')
+              ->orWhereHas('company', function($q2) use ($search) {
+                  $q2->where('name', 'LIKE', '%' . $search . '%');
+              })
+              ->orWhereHas('category', function($q2) use ($search) {
+                  $q2->where('name', 'LIKE', '%' . $search . '%');
+              });
+        });
+    }
+    
+    $services = $query->orderBy('created_at', 'desc')
+        ->limit(20)
+        ->get()
+        ->map(function($s) {
+            return [
+                'id' => $s->id,
+                'company_id' => $s->company_id,
+                'company_name' => $s->company->name ?? null,
+                'company_logo' => $s->company->logo ?? null,
+                'category' => $s->category->name ?? null,
+                'name' => $s->name,
+                'description' => $s->description,
+                'image' => $s->image,
+                'price' => $s->price,
+            ];
+        });
+
+    return response()->json($services);
+});
+
+// Búsqueda de servicios públicos
+Route::get('/services/search', function (Request $request) {
+    $search = $request->query('q');
+    
+    if (!$search) {
+        return response()->json([]);
+    }
+    
+    $services = App\Models\Service::with(['company','category'])
+        ->where(function($q) use ($search) {
+            $q->where('name', 'LIKE', '%' . $search . '%')
+              ->orWhere('description', 'LIKE', '%' . $search . '%')
+              ->orWhereHas('company', function($q2) use ($search) {
+                  $q2->where('name', 'LIKE', '%' . $search . '%');
+              })
+              ->orWhereHas('category', function($q2) use ($search) {
+                  $q2->where('name', 'LIKE', '%' . $search . '%');
+              });
+        })
+        ->orderBy('created_at', 'desc')
+        ->limit(20)
+        ->get()
+        ->map(function($s) {
+            return [
+                'id' => $s->id,
+                'company_id' => $s->company_id,
+                'company_name' => $s->company->name ?? null,
+                'company_logo' => $s->company->logo ?? null,
+                'category' => $s->category->name ?? null,
+                'name' => $s->name,
+                'description' => $s->description,
+                'image' => $s->image,
+                'price' => $s->price,
+            ];
+        });
+
+    return response()->json($services);
+});
+
+// Comentarios de un post (públicos)
+Route::get('/posts/{postId}/comments', function ($postId) {
+    $post = App\Models\Post::findOrFail($postId);
+    
+    $comments = App\Models\Comment::with('user')
+        ->where('post_id', $postId)
+        ->orderBy('created_at', 'desc')
+        ->get()
+        ->map(function($c) {
+            return [
+                'id' => $c->id,
+                'user_name' => $c->user->name ?? 'Anonymous',
+                'content' => $c->content,
+                'created_at' => $c->created_at
+            ];
+        });
+    
+    return response()->json($comments);
+});
+
+// Ratings de un servicio (públicos)
+Route::get('/services/{serviceId}/ratings', function ($serviceId) {
+    $ratings = App\Models\Rating::with('user')
+        ->where('service_id', $serviceId)
+        ->orderBy('created_at', 'desc')
+        ->get()
+        ->map(function($r) {
+            return [
+                'id' => $r->id,
+                'user_id' => $r->user_id,
+                'user_name' => $r->user->name ?? 'Anonymous',
+                'rating' => $r->rating,
+                'comment' => $r->comment,
+                'created_at' => $r->created_at
+            ];
+        });
+    
+    return response()->json($ratings);
+});
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', function (Request $request) {
         $user = $request->user()->load(['roles', 'company']);
@@ -76,44 +225,6 @@ Route::middleware('auth:sanctum')->group(function () {
         $services = App\Models\Service::with(['company','category'])
             ->whereIn('company_id', $companyIds)
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function($s) {
-                return [
-                    'id' => $s->id,
-                    'company_id' => $s->company_id,
-                    'company_name' => $s->company->name ?? null,
-                    'company_logo' => $s->company->logo ?? null,
-                    'category' => $s->category->name ?? null,
-                    'name' => $s->name,
-                    'description' => $s->description,
-                    'image' => $s->image,
-                    'price' => $s->price,
-                ];
-            });
-
-        return response()->json($services);
-    });
-
-    // All services (public to authenticated users)
-    Route::get('/services', function (Request $request) {
-        $search = $request->query('search');
-        
-        $query = App\Models\Service::with(['company','category']);
-        
-        if ($search) {
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'LIKE', '%' . $search . '%')
-                  ->orWhere('description', 'LIKE', '%' . $search . '%')
-                  ->orWhereHas('company', function($q2) use ($search) {
-                      $q2->where('name', 'LIKE', '%' . $search . '%');
-                  })
-                  ->orWhereHas('category', function($q2) use ($search) {
-                      $q2->where('name', 'LIKE', '%' . $search . '%');
-                  });
-            });
-        }
-        
-        $services = $query->orderBy('created_at', 'desc')
             ->get()
             ->map(function($s) {
                 return [
@@ -318,27 +429,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/followers', [CompanyController::class, 'getFollowers']);
     });
     
-    // Ratings - Get ratings for a service
-    Route::get('/services/{serviceId}/ratings', function ($serviceId) {
-        $ratings = App\Models\Rating::with('user')
-            ->where('service_id', $serviceId)
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function($r) {
-                return [
-                    'id' => $r->id,
-                    'user_id' => $r->user_id,
-                    'user_name' => $r->user->name ?? 'Anonymous',
-                    'rating' => $r->rating,
-                    'comment' => $r->comment,
-                    'created_at' => $r->created_at
-                ];
-            });
-        
-        return response()->json($ratings);
-    });
-    
-    // Ratings - Add rating to service
+    // Ratings - Add rating to service (autenticado)
     Route::post('/services/{serviceId}/ratings', function (Request $request, $serviceId) {
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
