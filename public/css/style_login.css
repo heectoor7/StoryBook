@@ -127,6 +127,14 @@ footer.site-footer {
 
 .site-footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
 
+/* Mensaje de error dentro del formulario */
+.error-message {
+  font-weight: 700;
+  color: #d32f2f;
+  margin-top: 8px;
+  text-align: center;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .header a img { height: 48px; }
