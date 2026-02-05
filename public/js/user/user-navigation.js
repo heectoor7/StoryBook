@@ -7,18 +7,21 @@
     // Variables globales
     const navbar = document.getElementById('navegacion');
     const navbarIndicator = document.getElementById('barra_indicador');
+    const mainElement = document.querySelector('.main');
     let timeout;
     
     // Mostrar la barra de navegación
     function showNavbar() {
         if (navbar) navbar.style.transform = 'translateY(0)';
         if (navbarIndicator) navbarIndicator.style.display = 'none';
+        if (mainElement) mainElement.classList.remove('nav-hidden');
     }
     
     // Ocultar la barra de navegación
     function hideNavbar() {
         if (navbar) navbar.style.transform = 'translateY(-100%)';
         if (navbarIndicator) navbarIndicator.style.display = 'block';
+        if (mainElement) mainElement.classList.add('nav-hidden');
     }
     
     function initScrollBehavior() {
@@ -125,6 +128,25 @@
                     }
                     showOnlySection('posts-section');
                     if (userTitle) userTitle.innerText = 'Publicaciones';
+                    
+                } else if (action === 'companies') {
+                    const token = localStorage.getItem('auth_token');
+                    if (typeof loadFollowedCompanies === 'function') {
+                        await loadFollowedCompanies(token);
+                    }
+                    if (typeof loadAllCompanies === 'function') {
+                        await loadAllCompanies(token);
+                    }
+                    showOnlySection('companies-section');
+                    if (userTitle) userTitle.innerText = 'Companies';
+                    
+                } else if (action === 'configuracion') {
+                    const token = localStorage.getItem('auth_token');
+                    if (typeof loadUserSettings === 'function') {
+                        await loadUserSettings(token);
+                    }
+                    showOnlySection('settings-section');
+                    if (userTitle) userTitle.innerText = 'Settings';
                     
                 } else {
                     showPlaceholder(action);

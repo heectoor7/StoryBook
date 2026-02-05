@@ -103,32 +103,39 @@
   position: relative;
   max-width: 90%;
   margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Stories nav buttons container */
+.stories-nav-buttons {
+  display: flex;
+  gap: 8px;
 }
 
 /* Stories scroll buttons */
 .stories-scroll-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--primary);
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  padding: 8px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  z-index: 10;
-  display: none;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  padding: 0;
 }
 
 .stories-scroll-btn:hover {
-  background: var(--primary-hover);
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: scale(1.1);
 }
 
-.stories-scroll-left {
-  left: -45px;
-}
-
-.stories-scroll-right {
-  right: -45px;
+.stories-scroll-btn:active {
+  transform: scale(0.95);
 }

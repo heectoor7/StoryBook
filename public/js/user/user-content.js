@@ -61,7 +61,7 @@ async function loadFollowedPosts(token) {
             }
         }
 
-        // Render regular posts (carousel by company)
+        // Render regular posts (horizontal carousel by company)
         if (postsContainer) {
             if (regular.length === 0) {
                 postsContainer.innerHTML = '<p style="color: var(--text-secondary);">No hay posts disponibles</p>';
@@ -80,59 +80,44 @@ async function loadFollowedPosts(token) {
                     postsByCompany[companyId].posts.push(post);
                 });
 
-                // Generar HTML por empresa
-                let html = '';
-                Object.keys(postsByCompany).forEach(companyId => {
-                    const companyData = postsByCompany[companyId];
-                    const carouselId = `carousel-company-${companyId}`;
-                    
-                    html += `
-                        <div class="col-12 mb-4">
-                            <div class="d-flex align-items-center mb-3">
-                                ${companyData.company_logo ? 
-                                    `<img src="${companyData.company_logo}" alt="${companyData.company_name}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:12px;">` : 
-                                    `<div style="width:40px;height:40px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;margin-right:12px;color:#fff;"><strong>${companyData.company_name.charAt(0)}</strong></div>`
-                                }
-                                <h5 class="mb-0">${companyData.company_name}</h5>
-                            </div>
-                            
-                            <div id="${carouselId}" class="carousel slide" data-bs-ride="false">
-                                <div class="carousel-inner">
-                    `;
-                    
-                    companyData.posts.forEach((post, index) => {
-                        html += `
-                            <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                                <div class="card post-card" style="cursor:pointer;" onclick="openPostModal(${JSON.stringify(post).replace(/"/g, '&quot;')})">
-                                    ${post.image ? `<img src="${post.image}" class="card-img-top" alt="${companyData.company_name}" style="max-height:300px;object-fit:cover;">` : ''}
-                                    <div class="card-body">
-                                        <p class="card-text">${post.content}</p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <small style="color: var(--text-secondary);">Publicado: ${new Date(post.created_at).toLocaleDateString()}</small>
-                                            <small style="color: var(--text-secondary);">${post.comments.length} comentarios</small>
+                // Renderizar posts agrupados por empresa con carrusel horizontal tipo stories
+                postsContainer.innerHTML = Object.values(postsByCompany).map((companyData, companyIndex) => {
+                    const carouselId = `posts-carousel-${companyIndex}`;
+                    return `
+                    <div class="company-posts-section mb-4">
+                        <div class="posts-header">
+                            <h5>${companyData.company_name}</h5>
+                            ${companyData.posts.length > 3 ? `
+                                <div class="carousel-nav-buttons">
+                                    <button class="carousel-nav-btn prev" onclick="scrollPostsCarousel('${carouselId}', -1)">
+                                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                        </svg>
+                                    </button>
+                                    <button class="carousel-nav-btn next" onclick="scrollPostsCarousel('${carouselId}', 1)">
+                                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="posts-carousel-horizontal" id="${carouselId}">
+                            ${companyData.posts.map(post => `
+                                <div class="post-card-horizontal" onclick='openPostModal(${JSON.stringify(post).replace(/'/g, "&#39;")})'>
+                                    <div class="card">
+                                        ${post.image ? `<img src="${post.image}" class="card-img-top" alt="${companyData.company_name}">` : ''}
+                                        <div class="card-body">
+                                            <p class="card-text">${post.content ? post.content.substring(0, 80) + (post.content.length > 80 ? '...' : '') : ''}</p>
+                                            <small style="color: var(--text-secondary);">${new Date(post.created_at).toLocaleDateString()}</small>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        `;
-                    });
-                    
-                    html += `
-                                </div>
-                                ${companyData.posts.length > 1 ? `
-                                    <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    </button>
-                                ` : ''}
-                            </div>
+                            `).join('')}
                         </div>
+                    </div>
                     `;
-                });
-                
-                postsContainer.innerHTML = html;
+                }).join('');
             }
         }
 
@@ -210,6 +195,18 @@ async function loadFollowedServices(token) {
         }
     }
 }
+
+// Función para scroll del carrusel de posts
+window.scrollPostsCarousel = function(carouselId, direction) {
+    const carousel = document.getElementById(carouselId);
+    if (!carousel) return;
+    
+    const scrollAmount = 316; // 300px de ancho + 16px de gap
+    carousel.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+    });
+};
 
 // Cargar reservas del usuario autenticado
 async function loadUserBookings(token) {
@@ -1039,3 +1036,538 @@ async function addRatingToService() {
         alert('Error adding rating');
     }
 }
+
+// ========================================
+// COMPANIES FUNCTIONS
+// ========================================
+
+// Cargar empresas que sigo
+async function loadFollowedCompanies(token) {
+    const t = typeof token !== 'undefined' ? token : localStorage.getItem('auth_token');
+    const container = document.getElementById('followedCompaniesContainer');
+    
+    if (!container) return;
+    
+    if (!t) {
+        container.innerHTML = '<p style="color: var(--text-secondary);">No autenticado</p>';
+        return;
+    }
+    
+    try {
+        const res = await fetch('/api/user/followed-companies', {
+            headers: {
+                'Authorization': 'Bearer ' + t,
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (!res.ok) {
+            container.innerHTML = '<p class="text-danger">Error al cargar empresas</p>';
+            return;
+        }
+        
+        const companies = await res.json();
+        
+        if (!Array.isArray(companies) || companies.length === 0) {
+            container.innerHTML = '<p style="color: var(--text-secondary);">No sigues ninguna empresa todavía</p>';
+            return;
+        }
+        
+        container.innerHTML = companies.map(c => `
+            <div class="col-12 mb-2">
+                <div class="card company-card-clickable" data-company-id="${c.id}">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-3 flex-grow-1" style="cursor: pointer;" onclick="openCompanyProfile(${c.id})">
+                            ${c.logo ? `<img src="${c.logo}" alt="${c.name}" style="width:50px;height:50px;border-radius:50%;object-fit:cover;">` : `<div style="width:50px;height:50px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;">${c.name.charAt(0)}</div>`}
+                            <div>
+                                <div><strong>${c.name}</strong></div>
+                                <div><small style="color: var(--text-secondary);">${c.description || 'No description'}</small></div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-danger follow-btn" data-company-id="${c.id}" data-is-following="true" onclick="event.stopPropagation()">
+                                Unfollow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        // Attach event listeners
+        attachFollowButtonListeners();
+    } catch (err) {
+        console.error(err);
+        container.innerHTML = '<p class="text-danger">Error al cargar empresas</p>';
+    }
+}
+
+// Cargar todas las empresas (para descubrir)
+async function loadAllCompanies(token, searchQuery = '') {
+    const t = typeof token !== 'undefined' ? token : localStorage.getItem('auth_token');
+    const container = document.getElementById('allCompaniesContainer');
+    
+    if (!container) return;
+    
+    if (!t) {
+        container.innerHTML = '<p style="color: var(--text-secondary);">No autenticado</p>';
+        return;
+    }
+    
+    try {
+        const url = searchQuery ? `/api/companies?search=${encodeURIComponent(searchQuery)}` : '/api/companies';
+        const res = await fetch(url, {
+            headers: {
+                'Authorization': 'Bearer ' + t,
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (!res.ok) {
+            container.innerHTML = '<p class="text-danger">Error al cargar empresas</p>';
+            return;
+        }
+        
+        const companies = await res.json();
+        
+        if (!Array.isArray(companies) || companies.length === 0) {
+            container.innerHTML = '<p style="color: var(--text-secondary);">No se encontraron empresas</p>';
+            return;
+        }
+        
+        container.innerHTML = companies.map(c => `
+            <div class="col-12 mb-2">
+                <div class="card company-card-clickable" data-company-id="${c.id}">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-3 flex-grow-1" style="cursor: pointer;" onclick="openCompanyProfile(${c.id})">
+                            ${c.logo ? `<img src="${c.logo}" alt="${c.name}" style="width:50px;height:50px;border-radius:50%;object-fit:cover;">` : `<div style="width:50px;height:50px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;">${c.name.charAt(0)}</div>`}
+                            <div>
+                                <div><strong>${c.name}</strong></div>
+                                <div><small style="color: var(--text-secondary);">${c.description || 'No description'}</small></div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm ${c.is_following ? 'btn-danger' : 'btn-primary'} follow-btn" data-company-id="${c.id}" data-is-following="${c.is_following}" onclick="event.stopPropagation()">
+                                ${c.is_following ? 'Unfollow' : 'Follow'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        
+        // Attach event listeners
+        attachFollowButtonListeners();
+    } catch (err) {
+        console.error(err);
+        container.innerHTML = '<p class="text-danger">Error al cargar empresas</p>';
+    }
+}
+
+// Toggle follow/unfollow company
+async function toggleFollowCompany(companyId, buttonElement) {
+    const token = localStorage.getItem('auth_token');
+    
+    if (!token) {
+        alert('Debes estar autenticado');
+        return;
+    }
+    
+    // Disable button during request
+    buttonElement.disabled = true;
+    const originalText = buttonElement.innerText;
+    buttonElement.innerText = 'Loading...';
+    
+    try {
+        const res = await fetch(`/api/companies/${companyId}/follow`, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => ({}));
+            console.error('Error response:', errorData);
+            alert('Error al seguir/dejar de seguir empresa');
+            buttonElement.innerText = originalText;
+            buttonElement.disabled = false;
+            return;
+        }
+        
+        const data = await res.json();
+        
+        // Reload both company lists to reflect the change
+        await Promise.all([
+            loadFollowedCompanies(token),
+            loadAllCompanies(token)
+        ]);
+        
+        // Reload home content (stories, posts, services) to reflect new followed companies
+        if (typeof loadFollowedPosts === 'function') {
+            await loadFollowedPosts(token);
+        }
+        if (typeof loadFollowedServices === 'function') {
+            await loadFollowedServices(token);
+        }
+        
+    } catch (err) {
+        console.error('Error in toggleFollowCompany:', err);
+        alert('Error al seguir/dejar de seguir empresa');
+        buttonElement.innerText = originalText;
+        buttonElement.disabled = false;
+    }
+}
+
+// Attach event listeners to follow buttons
+function attachFollowButtonListeners() {
+    document.querySelectorAll('.follow-btn').forEach(btn => {
+        // Remove any existing listeners by cloning the node
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        
+        // Add new listener
+        newBtn.addEventListener('click', function() {
+            const companyId = this.dataset.companyId;
+            toggleFollowCompany(companyId, this);
+        });
+    });
+}
+
+// Setup company search input listener
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('companySearchInput');
+    if (searchInput) {
+        let searchTimeout;
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const token = localStorage.getItem('auth_token');
+                loadAllCompanies(token, this.value);
+            }, 300);
+        });
+    }
+});
+
+// ========================================
+// COMPANY PROFILE FUNCTIONS
+// ========================================
+
+// Open company profile
+async function openCompanyProfile(companyId) {
+    const token = localStorage.getItem('auth_token');
+    
+    if (!token) {
+        alert('Debes estar autenticado');
+        return;
+    }
+    
+    // Show company profile section and hide companies section
+    document.querySelectorAll('main.content section').forEach(s => s.style.display = 'none');
+    const profileSection = document.querySelector('.company-profile-section');
+    if (profileSection) profileSection.style.display = '';
+    
+    // Load company profile
+    await loadCompanyProfile(companyId, token);
+}
+
+// Load company profile details
+async function loadCompanyProfile(companyId, token) {
+    const container = document.getElementById('companyProfileContainer');
+    
+    if (!container) return;
+    
+    container.innerHTML = '<p style="color: var(--text-secondary);">Loading company profile...</p>';
+    
+    try {
+        const res = await fetch(`/api/companies/${companyId}`, {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (!res.ok) {
+            container.innerHTML = '<p class="text-danger">Error al cargar el perfil de la empresa</p>';
+            return;
+        }
+        
+        const company = await res.json();
+        
+        // Render company profile
+        container.innerHTML = `
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start gap-4 mb-4">
+                                ${company.logo ? `<img src="${company.logo}" alt="${company.name}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;">` : `<div style="width:100px;height:100px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-size:2rem;font-weight:bold;">${company.name.charAt(0)}</div>`}
+                                <div class="flex-grow-1">
+                                    <h3>${company.name}</h3>
+                                    <p style="color: var(--text-secondary);">${company.description || 'No description available'}</p>
+                                    <div class="mb-2">
+                                        <small style="color: var(--text-secondary);"><strong>Email:</strong> ${company.email || 'N/A'}</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small style="color: var(--text-secondary);"><strong>Phone:</strong> ${company.phone || 'N/A'}</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small style="color: var(--text-secondary);"><strong>Address:</strong> ${company.address || 'N/A'}</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small style="color: var(--text-secondary);"><strong>Followers:</strong> ${company.followers_count}</small>
+                                    </div>
+                                    <button class="btn btn-sm ${company.is_following ? 'btn-danger' : 'btn-primary'} follow-btn" data-company-id="${company.id}" data-is-following="${company.is_following}">
+                                        ${company.is_following ? 'Unfollow' : 'Follow'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 mb-4">
+                    <h4 class="mb-3">Services (${company.services.length})</h4>
+                    <div class="row">
+                        ${company.services.length > 0 ? company.services.map(s => `
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 service-card" style="cursor:pointer;" onclick="openServiceModal(${JSON.stringify(s).replace(/"/g, '&quot;')})">
+                                    ${s.image ? `<img src="${s.image}" class="card-img-top" alt="${s.name}" style="max-height:180px;object-fit:cover;">` : ''}
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="card-title mb-0">${s.name}</h5>
+                                            <small style="color: var(--text-secondary);">${s.category || ''}</small>
+                                        </div>
+                                        <p class="card-text text-truncate">${s.description || ''}</p>
+                                        <div class="mt-2">
+                                            <strong>${s.price ? '$' + parseFloat(s.price).toFixed(2) : ''}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('') : '<p style="color: var(--text-secondary);">No services available</p>'}
+                    </div>
+                </div>
+                
+                <div class="col-12 mb-4">
+                    <h4 class="mb-3">Recent Posts (${company.posts.length})</h4>
+                    <div class="row">
+                        ${company.posts.length > 0 ? company.posts.map(p => `
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100" style="cursor:pointer;">
+                                    ${p.image ? `<img src="${p.image}" class="card-img-top" alt="Post" style="max-height:200px;object-fit:cover;">` : ''}
+                                    <div class="card-body">
+                                        <p class="card-text">${p.content ? (p.content.length > 100 ? p.content.substring(0, 100) + '...' : p.content) : ''}</p>
+                                        <small style="color: var(--text-secondary);">${new Date(p.created_at).toLocaleDateString()} · ${p.comments_count} comments</small>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('') : '<p style="color: var(--text-secondary);">No posts available</p>'}
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Attach follow button listener
+        attachFollowButtonListeners();
+        
+    } catch (err) {
+        console.error(err);
+        container.innerHTML = '<p class="text-danger">Error al cargar el perfil de la empresa</p>';
+    }
+}
+
+// Back to companies list
+window.backToCompanies = async function() {
+    const token = localStorage.getItem('auth_token');
+    
+    // Hide profile section and show companies section
+    document.querySelectorAll('main.content section').forEach(s => s.style.display = 'none');
+    const companiesSection = document.querySelector('.companies-section');
+    if (companiesSection) companiesSection.style.display = '';
+    
+    // Reload companies lists
+    if (typeof loadFollowedCompanies === 'function') {
+        await loadFollowedCompanies(token);
+    }
+    if (typeof loadAllCompanies === 'function') {
+        await loadAllCompanies(token);
+    }
+};
+
+// Make openCompanyProfile globally available
+window.openCompanyProfile = openCompanyProfile;
+
+// ========================================
+// SETTINGS FUNCTIONS
+// ========================================
+
+// Load user settings
+async function loadUserSettings(token) {
+    const t = typeof token !== 'undefined' ? token : localStorage.getItem('auth_token');
+    
+    if (!t) {
+        return;
+    }
+    
+    try {
+        const res = await fetch('/api/me', {
+            headers: {
+                'Authorization': 'Bearer ' + t,
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (!res.ok) {
+            console.error('Error loading user data');
+            return;
+        }
+        
+        const user = await res.json();
+        
+        // Fill form with user data
+        document.getElementById('settingsName').value = user.name || '';
+        document.getElementById('settingsEmail').value = user.email || '';
+        
+        // Clear password fields
+        document.getElementById('settingsCurrentPassword').value = '';
+        document.getElementById('settingsNewPassword').value = '';
+        document.getElementById('settingsConfirmPassword').value = '';
+        
+    } catch (err) {
+        console.error('Error loading user settings:', err);
+    }
+}
+
+// Save user settings
+async function saveUserSettings() {
+    const token = localStorage.getItem('auth_token');
+    
+    if (!token) {
+        alert('Debes estar autenticado');
+        return;
+    }
+    
+    const name = document.getElementById('settingsName').value;
+    const currentPassword = document.getElementById('settingsCurrentPassword').value;
+    const newPassword = document.getElementById('settingsNewPassword').value;
+    const confirmPassword = document.getElementById('settingsConfirmPassword').value;
+    
+    // Validate name
+    if (!name.trim()) {
+        alert('Name is required');
+        return;
+    }
+    
+    try {
+        // Update profile information
+        const profileRes = await fetch('/api/user/profile', {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name
+            })
+        });
+        
+        if (!profileRes.ok) {
+            const errorData = await profileRes.json().catch(() => ({}));
+            alert('Error updating profile: ' + (errorData.message || 'Unknown error'));
+            return;
+        }
+        
+        // Update password if provided
+        if (currentPassword || newPassword || confirmPassword) {
+            if (!currentPassword) {
+                alert('Current password is required to change password');
+                return;
+            }
+            
+            if (!newPassword) {
+                alert('New password is required');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                alert('New password must be at least 8 characters');
+                return;
+            }
+            
+            const passwordRes = await fetch('/api/user/password', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    current_password: currentPassword,
+                    new_password: newPassword,
+                    new_password_confirmation: confirmPassword
+                })
+            });
+            
+            if (!passwordRes.ok) {
+                const errorData = await passwordRes.json().catch(() => ({}));
+                alert('Error updating password: ' + (errorData.message || 'Unknown error'));
+                return;
+            }
+        }
+        
+        alert('Settings saved successfully!');
+        
+        // Reload user data
+        await loadUserSettings(token);
+        
+        // Update user name display in header
+        if (typeof document.getElementById('userNameDisplay') !== 'undefined') {
+            const userRes = await fetch('/api/me', {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json'
+                }
+            });
+            if (userRes.ok) {
+                const userData = await userRes.json();
+                const nameDisplay = document.getElementById('userNameDisplay');
+                if (nameDisplay) {
+                    nameDisplay.innerText = userData.name || 'User';
+                }
+            }
+        }
+        
+    } catch (err) {
+        console.error('Error saving settings:', err);
+        alert('Error saving settings');
+    }
+}
+
+// Setup settings event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    const saveBtn = document.getElementById('saveSettingsBtn');
+    const cancelBtn = document.getElementById('cancelSettingsBtn');
+    
+    if (saveBtn) {
+        saveBtn.addEventListener('click', saveUserSettings);
+    }
+    
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', function() {
+            const token = localStorage.getItem('auth_token');
+            loadUserSettings(token);
+        });
+    }
+});
+
+// Make loadUserSettings globally available
+window.loadUserSettings = loadUserSettings;
