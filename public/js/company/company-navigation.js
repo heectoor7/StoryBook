@@ -232,7 +232,7 @@
                     <div class="section-header">
                         <h5>Perfil de la Empresa</h5>
                         <div>
-                            <button class="btn btn-outline-primary me-2" onclick="window.location.href='company_edit_profile.html'">Editar Perfil</button>
+                            <button id="btnEditProfile" class="btn btn-outline-primary me-2">Editar Perfil</button>
                         </div>
                     </div>
                     <div class="card" style="max-width:900px;">
@@ -286,9 +286,166 @@
                 await loadCompanyBookings();
             }
 
+            // Agregar listener al botón Editar Perfil
+            const btnEditProfile = document.getElementById('btnEditProfile');
+            if (btnEditProfile) {
+                btnEditProfile.addEventListener('click', async function() {
+                    await loadEditProfileForm(company, data.email);
+                });
+            }
+
         } catch (e) {
             console.error('Error al cargar perfil por AJAX', e);
             main.innerHTML = `<p style="color: var(--danger);">Error al cargar el perfil.</p>`;
+        }
+    }
+
+    // Cargar formulario de edición de perfil
+    async function loadEditProfileForm(company, email) {
+        const token = localStorage.getItem('auth_token');
+        if (!token) return;
+
+        const main = document.getElementById('mainContent');
+        if (!main) return;
+
+        main.innerHTML = `
+            <section id="editProfileSection">
+                <div class="section-header">
+                    <h5>Editar Perfil de la Empresa</h5>
+                </div>
+                <form id="editProfileForm" class="edit-form" enctype="multipart/form-data" style="max-width:600px;">
+                    <div class="form-group mb-3">
+                        <label for="editLogo" class="form-label">Foto de Perfil:</label>
+                        <div class="profile-image-container mb-3">
+                            <img id="editProfileImagePreview" class="profile-image-preview" src="${company.logo || ''}" alt="Vista previa de foto" style="max-width: 150px; max-height: 150px; border-radius: 8px; display: ${company.logo ? 'block' : 'none'};">
+                        </div>
+                        <input type="file" id="editLogo" name="logo" accept="image/*" class="form-control">
+                        <small class="form-text">Formatos: JPG, PNG, GIF (máx. 5MB)</small>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="editName" class="form-label">Nombre de la Empresa:</label>
+                        <input type="text" id="editName" name="name" required class="form-control" value="${company.name || ''}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="editEmail" class="form-label">Email:</label>
+                        <input type="email" id="editEmail" name="email" required class="form-control" value="${email || ''}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="editPhone" class="form-label">Teléfono:</label>
+                        <input type="tel" id="editPhone" name="phone" class="form-control" value="${company.phone || ''}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="editDescription" class="form-label">Descripción:</label>
+                        <textarea id="editDescription" name="description" rows="4" class="form-control">${company.description || ''}</textarea>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="editAddress" class="form-label">Dirección:</label>
+                        <input type="text" id="editAddress" name="address" class="form-control" value="${company.address || ''}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="editCity" class="form-label">Ciudad:</label>
+                        <input type="text" id="editCity" name="city" class="form-control" value="${company.city || ''}">
+                    </div>
+
+                    <div class="form-actions d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        <button type="button" id="cancelEditBtn" class="btn btn-secondary">Cancelar</button>
+                    </div>
+
+                    <div id="editMessage" class="message mt-3"></div>
+                </form>
+            </section>
+        `;
+
+        // Preview de imagen
+        const editLogo = document.getElementById('editLogo');
+        if (editLogo) {
+            editLogo.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    if (file.size > 5 * 1024 * 1024) {
+                        showEditMessage('La imagen no debe superar 5MB', 'error');
+                        this.value = '';
+                        return;
+                    }
+                    if (!file.type.startsWith('image/')) {
+                        showEditMessage('Por favor selecciona un archivo de imagen válido', 'error');
+                        this.value = '';
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById('editProfileImagePreview');
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Submit del formulario
+        const editForm = document.getElementById('editProfileForm');
+        if (editForm) {
+            editForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData();
+                formData.append('name', document.getElementById('editName').value);
+                formData.append('email', document.getElementById('editEmail').value);
+                formData.append('phone', document.getElementById('editPhone').value);
+                formData.append('description', document.getElementById('editDescription').value);
+                formData.append('address', document.getElementById('editAddress').value);
+                formData.append('city', document.getElementById('editCity').value);
+                
+                const fileInput = document.getElementById('editLogo');
+                if (fileInput.files.length > 0) {
+                    formData.append('logo', fileInput.files[0]);
+                }
+
+                try {
+                    const res = await fetch('/api/company/profile', {
+                        method: 'POST',
+                        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' },
+                        body: formData
+                    });
+
+                    if (!res.ok) {
+                        const errorData = await res.json();
+                        throw new Error(errorData.message || 'Error al guardar');
+                    }
+
+                    showEditMessage('Perfil actualizado correctamente', 'success');
+                    setTimeout(async () => {
+                        await loadCompanyProfile();
+                    }, 1500);
+                } catch (e) {
+                    console.error(e);
+                    showEditMessage('Error al guardar los cambios: ' + e.message, 'error');
+                }
+            });
+        }
+
+        // Botón Cancelar
+        const cancelBtn = document.getElementById('cancelEditBtn');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', async function() {
+                await loadCompanyProfile();
+            });
+        }
+    }
+
+    function showEditMessage(text, type) {
+        const messageDiv = document.getElementById('editMessage');
+        if (messageDiv) {
+            messageDiv.textContent = text;
+            messageDiv.className = 'message ' + type;
         }
     }
 })();
