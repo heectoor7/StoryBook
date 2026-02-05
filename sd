@@ -1,0 +1,68 @@
+[35mapp/Http/Controllers/AuthController.php[m[36m:[m[32m18[m[36m:[m            '[1;31memail[m' => 'required|[1;31memail[m|unique:users,[1;31memail[m',
+[35mapp/Http/Controllers/AuthController.php[m[36m:[m[32m25[m[36m:[m            '[1;31memail[m' => $request->[1;31memail[m,
+[35mapp/Http/Controllers/AuthController.php[m[36m:[m[32m58[m[36m:[m            '[1;31memail[m' => 'required|[1;31memail[m',
+[35mapp/Http/Controllers/AuthController.php[m[36m:[m[32m62[m[36m:[m        if (Auth::attempt(['[1;31memail[m' => $request->[1;31memail[m, 'password' => $request->password])) {
+[35mapp/Http/Controllers/AuthController.php[m[36m:[m[32m83[m[36m:[m            return response()->json(['message' => '[1;31mCredenciales[m [1;31mincorrect[mas'], 401);
+[35mapp/Http/Controllers/CompanyController.php[m[36m:[m[32m33[m[36m:[m            '[1;31memail[m' => $user->[1;31memail[m,
+[35mapp/Http/Controllers/CompanyController.php[m[36m:[m[32m58[m[36m:[m            '[1;31memail[m' => 'required|[1;31memail[m|unique:users,[1;31memail[m,' . $user->id,
+[35mapp/Http/Controllers/CompanyController.php[m[36m:[m[32m67[m[36m:[m            // actualizar [1;31memail[m del usuario
+[35mapp/Http/Controllers/CompanyController.php[m[36m:[m[32m69[m[36m:[m                '[1;31memail[m' => $validated['[1;31memail[m']
+[35mapp/Http/Controllers/CompanyController.php[m[36m:[m[32m113[m[36m:[m            '[1;31memail[m' => $user->[1;31memail[m
+[35mapp/Http/Controllers/CompanyController.php[m[36m:[m[32m471[m[36m:[m            ->select('users.id', 'users.name', 'users.[1;31memail[m')
+[35mapp/Models/User.php[m[36m:[m[32m16[m[36m:[m        '[1;31memail[m',
+[35mcomposer.lock[m[36m:[m[32m107[m[36m:[m                    "[1;31memail[m": "kylekatarnls@gmail.com"
+[35mcomposer.lock[m[36m:[m[32m180[m[36m:[m                    "[1;31memail[m": "info@dflydev.com",
+[35mcomposer.lock[m[36m:[m[32m185[m[36m:[m                    "[1;31memail[m": "beau@dflydev.com",
+[35mcomposer.lock[m[36m:[m[32m190[m[36m:[m                    "[1;31memail[m": "carlos@kiwing.it",
+[35mcomposer.lock[m[36m:[m[32m195[m[36m:[m                    "[1;31memail[m": "colinodell@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m250[m[36m:[m                    "[1;31memail[m": "guilhermeblanco@gmail.com"
+[35mcomposer.lock[m[36m:[m[32m254[m[36m:[m                    "[1;31memail[m": "roman@code-factory.org"
+[35mcomposer.lock[m[36m:[m[32m258[m[36m:[m                    "[1;31memail[m": "kontakt@beberlei.de"
+[35mcomposer.lock[m[36m:[m[32m262[m[36m:[m                    "[1;31memail[m": "jonwage@gmail.com"
+[35mcomposer.lock[m[36m:[m[32m266[m[36m:[m                    "[1;31memail[m": "schmittjoh@gmail.com"
+[35mcomposer.lock[m[36m:[m[32m340[m[36m:[m                    "[1;31memail[m": "guilhermeblanco@gmail.com"
+[35mcomposer.lock[m[36m:[m[32m344[m[36m:[m                    "[1;31memail[m": "roman@code-factory.org"
+[35mcomposer.lock[m[36m:[m[32m348[m[36m:[m                    "[1;31memail[m": "schmittjoh@gmail.com"
+[35mcomposer.lock[m[36m:[m[32m423[m[36m:[m                    "[1;31memail[m": "chris@ctankersley.com",
+[35mcomposer.lock[m[36m:[m[32m445[m[36m:[m            "name": "egulias/[1;31memail[m-validator",
+[35mcomposer.lock[m[36m:[m[32m449[m[36m:[m                "url": "https://github.com/egulias/[1;31mEmail[mValidator.git",
+[35mcomposer.lock[m[36m:[m[32m454[m[36m:[m                "url": "https://api.github.com/repos/egulias/[1;31mEmail[mValidator/zipball/d42c8731f0624ad6bdc8d3e5e9a4524f68801cfa",
+[35mcomposer.lock[m[36m:[m[32m478[m[36m:[m                    "Egulias\\[1;31mEmail[mValidator\\": "src"
+[35mcomposer.lock[m[36m:[m[32m490[m[36m:[m            "description": "A library for validating [1;31memail[ms against several RFCs",
+[35mcomposer.lock[m[36m:[m[32m491[m[36m:[m            "homepage": "https://github.com/egulias/[1;31mEmail[mValidator",
+[35mcomposer.lock[m[36m:[m[32m493[m[36m:[m                "[1;31memail[m",
+[35mcomposer.lock[m[36m:[m[32m494[m[36m:[m                "[1;31memail[mvalidation",
+[35mcomposer.lock[m[36m:[m[32m495[m[36m:[m                "[1;31memail[mvalidator",
+[35mcomposer.lock[m[36m:[m[32m500[m[36m:[m                "issues": "https://github.com/egulias/[1;31mEmail[mValidator/issues",
+[35mcomposer.lock[m[36m:[m[32m501[m[36m:[m                "source": "https://github.com/egulias/[1;31mEmail[mValidator/tree/4.0.4"
+[35mcomposer.lock[m[36m:[m[32m556[m[36m:[m                    "[1;31memail[m": "barryvdh@gmail.com"
+[35mcomposer.lock[m[36m:[m[32m616[m[36m:[m                    "[1;31memail[m": "hello@gjcampbell.co.uk",
+[35mcomposer.lock[m[36m:[m[32m704[m[36m:[m                    "[1;31memail[m": "hello@gjcampbell.co.uk",
+[35mcomposer.lock[m[36m:[m[32m709[m[36m:[m                    "[1;31memail[m": "mtdowling@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m714[m[36m:[m                    "[1;31memail[m": "jeremeamia@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m719[m[36m:[m                    "[1;31memail[m": "gmponos@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m724[m[36m:[m                    "[1;31memail[m": "tobias.nyholm@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m729[m[36m:[m                    "[1;31memail[m": "mark.sagikazar@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m734[m[36m:[m                    "[1;31memail[m": "webmaster@tubo-world.de",
+[35mcomposer.lock[m[36m:[m[32m810[m[36m:[m                    "[1;31memail[m": "hello@gjcampbell.co.uk",
+[35mcomposer.lock[m[36m:[m[32m815[m[36m:[m                    "[1;31memail[m": "mtdowling@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m820[m[36m:[m                    "[1;31memail[m": "tobias.nyholm@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m825[m[36m:[m                    "[1;31memail[m": "webmaster@tubo-world.de",
+[35mcomposer.lock[m[36m:[m[32m904[m[36m:[m                    "[1;31memail[m": "hello@gjcampbell.co.uk",
+[35mcomposer.lock[m[36m:[m[32m909[m[36m:[m                    "[1;31memail[m": "mtdowling@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m914[m[36m:[m                    "[1;31memail[m": "gmponos@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m919[m[36m:[m                    "[1;31memail[m": "tobias.nyholm@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m924[m[36m:[m                    "[1;31memail[m": "mark.sagikazar@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m929[m[36m:[m                    "[1;31memail[m": "webmaster@tubo-world.de",
+[35mcomposer.lock[m[36m:[m[32m934[m[36m:[m                    "[1;31memail[m": "mark.sagikazar@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m1011[m[36m:[m                    "[1;31memail[m": "hello@gjcampbell.co.uk",
+[35mcomposer.lock[m[36m:[m[32m1016[m[36m:[m                    "[1;31memail[m": "mtdowling@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m1021[m[36m:[m                    "[1;31memail[m": "gmponos@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m1026[m[36m:[m                    "[1;31memail[m": "tobias.nyholm@gmail.com",
+[35mcomposer.lock[m[36m:[m[32m1074[m[36m:[m                "egulias/[1;31memail[m-validator": "^3.2.1|^4.0",
+[35mcomposer.lock[m[36m:[m[32m1262[m[36m:[m                    "[1;31memail[m": "taylor@laravel.com"
+[35mcomposer.lock[m[36m:[m[32m1384[m[36m:[m                    "[1;31memail[m": "taylor@laravel.com"
+[35mcomposer.lock[m[36m:[m[32m1441[m[36m:[m                    "[1;31memail[m": "taylor@laravel.com"
+[35mcomposer.lock[m[36m:[m[32m1445[m[36m:[m                    "[1;31memail[m": "nuno@laravel.com"
+[35mcomposer.lock[m[36m:[m[32m1510[m[36m:[m                    "[1;31memail[m": "taylor@laravel.com"
+[35mcomposer.lock[m[36m:[m[32m1589[m[36m:[m                    "
