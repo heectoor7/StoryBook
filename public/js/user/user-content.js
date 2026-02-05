@@ -1399,3 +1399,175 @@ window.backToCompanies = async function() {
 
 // Make openCompanyProfile globally available
 window.openCompanyProfile = openCompanyProfile;
+
+// ========================================
+// SETTINGS FUNCTIONS
+// ========================================
+
+// Load user settings
+async function loadUserSettings(token) {
+    const t = typeof token !== 'undefined' ? token : localStorage.getItem('auth_token');
+    
+    if (!t) {
+        return;
+    }
+    
+    try {
+        const res = await fetch('/api/me', {
+            headers: {
+                'Authorization': 'Bearer ' + t,
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (!res.ok) {
+            console.error('Error loading user data');
+            return;
+        }
+        
+        const user = await res.json();
+        
+        // Fill form with user data
+        document.getElementById('settingsName').value = user.name || '';
+        document.getElementById('settingsEmail').value = user.email || '';
+        
+        // Clear password fields
+        document.getElementById('settingsCurrentPassword').value = '';
+        document.getElementById('settingsNewPassword').value = '';
+        document.getElementById('settingsConfirmPassword').value = '';
+        
+    } catch (err) {
+        console.error('Error loading user settings:', err);
+    }
+}
+
+// Save user settings
+async function saveUserSettings() {
+    const token = localStorage.getItem('auth_token');
+    
+    if (!token) {
+        alert('Debes estar autenticado');
+        return;
+    }
+    
+    const name = document.getElementById('settingsName').value;
+    const currentPassword = document.getElementById('settingsCurrentPassword').value;
+    const newPassword = document.getElementById('settingsNewPassword').value;
+    const confirmPassword = document.getElementById('settingsConfirmPassword').value;
+    
+    // Validate name
+    if (!name.trim()) {
+        alert('Name is required');
+        return;
+    }
+    
+    try {
+        // Update profile information
+        const profileRes = await fetch('/api/user/profile', {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name
+            })
+        });
+        
+        if (!profileRes.ok) {
+            const errorData = await profileRes.json().catch(() => ({}));
+            alert('Error updating profile: ' + (errorData.message || 'Unknown error'));
+            return;
+        }
+        
+        // Update password if provided
+        if (currentPassword || newPassword || confirmPassword) {
+            if (!currentPassword) {
+                alert('Current password is required to change password');
+                return;
+            }
+            
+            if (!newPassword) {
+                alert('New password is required');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match');
+                return;
+            }
+            
+            if (newPassword.length < 8) {
+                alert('New password must be at least 8 characters');
+                return;
+            }
+            
+            const passwordRes = await fetch('/api/user/password', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    current_password: currentPassword,
+                    new_password: newPassword,
+                    new_password_confirmation: confirmPassword
+                })
+            });
+            
+            if (!passwordRes.ok) {
+                const errorData = await passwordRes.json().catch(() => ({}));
+                alert('Error updating password: ' + (errorData.message || 'Unknown error'));
+                return;
+            }
+        }
+        
+        alert('Settings saved successfully!');
+        
+        // Reload user data
+        await loadUserSettings(token);
+        
+        // Update user name display in header
+        if (typeof document.getElementById('userNameDisplay') !== 'undefined') {
+            const userRes = await fetch('/api/me', {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json'
+                }
+            });
+            if (userRes.ok) {
+                const userData = await userRes.json();
+                const nameDisplay = document.getElementById('userNameDisplay');
+                if (nameDisplay) {
+                    nameDisplay.innerText = userData.name || 'User';
+                }
+            }
+        }
+        
+    } catch (err) {
+        console.error('Error saving settings:', err);
+        alert('Error saving settings');
+    }
+}
+
+// Setup settings event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    const saveBtn = document.getElementById('saveSettingsBtn');
+    const cancelBtn = document.getElementById('cancelSettingsBtn');
+    
+    if (saveBtn) {
+        saveBtn.addEventListener('click', saveUserSettings);
+    }
+    
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', function() {
+            const token = localStorage.getItem('auth_token');
+            loadUserSettings(token);
+        });
+    }
+});
+
+// Make loadUserSettings globally available
+window.loadUserSettings = loadUserSettings;

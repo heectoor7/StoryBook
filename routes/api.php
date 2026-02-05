@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CompanyController;
@@ -162,6 +163,43 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', function (Request $request) {
         $user = $request->user()->load(['roles', 'company']);
         return response()->json($user);
+    });
+
+    // Update user profile
+    Route::put('/user/profile', function (Request $request) {
+        $user = $request->user();
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+        
+        $user->name = $validated['name'];
+        $user->save();
+        
+        return response()->json([
+            'message' => 'Profile updated successfully',
+            'user' => $user
+        ]);
+    });
+
+    // Update user password
+    Route::put('/user/password', function (Request $request) {
+        $user = $request->user();
+        
+        $validated = $request->validate([
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+        
+        // Verify current password
+        if (!Hash::check($validated['current_password'], $user->password)) {
+            return response()->json(['message' => 'Current password is incorrect'], 422);
+        }
+        
+        $user->password = Hash::make($validated['new_password']);
+        $user->save();
+        
+        return response()->json(['message' => 'Password updated successfully']);
     });
 
     // Get companies that the user follows

@@ -140,6 +140,14 @@
                     showOnlySection('companies-section');
                     if (userTitle) userTitle.innerText = 'Companies';
                     
+                } else if (action === 'configuracion') {
+                    const token = localStorage.getItem('auth_token');
+                    if (typeof loadUserSettings === 'function') {
+                        await loadUserSettings(token);
+                    }
+                    showOnlySection('settings-section');
+                    if (userTitle) userTitle.innerText = 'Settings';
+                    
                 } else {
                     showPlaceholder(action);
                     if (userTitle) userTitle.innerText = this.innerText;

@@ -3,13 +3,14 @@
 ========================================================= */
 
 /* =========================
-   SERVICIOS / PUBLICACIONES / RESERVAS / COMPANIES
+   SERVICIOS / PUBLICACIONES / RESERVAS / COMPANIES / SETTINGS
 ========================= */
 .services-section,
 .posts-section,
 .publicaciones-section,
 .reservas-section,
-.companies-section {
+.companies-section,
+.settings-section {
   overflow: visible !important;
   max-height: none !important;
   margin-bottom: 48px;
@@ -19,7 +20,8 @@
 .posts-section .card,
 .publicaciones-section .card,
 .reservas-section .card,
-.companies-section .card {
+.companies-section .card,
+.settings-section .card {
   background: var(--bg-card);
   color: var(--text-primary);
 }
@@ -28,6 +30,43 @@
 .posts-section h4,
 .publicaciones-section h4,
 .reservas-section h4,
+.settings-section h4 {
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.settings-section h5 {
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.settings-section .form-label {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.settings-section .form-control {
+  background: var(--bg-primary);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.settings-section .form-control:focus {
+  background: var(--bg-primary);
+  border-color: var(--primary);
+  color: var(--text-primary);
+}
+
+.settings-section .form-control:read-only {
+  background: var(--bg-card);
+  opacity: 0.7;
+}
+
+.settings-section .text-muted {
+  color: var(--text-secondary) !important;
+}
 .companies-section h4 {
   color: var(--text-primary);
   border-bottom: 1px solid var(--border);

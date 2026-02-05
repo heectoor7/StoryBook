@@ -53,15 +53,23 @@
             <!-- Section: Stories -->
             <section class="stories-section">
                 <div class="stories-carousel-container">
-                    <button id="storiesScrollLeft" class="stories-scroll-btn stories-scroll-left">
-                        ‹
-                    </button>
+                    <div class="stories-nav-buttons">
+                        <button id="storiesScrollLeft" class="stories-scroll-btn prev">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                            </svg>
+                        </button>
+                    </div>
                     <div id="storiesContainer" class="stories-list">
                         <p style="color: var(--text-secondary);">Loading stories...</p>
                     </div>
-                    <button id="storiesScrollRight" class="stories-scroll-btn stories-scroll-right">
-                        ›
-                    </button>
+                    <div class="stories-nav-buttons">
+                        <button id="storiesScrollRight" class="stories-scroll-btn next">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </section>
 
@@ -119,6 +127,58 @@
                 
                 <div id="companyProfileContainer">
                     <p style="color: var(--text-secondary);">Loading company profile...</p>
+                </div>
+            </section>
+
+            <!-- Section: Settings (configuración del perfil del usuario) -->
+            <section class="settings-section" style="display: none;">
+                <h4 class="mb-4">Account Settings</h4>
+                
+                <div class="row">
+                    <div class="col-12 col-lg-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="mb-4">Personal Information</h5>
+                                
+                                <form id="settingsForm">
+                                    <div class="mb-3">
+                                        <label for="settingsName" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="settingsName" placeholder="Your name">
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="settingsEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="settingsEmail" placeholder="your@email.com" readonly>
+                                        <small class="text-muted">Email cannot be changed</small>
+                                    </div>
+                                    
+                                    <hr class="my-4">
+                                    
+                                    <h5 class="mb-4">Change Password</h5>
+                                    
+                                    <div class="mb-3">
+                                        <label for="settingsCurrentPassword" class="form-label">Current Password</label>
+                                        <input type="password" class="form-control" id="settingsCurrentPassword" placeholder="Enter current password">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="settingsNewPassword" class="form-label">New Password</label>
+                                        <input type="password" class="form-control" id="settingsNewPassword" placeholder="Enter new password">
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label for="settingsConfirmPassword" class="form-label">Confirm New Password</label>
+                                        <input type="password" class="form-control" id="settingsConfirmPassword" placeholder="Confirm new password">
+                                    </div>
+                                    
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-primary" id="saveSettingsBtn">Save Changes</button>
+                                        <button type="button" class="btn btn-secondary" id="cancelSettingsBtn">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
