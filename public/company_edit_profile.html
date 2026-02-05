@@ -27,7 +27,7 @@
         <header class="header" id="mainHeader">
             <h5 id="sidebarTitle">Editar Perfil</h5>
             <div class="d-flex align-items-center gap-2" id="headerActions">
-            <button class="btn btn-outline-primary me-2" onclick="window.location.href='perfil_company.html'">Ver Perfil</button>
+            <button class="btn btn-outline-primary me-2" onclick="window.location.href='index_comany.html'">Volver</button>
             <button id="logoutBtn" class="btn btn-outline-danger">Log out</button>
             </div>
         </header>
@@ -199,7 +199,7 @@
             }
 
             showMessage('Perfil actualizado correctamente', 'success');
-            setTimeout(() => window.location.href = '/perfil_company.html', 1500);
+            setTimeout(() => window.location.href = 'index_comany.html', 1500);
         } catch (e) {
             console.error(e);
             showMessage('Error al guardar los cambios: ' + e.message, 'error');
