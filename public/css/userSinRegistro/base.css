@@ -1,0 +1,52 @@
+/* =========================================================
+   base.css - Estilos base y variables globales
+========================================================= */
+
+/* =========================
+   BASE
+========================= */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  /* ✅ SCROLL ÚNICO */
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  background-color: #0e1111;
+  color: #fff;
+  font-family: Arial, sans-serif;
+
+  /* FLEX COLUMN PARA MANTENER FOOTER ABAJO */
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   VARIABLES
+========================= */
+:root {
+  --primary-header-height: 70px;
+  --top-nav-height: 100px;
+
+  --bg-app: #0e1111;
+  --bg-header: #070a0a;
+  --bg-card: #141a1a;
+  --bg-hover: #1c2424;
+
+  --primary: #03bab6;
+  --primary-hover: #028a87;
+  --accent: #f59e0b;
+
+  --text-primary: #f1f5f4;
+  --text-secondary: #d4dbd9;
+  --text-muted: #c3b8b8;
+
+  --border: #1f2a2a;
+}
