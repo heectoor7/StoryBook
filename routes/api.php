@@ -216,6 +216,67 @@ Route::middleware('auth:sanctum')->group(function () {
         return response()->json($companies);
     });
 
+    // Get company profile details
+    Route::get('/companies/{id}', function (Request $request, $id) {
+        $user = $request->user();
+        
+        $company = App\Models\Company::findOrFail($id);
+        
+        $isFollowing = \DB::table('followers')
+            ->where('user_id', $user->id)
+            ->where('company_id', $id)
+            ->exists();
+        
+        // Get company's services
+        $services = App\Models\Service::where('company_id', $id)
+            ->with('category')
+            ->get()
+            ->map(function($s) {
+                return [
+                    'id' => $s->id,
+                    'name' => $s->name,
+                    'description' => $s->description,
+                    'image' => $s->image,
+                    'price' => $s->price,
+                    'category' => $s->category->name ?? null
+                ];
+            });
+        
+        // Get company's posts (not stories)
+        $posts = App\Models\Post::where('company_id', $id)
+            ->where('is_story', false)
+            ->with('comments.user')
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get()
+            ->map(function($p) {
+                return [
+                    'id' => $p->id,
+                    'content' => $p->content,
+                    'image' => $p->image,
+                    'created_at' => $p->created_at,
+                    'comments_count' => $p->comments->count()
+                ];
+            });
+        
+        // Get followers count
+        $followersCount = \DB::table('followers')->where('company_id', $id)->count();
+        
+        return response()->json([
+            'id' => $company->id,
+            'name' => $company->name,
+            'logo' => $company->logo,
+            'description' => $company->description,
+            'email' => $company->email,
+            'phone' => $company->phone,
+            'address' => $company->address,
+            'is_following' => $isFollowing,
+            'followers_count' => $followersCount,
+            'services' => $services,
+            'posts' => $posts
+        ]);
+    });
+
     // Follow/Unfollow a company
     Route::post('/companies/{id}/follow', function (Request $request, $id) {
         $user = $request->user();

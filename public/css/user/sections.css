@@ -307,3 +307,37 @@
     max-width: 100%;
   }
 }
+
+/* =========================
+   COMPANY PROFILE SECTION
+========================= */
+.company-profile-section {
+  overflow: visible !important;
+  max-height: none !important;
+  margin-bottom: 48px;
+}
+
+.company-profile-section .card {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.company-profile-section h3,
+.company-profile-section h4 {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.company-profile-section h4 {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+.company-card-clickable {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.company-card-clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(3, 186, 182, 0.2);
+}

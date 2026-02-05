@@ -1075,9 +1075,9 @@ async function loadFollowedCompanies(token) {
         
         container.innerHTML = companies.map(c => `
             <div class="col-12 mb-2">
-                <div class="card">
+                <div class="card company-card-clickable" data-company-id="${c.id}">
                     <div class="card-body d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center gap-3 flex-grow-1" style="cursor: pointer;" onclick="openCompanyProfile(${c.id})">
                             ${c.logo ? `<img src="${c.logo}" alt="${c.name}" style="width:50px;height:50px;border-radius:50%;object-fit:cover;">` : `<div style="width:50px;height:50px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;">${c.name.charAt(0)}</div>`}
                             <div>
                                 <div><strong>${c.name}</strong></div>
@@ -1085,7 +1085,7 @@ async function loadFollowedCompanies(token) {
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-sm btn-danger follow-btn" data-company-id="${c.id}" data-is-following="true">
+                            <button class="btn btn-sm btn-danger follow-btn" data-company-id="${c.id}" data-is-following="true" onclick="event.stopPropagation()">
                                 Unfollow
                             </button>
                         </div>
@@ -1137,9 +1137,9 @@ async function loadAllCompanies(token, searchQuery = '') {
         
         container.innerHTML = companies.map(c => `
             <div class="col-12 mb-2">
-                <div class="card">
+                <div class="card company-card-clickable" data-company-id="${c.id}">
                     <div class="card-body d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center gap-3 flex-grow-1" style="cursor: pointer;" onclick="openCompanyProfile(${c.id})">
                             ${c.logo ? `<img src="${c.logo}" alt="${c.name}" style="width:50px;height:50px;border-radius:50%;object-fit:cover;">` : `<div style="width:50px;height:50px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;">${c.name.charAt(0)}</div>`}
                             <div>
                                 <div><strong>${c.name}</strong></div>
@@ -1147,7 +1147,7 @@ async function loadAllCompanies(token, searchQuery = '') {
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-sm ${c.is_following ? 'btn-danger' : 'btn-primary'} follow-btn" data-company-id="${c.id}" data-is-following="${c.is_following}">
+                            <button class="btn btn-sm ${c.is_following ? 'btn-danger' : 'btn-primary'} follow-btn" data-company-id="${c.id}" data-is-following="${c.is_following}" onclick="event.stopPropagation()">
                                 ${c.is_following ? 'Unfollow' : 'Follow'}
                             </button>
                         </div>
@@ -1250,3 +1250,152 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// ========================================
+// COMPANY PROFILE FUNCTIONS
+// ========================================
+
+// Open company profile
+async function openCompanyProfile(companyId) {
+    const token = localStorage.getItem('auth_token');
+    
+    if (!token) {
+        alert('Debes estar autenticado');
+        return;
+    }
+    
+    // Show company profile section and hide companies section
+    document.querySelectorAll('main.content section').forEach(s => s.style.display = 'none');
+    const profileSection = document.querySelector('.company-profile-section');
+    if (profileSection) profileSection.style.display = '';
+    
+    // Load company profile
+    await loadCompanyProfile(companyId, token);
+}
+
+// Load company profile details
+async function loadCompanyProfile(companyId, token) {
+    const container = document.getElementById('companyProfileContainer');
+    
+    if (!container) return;
+    
+    container.innerHTML = '<p style="color: var(--text-secondary);">Loading company profile...</p>';
+    
+    try {
+        const res = await fetch(`/api/companies/${companyId}`, {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (!res.ok) {
+            container.innerHTML = '<p class="text-danger">Error al cargar el perfil de la empresa</p>';
+            return;
+        }
+        
+        const company = await res.json();
+        
+        // Render company profile
+        container.innerHTML = `
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start gap-4 mb-4">
+                                ${company.logo ? `<img src="${company.logo}" alt="${company.name}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;">` : `<div style="width:100px;height:100px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-size:2rem;font-weight:bold;">${company.name.charAt(0)}</div>`}
+                                <div class="flex-grow-1">
+                                    <h3>${company.name}</h3>
+                                    <p style="color: var(--text-secondary);">${company.description || 'No description available'}</p>
+                                    <div class="mb-2">
+                                        <small style="color: var(--text-secondary);"><strong>Email:</strong> ${company.email || 'N/A'}</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <small style="color: var(--text-secondary);"><strong>Phone:</strong> ${company.phone || 'N/A'}</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small style="color: var(--text-secondary);"><strong>Address:</strong> ${company.address || 'N/A'}</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small style="color: var(--text-secondary);"><strong>Followers:</strong> ${company.followers_count}</small>
+                                    </div>
+                                    <button class="btn btn-sm ${company.is_following ? 'btn-danger' : 'btn-primary'} follow-btn" data-company-id="${company.id}" data-is-following="${company.is_following}">
+                                        ${company.is_following ? 'Unfollow' : 'Follow'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 mb-4">
+                    <h4 class="mb-3">Services (${company.services.length})</h4>
+                    <div class="row">
+                        ${company.services.length > 0 ? company.services.map(s => `
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 service-card" style="cursor:pointer;" onclick="openServiceModal(${JSON.stringify(s).replace(/"/g, '&quot;')})">
+                                    ${s.image ? `<img src="${s.image}" class="card-img-top" alt="${s.name}" style="max-height:180px;object-fit:cover;">` : ''}
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="card-title mb-0">${s.name}</h5>
+                                            <small style="color: var(--text-secondary);">${s.category || ''}</small>
+                                        </div>
+                                        <p class="card-text text-truncate">${s.description || ''}</p>
+                                        <div class="mt-2">
+                                            <strong>${s.price ? '$' + parseFloat(s.price).toFixed(2) : ''}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('') : '<p style="color: var(--text-secondary);">No services available</p>'}
+                    </div>
+                </div>
+                
+                <div class="col-12 mb-4">
+                    <h4 class="mb-3">Recent Posts (${company.posts.length})</h4>
+                    <div class="row">
+                        ${company.posts.length > 0 ? company.posts.map(p => `
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100" style="cursor:pointer;">
+                                    ${p.image ? `<img src="${p.image}" class="card-img-top" alt="Post" style="max-height:200px;object-fit:cover;">` : ''}
+                                    <div class="card-body">
+                                        <p class="card-text">${p.content ? (p.content.length > 100 ? p.content.substring(0, 100) + '...' : p.content) : ''}</p>
+                                        <small style="color: var(--text-secondary);">${new Date(p.created_at).toLocaleDateString()} · ${p.comments_count} comments</small>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('') : '<p style="color: var(--text-secondary);">No posts available</p>'}
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Attach follow button listener
+        attachFollowButtonListeners();
+        
+    } catch (err) {
+        console.error(err);
+        container.innerHTML = '<p class="text-danger">Error al cargar el perfil de la empresa</p>';
+    }
+}
+
+// Back to companies list
+window.backToCompanies = async function() {
+    const token = localStorage.getItem('auth_token');
+    
+    // Hide profile section and show companies section
+    document.querySelectorAll('main.content section').forEach(s => s.style.display = 'none');
+    const companiesSection = document.querySelector('.companies-section');
+    if (companiesSection) companiesSection.style.display = '';
+    
+    // Reload companies lists
+    if (typeof loadFollowedCompanies === 'function') {
+        await loadFollowedCompanies(token);
+    }
+    if (typeof loadAllCompanies === 'function') {
+        await loadAllCompanies(token);
+    }
+};
+
+// Make openCompanyProfile globally available
+window.openCompanyProfile = openCompanyProfile;
