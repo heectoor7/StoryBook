@@ -99,6 +99,22 @@ main.main {
 
 .login-card button:hover { background: var(--primary-hover); }
 
+/* Asegurar que el botón outline en el header use el mismo azul que en index.html */
+.header a.btn-outline-primary {
+  background: transparent;
+  color: rgb(3, 186, 182);
+  border: 1px solid   rgb(3, 186, 182);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.header a.btn-outline-primary:hover,
+.header a.btn-outline-primary:focus {
+  background:  rgb(3, 186, 182);
+  color: #000000;
+  text-decoration: none;
+}
+
 .bg-white { background: #fff; }
 
 /* FOOTER */
