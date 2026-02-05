@@ -15,6 +15,14 @@
 
   /* NUNCA SCROLL AQUÍ */
   overflow: visible;
+  
+  /* Transición suave para el margin-top */
+  transition: margin-top 0.3s ease-in-out;
+}
+
+/* Reducir margin cuando la barra de navegación está oculta */
+.main.nav-hidden {
+  margin-top: var(--primary-header-height);
 }
 
 /* =========================
