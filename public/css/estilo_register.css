@@ -1,0 +1,139 @@
+/* =========================================================
+   estilo_register.css - Layout simple: header, main, footer
+   Sin sidebar. Estilos centrados para formularios de registro
+========================================================= */
+
+/* RESET BÁSICO */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+:root {
+  --header-height: 88px;
+  --footer-height: 90px;
+
+  --bg-app: #0e1111;
+  --bg-header: #070a0a;
+  --bg-main: #0e1111;
+  --bg-card: #141a1a;
+  --bg-hover: #1c2424;
+
+  --primary: #03bab6;
+  --primary-hover: #028a87;
+  --accent: #f59e0b;
+
+  --text-primary: #f1f5f4;
+  --text-secondary: #d4dbd9;
+  --text-muted: #c3b8b8;
+
+  --border: #1f2a2a;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1000;
+}
+
+.header h3 { font-size: 1.2rem; color: var(--text-primary); }
+.header a img { height: 190px; }
+
+/* MAIN - se sitúa debajo del header y crece para empujar el footer */
+main.main {
+  margin-top: var(--header-height);
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 20px;
+  overflow: auto;
+  width: 100%;
+}
+
+/* Contenedor del formulario */
+.register-container { width: 100%; max-width: 560px; }
+
+.register-card {
+  background: #ffffff; /* la página de registro usa fondo blanco para el formulario */
+  color: #04201a;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+}
+
+.register-card h4 { margin-bottom: 12px; color: #04201a; }
+.register-card input, .register-card select, .register-card button {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
+
+.register-card button {
+  background: var(--primary);
+  color: #04201a;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.register-card button:hover { background: var(--primary-hover); }
+
+.bg-white { background: #fff; }
+
+/* FOOTER */
+footer.site-footer {
+  background: var(--bg-header);
+  color: var(--text-muted);
+  padding: 28px 20px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-logo {
+  height: 160px;
+}
+
+.site-footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header a img { height: 48px; }
+  .register-container { padding: 0 12px; }
+  .header { padding: 0 12px; }
+}
+
+@media (max-width: 480px) {
+  :root { --header-height: 72px; --footer-height: 72px; }
+}
