@@ -162,6 +162,14 @@
         if (typeof loadCompanyPosts === 'function') {
             loadCompanyPosts();
         }
+
+        // Botón My Profile -> cargar perfil dentro de <main> vía AJAX
+        const btnProfile = document.getElementById('btnProfile');
+        if (btnProfile) {
+            btnProfile.addEventListener('click', async function() {
+                await loadCompanyProfile();
+            });
+        }
     });
 
     // Cargar información de la empresa
@@ -191,6 +199,96 @@
             }
         } catch (err) {
             console.error('[debug] loadCompanyInfo exception', err);
+        }
+    }
+
+    // Cargar y renderizar perfil completo dentro del main (posts, servicios, reservas, datos)
+    async function loadCompanyProfile() {
+        const token = localStorage.getItem('auth_token');
+        if (!token) return;
+
+        const main = document.getElementById('mainContent');
+        if (!main) return;
+
+        // Mostrar estado de carga inmediato
+        main.innerHTML = `<section class="section-header"><h5>Cargando perfil...</h5></section>`;
+
+        try {
+            const res = await fetch('/api/company/profile', {
+                headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+            });
+
+            if (!res.ok) {
+                main.innerHTML = `<p style="color: var(--danger);">No se pudo cargar el perfil.</p>`;
+                return;
+            }
+
+            const data = await res.json();
+            const company = data.company || data;
+
+            // Render principal: info + secciones reutilizando los ids existentes
+            main.innerHTML = `
+                <section id="profileOverview">
+                    <div class="section-header">
+                        <h5>Perfil de la Empresa</h5>
+                        <div>
+                            <button class="btn btn-outline-primary me-2" onclick="window.location.href='company_edit_profile.html'">Editar Perfil</button>
+                        </div>
+                    </div>
+                    <div class="card" style="max-width:900px;">
+                        <div class="card-body d-flex gap-4">
+                            <div>
+                                ${company.logo ? `<img src="${company.logo}" alt="Logo" style="max-width:160px; border-radius:8px;">` : ''}
+                            </div>
+                            <div>
+                                <h4 style="margin:0 0 6px 0;">${company.name || 'Sin nombre'}</h4>
+                                <p style="margin:0; color:var(--text-secondary);">${company.description || ''}</p>
+                                <div style="margin-top:8px;">
+                                    <span class="badge bg-primary">${company.city || ''}</span>
+                                    <span class="badge" style="background:var(--bg-card); color:var(--text-secondary);">${company.address || ''}</span>
+                                </div>
+                                <div style="margin-top:8px; color:var(--text-secondary);">Email: ${data.email || company.email || 'N/A'}</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="postsSectionProfile" style="margin-top:20px;">
+                    <div class="section-header"><h5>Publicaciones</h5></div>
+                    <div class="row" id="companyPostsContainer">
+                        <p style="color: var(--text-secondary);">Cargando publicaciones...</p>
+                    </div>
+                </section>
+
+                <section id="servicesSectionProfile" style="margin-top:20px;">
+                    <div class="section-header"><h5>Servicios</h5></div>
+                    <div class="row" id="companyServicesContainer">
+                        <p style="color: var(--text-secondary);">Cargando servicios...</p>
+                    </div>
+                </section>
+
+                <section id="bookingsSectionProfile" style="margin-top:20px;">
+                    <div class="section-header"><h5>Reservas</h5></div>
+                    <div id="companyBookingsContainer">
+                        <p style="color: var(--text-secondary);">Cargando reservas...</p>
+                    </div>
+                </section>
+            `;
+
+            // Llamar a los loaders si están disponibles (reutilizan los mismos contenedores)
+            if (typeof loadCompanyPosts === 'function') {
+                await loadCompanyPosts();
+            }
+            if (typeof loadCompanyServices === 'function') {
+                await loadCompanyServices();
+            }
+            if (typeof loadCompanyBookings === 'function') {
+                await loadCompanyBookings();
+            }
+
+        } catch (e) {
+            console.error('Error al cargar perfil por AJAX', e);
+            main.innerHTML = `<p style="color: var(--danger);">Error al cargar el perfil.</p>`;
         }
     }
 })();
