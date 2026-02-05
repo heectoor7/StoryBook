@@ -164,9 +164,92 @@ Route::middleware('auth:sanctum')->group(function () {
         return response()->json($user);
     });
 
+    // Get companies that the user follows
+    Route::get('/user/followed-companies', function (Request $request) {
+        $user = $request->user();
+        
+        $companyIds = \DB::table('followers')->where('user_id', $user->id)->pluck('company_id');
+        
+        if ($companyIds->isEmpty()) {
+            return response()->json([]);
+        }
+        
+        $companies = App\Models\Company::whereIn('id', $companyIds)
+            ->get()
+            ->map(function($c) use ($user) {
+                return [
+                    'id' => $c->id,
+                    'name' => $c->name,
+                    'logo' => $c->logo,
+                    'description' => $c->description,
+                    'is_following' => true
+                ];
+            });
+        
+        return response()->json($companies);
+    });
+
+    // Get all companies (for discovery)
+    Route::get('/companies', function (Request $request) {
+        $user = $request->user();
+        $search = $request->query('search');
+        
+        $query = App\Models\Company::query();
+        
+        if ($search) {
+            $query->where('name', 'LIKE', '%' . $search . '%')
+                  ->orWhere('description', 'LIKE', '%' . $search . '%');
+        }
+        
+        $followedIds = \DB::table('followers')->where('user_id', $user->id)->pluck('company_id')->toArray();
+        
+        $companies = $query->get()->map(function($c) use ($followedIds) {
+            return [
+                'id' => $c->id,
+                'name' => $c->name,
+                'logo' => $c->logo,
+                'description' => $c->description,
+                'is_following' => in_array($c->id, $followedIds)
+            ];
+        });
+        
+        return response()->json($companies);
+    });
+
+    // Follow/Unfollow a company
+    Route::post('/companies/{id}/follow', function (Request $request, $id) {
+        $user = $request->user();
+        
+        $company = App\Models\Company::findOrFail($id);
+        
+        $exists = \DB::table('followers')
+            ->where('user_id', $user->id)
+            ->where('company_id', $id)
+            ->exists();
+        
+        if ($exists) {
+            // Unfollow
+            \DB::table('followers')
+                ->where('user_id', $user->id)
+                ->where('company_id', $id)
+                ->delete();
+            
+            return response()->json(['message' => 'Unfollowed successfully', 'is_following' => false]);
+        } else {
+            // Follow
+            \DB::table('followers')->insert([
+                'user_id' => $user->id,
+                'company_id' => $id
+            ]);
+            
+            return response()->json(['message' => 'Followed successfully', 'is_following' => true]);
+        }
+    });
+
     // Posts from companies that the authenticated user follows
     Route::get('/user/followed-companies-posts', function (Request $request) {
         $user = $request->user();
+
 
         // Obtener company_ids que sigue el usuario
         $companyIds = \DB::table('followers')->where('user_id', $user->id)->pluck('company_id');

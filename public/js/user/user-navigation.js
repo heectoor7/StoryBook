@@ -126,6 +126,17 @@
                     showOnlySection('posts-section');
                     if (userTitle) userTitle.innerText = 'Publicaciones';
                     
+                } else if (action === 'companies') {
+                    const token = localStorage.getItem('auth_token');
+                    if (typeof loadFollowedCompanies === 'function') {
+                        await loadFollowedCompanies(token);
+                    }
+                    if (typeof loadAllCompanies === 'function') {
+                        await loadAllCompanies(token);
+                    }
+                    showOnlySection('companies-section');
+                    if (userTitle) userTitle.innerText = 'Companies';
+                    
                 } else {
                     showPlaceholder(action);
                     if (userTitle) userTitle.innerText = this.innerText;
