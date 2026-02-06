@@ -30,7 +30,7 @@
         if (menuPosts) {
             menuPosts.addEventListener('click', async function() {
                 showOnlySection('postsSection');
-                updatePageTitle('Mis Publicaciones');
+                updatePageTitle('My Posts');
                 if (typeof loadCompanyPosts === 'function') {
                     await loadCompanyPosts();
                 }
@@ -42,7 +42,7 @@
         if (menuServices) {
             menuServices.addEventListener('click', async function() {
                 showOnlySection('servicesSection');
-                updatePageTitle('Mis Servicios');
+                updatePageTitle('My Services');
                 if (typeof loadCompanyServices === 'function') {
                     await loadCompanyServices();
                 }
@@ -54,19 +54,17 @@
         if (menuBookings) {
             menuBookings.addEventListener('click', async function() {
                 showOnlySection('bookingsSection');
-                updatePageTitle('Agenda de Reservas');
+                updatePageTitle('Reservations Schedule');
                 if (typeof loadCompanyBookings === 'function') {
                     await loadCompanyBookings();
                 }
             });
         }
-
-        // Menú: Seguidores
         const menuFollowers = document.getElementById('menuFollowers');
         if (menuFollowers) {
             menuFollowers.addEventListener('click', async function() {
                 showOnlySection('followersSection');
-                updatePageTitle('Mis Seguidores');
+                updatePageTitle('My Followers');
                 if (typeof loadCompanyFollowers === 'function') {
                     await loadCompanyFollowers();
                 }
@@ -158,7 +156,7 @@
 
         // Mostrar sección de publicaciones por defecto
         showOnlySection('postsSection');
-        updatePageTitle('Mis Publicaciones');
+        updatePageTitle('My Posts');
         if (typeof loadCompanyPosts === 'function') {
             loadCompanyPosts();
         }
@@ -195,7 +193,7 @@
             // Actualizar nombre de la empresa en el sidebar
             const sidebarTitle = document.getElementById('sidebarTitle');
             if (sidebarTitle && user.company) {
-                sidebarTitle.textContent = user.company.name || 'Mi Empresa';
+                sidebarTitle.textContent = user.company.name || 'My Company';
             }
         } catch (err) {
             console.error('[debug] loadCompanyInfo exception', err);
@@ -211,7 +209,7 @@
         if (!main) return;
 
         // Mostrar estado de carga inmediato
-        main.innerHTML = `<section class="section-header"><h5>Cargando perfil...</h5></section>`;
+        main.innerHTML = `<section class="section-header"><h5>Loading profile...</h5></section>`;
 
         try {
             const res = await fetch('/api/company/profile', {
@@ -219,7 +217,7 @@
             });
 
             if (!res.ok) {
-                main.innerHTML = `<p style="color: var(--danger);">No se pudo cargar el perfil.</p>`;
+                main.innerHTML = `<p style="color: var(--danger);">Profile could not be loaded.</p>`;
                 return;
             }
 
@@ -230,9 +228,9 @@
             main.innerHTML = `
                 <section id="profileOverview">
                     <div class="section-header">
-                        <h5>Perfil de la Empresa</h5>
+                        <h5>Company Profile</h5>
                         <div>
-                            <button id="btnEditProfile" class="btn btn-outline-primary me-2">Editar Perfil</button>
+                            <button id="btnEditProfile" class="btn btn-outline-primary me-2">Edit Profile</button>
                         </div>
                     </div>
                     <div class="card" style="max-width:900px;">
@@ -241,7 +239,7 @@
                                 ${company.logo ? `<img src="${company.logo}" alt="Logo" style="max-width:160px; border-radius:8px;">` : ''}
                             </div>
                             <div>
-                                <h4 style="margin:0 0 6px 0;">${company.name || 'Sin nombre'}</h4>
+                                <h4 style="margin:0 0 6px 0;">${company.name || 'No name'}</h4>
                                 <p style="margin:0; color:var(--text-secondary);">${company.description || ''}</p>
                                 <div style="margin-top:8px;">
                                     <span class="badge bg-primary">${company.city || ''}</span>
@@ -254,23 +252,23 @@
                 </section>
 
                 <section id="postsSectionProfile" style="margin-top:20px;">
-                    <div class="section-header"><h5>Publicaciones</h5></div>
+                    <div class="section-header"><h5>Posts</h5></div>
                     <div class="row" id="companyPostsContainer">
-                        <p style="color: var(--text-secondary);">Cargando publicaciones...</p>
+                        <p style="color: var(--text-secondary);">Loading posts...</p>
                     </div>
                 </section>
 
                 <section id="servicesSectionProfile" style="margin-top:20px;">
-                    <div class="section-header"><h5>Servicios</h5></div>
+                    <div class="section-header"><h5>Services</h5></div>
                     <div class="row" id="companyServicesContainer">
-                        <p style="color: var(--text-secondary);">Cargando servicios...</p>
+                        <p style="color: var(--text-secondary);">Loading services...</p>
                     </div>
                 </section>
 
                 <section id="bookingsSectionProfile" style="margin-top:20px;">
-                    <div class="section-header"><h5>Reservas</h5></div>
+                    <div class="section-header"><h5>Bookings</h5></div>
                     <div id="companyBookingsContainer">
-                        <p style="color: var(--text-secondary);">Cargando reservas...</p>
+                        <p style="color: var(--text-secondary);">Loading bookings...</p>
                     </div>
                 </section>
             `;
@@ -295,8 +293,8 @@
             }
 
         } catch (e) {
-            console.error('Error al cargar perfil por AJAX', e);
-            main.innerHTML = `<p style="color: var(--danger);">Error al cargar el perfil.</p>`;
+            console.error('Error loading profile via AJAX', e);
+            main.innerHTML = `<p style="color: var(--danger);">Error loading profile.</p>`;
         }
     }
 
@@ -311,20 +309,20 @@
         main.innerHTML = `
             <section id="editProfileSection">
                 <div class="section-header">
-                    <h5>Editar Perfil de la Empresa</h5>
+                    <h5>Edit Company Profile</h5>
                 </div>
                 <form id="editProfileForm" class="edit-form" enctype="multipart/form-data" style="max-width:600px;">
                     <div class="form-group mb-3">
-                        <label for="editLogo" class="form-label">Foto de Perfil:</label>
+                        <label for="editLogo" class="form-label">Profile Photo:</label>
                         <div class="profile-image-container mb-3">
-                            <img id="editProfileImagePreview" class="profile-image-preview" src="${company.logo || ''}" alt="Vista previa de foto" style="max-width: 150px; max-height: 150px; border-radius: 8px; display: ${company.logo ? 'block' : 'none'};">
+                            <img id="editProfileImagePreview" class="profile-image-preview" src="${company.logo || ''}" alt="Photo preview" style="max-width: 150px; max-height: 150px; border-radius: 8px; display: ${company.logo ? 'block' : 'none'};">
                         </div>
                         <input type="file" id="editLogo" name="logo" accept="image/*" class="form-control">
-                        <small class="form-text" style="color: var(--text-secondary);">Formatos: JPG, PNG, GIF (máx. 5MB)</small>
+                        <small class="form-text" style="color: var(--text-secondary);">Formats: JPG, PNG, GIF (max. 5MB)</small>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="editName" class="form-label">Nombre de la Empresa:</label>
+                        <label for="editName" class="form-label">Company Name:</label>
                         <input type="text" id="editName" name="name" required class="form-control" value="${company.name || ''}">
                     </div>
 
@@ -334,28 +332,28 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="editPhone" class="form-label">Teléfono:</label>
+                        <label for="editPhone" class="form-label">Phone:</label>
                         <input type="tel" id="editPhone" name="phone" class="form-control" value="${company.phone || ''}">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="editDescription" class="form-label">Descripción:</label>
+                        <label for="editDescription" class="form-label">Description:</label>
                         <textarea id="editDescription" name="description" rows="4" class="form-control">${company.description || ''}</textarea>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="editAddress" class="form-label">Dirección:</label>
+                        <label for="editAddress" class="form-label">Address:</label>
                         <input type="text" id="editAddress" name="address" class="form-control" value="${company.address || ''}">
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="editCity" class="form-label">Ciudad:</label>
+                        <label for="editCity" class="form-label">City:</label>
                         <input type="text" id="editCity" name="city" class="form-control" value="${company.city || ''}">
                     </div>
 
                     <div class="form-actions d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                        <button type="button" id="cancelEditBtn" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" id="cancelEditBtn" class="btn btn-secondary">Cancel</button>
                     </div>
 
                     <div id="editMessage" class="message mt-3"></div>
@@ -370,12 +368,12 @@
                 const file = e.target.files[0];
                 if (file) {
                     if (file.size > 5 * 1024 * 1024) {
-                        showEditMessage('La imagen no debe superar 5MB', 'error');
+                        showEditMessage('Image must not exceed 5MB', 'error');
                         this.value = '';
                         return;
                     }
                     if (!file.type.startsWith('image/')) {
-                        showEditMessage('Por favor selecciona un archivo de imagen válido', 'error');
+                        showEditMessage('Please select a valid image file', 'error');
                         this.value = '';
                         return;
                     }
@@ -418,16 +416,16 @@
 
                     if (!res.ok) {
                         const errorData = await res.json();
-                        throw new Error(errorData.message || 'Error al guardar');
+                        throw new Error(errorData.message || 'Error saving');
                     }
 
-                    showEditMessage('Perfil actualizado correctamente', 'success');
+                    showEditMessage('Profile updated successfully', 'success');
                     setTimeout(async () => {
                         await loadCompanyProfile();
                     }, 1500);
                 } catch (e) {
                     console.error(e);
-                    showEditMessage('Error al guardar los cambios: ' + e.message, 'error');
+                    showEditMessage('Error saving changes: ' + e.message, 'error');
                 }
             });
         }

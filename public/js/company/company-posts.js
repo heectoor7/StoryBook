@@ -10,10 +10,10 @@ async function loadCompanyPosts() {
     
     if (!postsContainer) return;
     
-    postsContainer.innerHTML = '<p style="color: var(--text-secondary);">Cargando publicaciones...</p>';
+    postsContainer.innerHTML = '<p style="color: var(--text-secondary);">Loading posts...</p>';
     
     if (!token) {
-        postsContainer.innerHTML = '<p style="color: var(--text-secondary);">No autenticado</p>';
+        postsContainer.innerHTML = '<p style="color: var(--text-secondary);">Not authenticated</p>';
         return;
     }
 
@@ -32,7 +32,7 @@ async function loadCompanyPosts() {
         const posts = await res.json();
         
         if (!Array.isArray(posts) || posts.length === 0) {
-            postsContainer.innerHTML = '<p style="color: var(--text-secondary);">No hay publicaciones aún</p>';
+            postsContainer.innerHTML = '<p style="color: var(--text-secondary);">No posts yet</p>';
             return;
         }
 
@@ -50,7 +50,7 @@ async function loadCompanyPosts() {
                         </small>
                         <div class="mt-2">
                             <button class="btn btn-sm btn-outline-danger" onclick="deletePost(${post.id})">
-                                Eliminar
+                                Delete
                             </button>
                         </div>
                     </div>
@@ -59,7 +59,7 @@ async function loadCompanyPosts() {
         `).join('');
     } catch (err) {
         console.error('[Posts] Error al cargar:', err);
-        postsContainer.innerHTML = '<p class="text-danger">Error al cargar publicaciones</p>';
+        postsContainer.innerHTML = '<p class="text-danger">Error loading posts</p>';
     }
 }
 
@@ -70,12 +70,12 @@ async function createPost(isStory = false) {
     const token = localStorage.getItem('auth_token');
 
     if (!content && !imageInput.files.length) {
-        alert('Debes agregar contenido o imagen');
+        alert('You must add content or image');
         return;
     }
 
     if (!token) {
-        alert('No autenticado');
+        alert('Not authenticated');
         return;
     }
 
@@ -112,23 +112,23 @@ async function createPost(isStory = false) {
         // Recargar posts
         await loadCompanyPosts();
         
-        alert(isStory ? 'Story creada exitosamente' : 'Post creado exitosamente');
+        alert(isStory ? 'Story created successfully' : 'Post created successfully');
     } catch (err) {
         console.error('[Posts] Error al crear:', err);
-        alert('Error al crear publicación');
+        alert('Error creating post');
     }
 }
 
 // Eliminar post
 async function deletePost(postId) {
-    if (!confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
+    if (!confirm('Are you sure you want to delete this post?')) {
         return;
     }
 
     const token = localStorage.getItem('auth_token');
     
     if (!token) {
-        alert('No autenticado');
+        alert('Not authenticated');
         return;
     }
 
@@ -146,9 +146,9 @@ async function deletePost(postId) {
         }
 
         await loadCompanyPosts();
-        alert('Publicación eliminada exitosamente');
+        alert('Post deleted successfully');
     } catch (err) {
         console.error('[Posts] Error al eliminar:', err);
-        alert('Error al eliminar publicación');
+        alert('Error deleting post');
     }
 }

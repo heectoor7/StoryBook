@@ -13,10 +13,10 @@ async function loadCompanyServices() {
     
     if (!servicesContainer) return;
     
-    servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">Cargando servicios...</p>';
+    servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">Loading services...</p>';
     
     if (!token) {
-        servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">No autenticado</p>';
+        servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">Not authenticated</p>';
         return;
     }
 
@@ -35,7 +35,7 @@ async function loadCompanyServices() {
         const services = await res.json();
         
         if (!Array.isArray(services) || services.length === 0) {
-            servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">No hay servicios aún. <button class="btn btn-sm btn-primary" onclick="openNewServiceModal()">Crear servicio</button></p>';
+            servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">No services yet. <button class="btn btn-sm btn-primary" onclick="openNewServiceModal()">Create service</button></p>';
             return;
         }
 
@@ -47,15 +47,15 @@ async function loadCompanyServices() {
                         <h5 class="card-title">${service.name}</h5>
                         <p class="card-text text-truncate">${service.description || ''}</p>
                         <div class="d-flex justify-content-between align-items-center mt-2">
-                            <small style="color: var(--text-secondary);">${service.category || 'Sin categoría'}</small>
+                            <small style="color: var(--text-secondary);">${service.category || 'No category'}</small>
                             <strong>$${parseFloat(service.price || 0).toFixed(2)}</strong>
                         </div>
                         <div class="mt-3 d-flex gap-2">
                             <button class="btn btn-sm btn-outline-primary flex-grow-1" onclick="editService(${service.id})">
-                                Editar
+                                Edit
                             </button>
                             <button class="btn btn-sm btn-outline-danger" onclick="deleteService(${service.id})">
-                                Eliminar
+                                Delete
                             </button>
                         </div>
                     </div>
@@ -64,14 +64,14 @@ async function loadCompanyServices() {
         `).join('');
     } catch (err) {
         console.error('[Services] Error al cargar:', err);
-        servicesContainer.innerHTML = '<p class="text-danger">Error al cargar servicios</p>';
+        servicesContainer.innerHTML = '<p class="text-danger">Error loading services</p>';
     }
 }
 
 // Abrir modal para nuevo servicio
 function openNewServiceModal() {
     editingServiceId = null;
-    document.getElementById('serviceModalTitle').textContent = 'Crear nuevo servicio';
+    document.getElementById('serviceModalTitle').textContent = 'Create new service';
     document.getElementById('serviceName').value = '';
     document.getElementById('serviceDescription').value = '';
     document.getElementById('servicePrice').value = '';
@@ -87,7 +87,7 @@ async function editService(serviceId) {
     const token = localStorage.getItem('auth_token');
     
     if (!token) {
-        alert('No autenticado');
+        alert('Not authenticated');
         return;
     }
 
@@ -100,13 +100,13 @@ async function editService(serviceId) {
         });
 
         if (!res.ok) {
-            throw new Error('Error al cargar servicio');
+            throw new Error('Error loading service');
         }
 
         const service = await res.json();
         
         editingServiceId = serviceId;
-        document.getElementById('serviceModalTitle').textContent = 'Editar servicio';
+        document.getElementById('serviceModalTitle').textContent = 'Edit service';
         document.getElementById('serviceName').value = service.name || '';
         document.getElementById('serviceDescription').value = service.description || '';
         document.getElementById('servicePrice').value = service.price || '';
@@ -116,7 +116,7 @@ async function editService(serviceId) {
         modal.show();
     } catch (err) {
         console.error('[Services] Error al cargar servicio:', err);
-        alert('Error al cargar servicio');
+        alert('Error loading service');
     }
 }
 
@@ -130,12 +130,12 @@ async function saveService() {
     const token = localStorage.getItem('auth_token');
 
     if (!name || !price) {
-        alert('Nombre y precio son obligatorios');
+        alert('Name and price are required');
         return;
     }
 
     if (!token) {
-        alert('No autenticado');
+        alert('Not authenticated');
         return;
     }
 
@@ -185,24 +185,24 @@ async function saveService() {
         // Recargar servicios
         await loadCompanyServices();
         
-        alert(editingServiceId ? 'Servicio actualizado exitosamente' : 'Servicio creado exitosamente');
+        alert(editingServiceId ? 'Service updated successfully' : 'Service created successfully');
         editingServiceId = null;
     } catch (err) {
         console.error('[Services] Error al guardar:', err);
-        alert('Error al guardar servicio');
+        alert('Error saving service');
     }
 }
 
 // Eliminar servicio
 async function deleteService(serviceId) {
-    if (!confirm('¿Estás seguro de que deseas eliminar este servicio?')) {
+    if (!confirm('Are you sure you want to delete this service?')) {
         return;
     }
 
     const token = localStorage.getItem('auth_token');
     
     if (!token) {
-        alert('No autenticado');
+        alert('Not authenticated');
         return;
     }
 
@@ -216,13 +216,13 @@ async function deleteService(serviceId) {
         });
 
         if (!res.ok) {
-            throw new Error('Error al eliminar servicio');
+            throw new Error('Error deleting service');
         }
 
         await loadCompanyServices();
-        alert('Servicio eliminado exitosamente');
+        alert('Service deleted successfully');
     } catch (err) {
         console.error('[Services] Error al eliminar:', err);
-        alert('Error al eliminar servicio');
+        alert('Error deleting service');
     }
 }

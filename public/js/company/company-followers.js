@@ -9,19 +9,19 @@ async function loadCompanyFollowers() {
     const followersContainer = document.getElementById('companyFollowersContainer');
     
     if (!followersContainer) {
-        console.error('[Followers] Container no encontrado');
+        console.error('[Followers] Container not found');
         return;
     }
     
-    followersContainer.innerHTML = '<p style="color: var(--text-secondary);">Cargando seguidores...</p>';
+    followersContainer.innerHTML = '<p style="color: var(--text-secondary);">Loading followers...</p>';
     
     if (!token) {
-        followersContainer.innerHTML = '<p style="color: var(--text-secondary);">No autenticado</p>';
+        followersContainer.innerHTML = '<p style="color: var(--text-secondary);">Not authenticated</p>';
         return;
     }
 
     try {
-        console.log('[Followers] Cargando seguidores...');
+        console.log('[Followers] Loading followers...');
         const res = await fetch('/api/company/followers', {
             headers: {
                 'Authorization': 'Bearer ' + token,
@@ -34,16 +34,16 @@ async function loadCompanyFollowers() {
         if (!res.ok) {
             const errorData = await res.text();
             console.error('[Followers] Error response:', errorData);
-            throw new Error('Error al cargar seguidores: ' + res.status);
+            throw new Error('Error loading followers: ' + res.status);
         }
 
         const followers = await res.json();
-        console.log('[Followers] Datos recibidos:', followers);
+        console.log('[Followers] Data received:', followers);
         
         if (!Array.isArray(followers) || followers.length === 0) {
             followersContainer.innerHTML = `
                 <div class="alert alert-info">
-                    <p class="mb-0">Aún no tienes seguidores. ¡Comparte tu perfil para conseguir más!</p>
+                    <p class="mb-0">You don't have followers yet. Share your profile to get more!</p>
                 </div>
             `;
             return;
@@ -52,7 +52,7 @@ async function loadCompanyFollowers() {
         followersContainer.innerHTML = `
             <div class="card">
                 <div class="card-body">
-                    <h6 class="mb-3">Total de seguidores: <strong>${followers.length}</strong></h6>
+                    <h6 class="mb-3">Total followers: <strong>${followers.length}</strong></h6>
                     <div class="list-group">
                         ${followers.map(follower => `
                             <div class="list-group-item d-flex justify-content-between align-items-center">
@@ -68,7 +68,7 @@ async function loadCompanyFollowers() {
                                     </div>
                                 </div>
                                 <div class="text-end">
-                                    <span class="badge bg-success">Seguidor</span>
+                                    <span class="badge bg-success">Follower</span>
                                 </div>
                             </div>
                         `).join('')}
@@ -77,7 +77,7 @@ async function loadCompanyFollowers() {
             </div>
         `;
     } catch (err) {
-        console.error('[Followers] Error al cargar:', err);
-        followersContainer.innerHTML = '<p class="text-danger">Error al cargar seguidores</p>';
+        console.error('[Followers] Error loading:', err);
+        followersContainer.innerHTML = '<p class="text-danger">Error loading followers</p>';
     }
 }
