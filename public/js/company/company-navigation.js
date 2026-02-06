@@ -320,7 +320,7 @@
                             <img id="editProfileImagePreview" class="profile-image-preview" src="${company.logo || ''}" alt="Vista previa de foto" style="max-width: 150px; max-height: 150px; border-radius: 8px; display: ${company.logo ? 'block' : 'none'};">
                         </div>
                         <input type="file" id="editLogo" name="logo" accept="image/*" class="form-control">
-                        <small class="form-text">Formatos: JPG, PNG, GIF (máx. 5MB)</small>
+                        <small class="form-text" style="color: var(--text-secondary);">Formatos: JPG, PNG, GIF (máx. 5MB)</small>
                     </div>
 
                     <div class="form-group mb-3">

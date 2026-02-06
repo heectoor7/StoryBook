@@ -306,7 +306,7 @@ textarea.form-control {
 }
 
 small {
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 0.85rem;
 }
 
