@@ -177,7 +177,7 @@ async function loadFollowedServices(token) {
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <h5 class="card-title mb-0">${s.name}</h5>
-                            <small style="color: var(--text-secondary);">${s.category ?? ''}</small>
+                            <small style="color: var(--primary);">${s.category ?? ''}</small>
                         </div>
                         <p class="card-text text-truncate">${s.description ?? ''}</p>
                         <div class="mt-2 d-flex justify-content-between align-items-center">
@@ -317,7 +317,7 @@ async function loadServices() {
         Object.keys(servicesByCategory).sort().forEach(category => {
             html += `
                 <div class="col-12 mb-4">
-                    <h4 class="mb-3 text-primary">${category}</h4>
+                    <h4 class="mb-3" style="color: var(--primary);">${category}</h4>
                     <div class="row">
             `;
             
@@ -782,7 +782,7 @@ async function searchServices(searchTerm) {
         Object.keys(servicesByCategory).sort().forEach(category => {
             html += `
                 <div class="col-12 mb-4">
-                    <h4 class="mb-3 text-primary">${category}</h4>
+                    <h4 class="mb-3" style="color: var(--primary);">${category}</h4>
                     <div class="row">
             `;
             
@@ -1338,7 +1338,7 @@ async function loadCompanyProfile(companyId, token) {
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between">
                                             <h5 class="card-title mb-0">${s.name}</h5>
-                                            <small style="color: var(--text-secondary);">${s.category || ''}</small>
+                                            <small style="color: var(--primary);">${s.category || ''}</small>
                                         </div>
                                         <p class="card-text text-truncate">${s.description || ''}</p>
                                         <div class="mt-2">
