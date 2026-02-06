@@ -7,18 +7,21 @@
     // Variables globales
     const navbar = document.getElementById('navegacion');
     const navbarIndicator = document.getElementById('barra_indicador');
+    const mainElement = document.querySelector('.main');
     let timeout;
     
     // Mostrar la barra de navegación
     function showNavbar() {
         if (navbar) navbar.style.transform = 'translateY(0)';
         if (navbarIndicator) navbarIndicator.style.display = 'none';
+        if (mainElement) mainElement.classList.remove('nav-hidden');
     }
     
     // Ocultar la barra de navegación
     function hideNavbar() {
         if (navbar) navbar.style.transform = 'translateY(-100%)';
         if (navbarIndicator) navbarIndicator.style.display = 'block';
+        if (mainElement) mainElement.classList.add('nav-hidden');
     }
     
     function initScrollBehavior() {
