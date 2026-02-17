@@ -6,6 +6,19 @@
 (function(){
     // Variables globales
     const sidebar = document.getElementById('sidebar');
+    const compactMedia = window.matchMedia('(max-width: 992px)');
+
+    function isCompactView() {
+        return compactMedia.matches;
+    }
+
+    function closeSidebarOnCompact() {
+        if (isCompactView() && sidebar) {
+            sidebar.classList.remove('open');
+            const toggle = document.getElementById('companyMenuToggle');
+            if (toggle) toggle.setAttribute('aria-expanded', 'false');
+        }
+    }
     
     // Función para mostrar solo una sección
     function showOnlySection(sectionId) {
@@ -24,11 +37,40 @@
 
     // Event listeners para los botones de navegación del sidebar
     document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.getElementById('companyMenuToggle');
+        if (menuToggle && sidebar) {
+            menuToggle.addEventListener('click', function() {
+                const willOpen = !sidebar.classList.contains('open');
+                sidebar.classList.toggle('open');
+                menuToggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+            });
+        }
+
+        compactMedia.addEventListener('change', function() {
+            if (!isCompactView() && sidebar) {
+                sidebar.classList.remove('open');
+            }
+            if (menuToggle) {
+                menuToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!isCompactView() || !sidebar || !menuToggle) return;
+            const clickedInsideSidebar = sidebar.contains(e.target);
+            const clickedToggle = menuToggle.contains(e.target);
+            if (!clickedInsideSidebar && !clickedToggle) {
+                sidebar.classList.remove('open');
+                menuToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
         
         // Menú: Publicaciones
         const menuPosts = document.getElementById('menuPosts');
         if (menuPosts) {
             menuPosts.addEventListener('click', async function() {
+                closeSidebarOnCompact();
                 showOnlySection('postsSection');
                 updatePageTitle('My Posts');
                 if (typeof loadCompanyPosts === 'function') {
@@ -41,6 +83,7 @@
         const menuServices = document.getElementById('menuServices');
         if (menuServices) {
             menuServices.addEventListener('click', async function() {
+                closeSidebarOnCompact();
                 showOnlySection('servicesSection');
                 updatePageTitle('My Services');
                 if (typeof loadCompanyServices === 'function') {
@@ -53,6 +96,7 @@
         const menuBookings = document.getElementById('menuBookings');
         if (menuBookings) {
             menuBookings.addEventListener('click', async function() {
+                closeSidebarOnCompact();
                 showOnlySection('bookingsSection');
                 updatePageTitle('Reservations Schedule');
                 if (typeof loadCompanyBookings === 'function') {
@@ -63,6 +107,7 @@
         const menuFollowers = document.getElementById('menuFollowers');
         if (menuFollowers) {
             menuFollowers.addEventListener('click', async function() {
+                closeSidebarOnCompact();
                 showOnlySection('followersSection');
                 updatePageTitle('My Followers');
                 if (typeof loadCompanyFollowers === 'function') {

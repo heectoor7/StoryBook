@@ -8,7 +8,12 @@
     const navbar = document.getElementById('navegacion');
     const navbarIndicator = document.getElementById('barra_indicador');
     const mainElement = document.querySelector('.main');
+    const compactMedia = window.matchMedia('(max-width: 992px)');
     let timeout;
+
+    function isCompactView() {
+        return compactMedia.matches;
+    }
     
     // Mostrar la barra de navegación
     function showNavbar() {
@@ -25,6 +30,11 @@
     }
     
     function initScrollBehavior() {
+        if (isCompactView()) {
+            showNavbar();
+            return;
+        }
+
         if (!navbar || !navbarIndicator) {
             console.error('❌ navbar o navbarIndicator no encontrados!');
             return;
@@ -103,10 +113,20 @@
     document.addEventListener('DOMContentLoaded', function() {
         // Inicializar comportamiento de scroll
         initScrollBehavior();
+
+        compactMedia.addEventListener('change', function() {
+            showNavbar();
+            if (navbar) navbar.classList.remove('show');
+            if (mainElement) mainElement.classList.remove('nav-hidden');
+        });
         
         document.querySelectorAll('[data-action]').forEach(btn => {
             btn.addEventListener('click', async function(e) {
                 const action = this.dataset.action;
+
+                if (isCompactView() && navbar) {
+                    navbar.classList.remove('show');
+                }
                 
                 if (action === 'servicios') {
                     if (typeof loadPublicServices === 'function') {
@@ -136,12 +156,13 @@
         });
 
         // Toggle navegación en móvil
-        const navToggleBtn = document.getElementById('navToggleBtn');
+        const navToggleBtn = document.getElementById('navHamburgerBtn') || document.getElementById('navToggleBtn');
         const topNav = document.getElementById('navegacion');
         
         if (navToggleBtn && topNav) {
             navToggleBtn.addEventListener('click', function() {
                 topNav.classList.toggle('show');
+                navToggleBtn.setAttribute('aria-expanded', topNav.classList.contains('show') ? 'true' : 'false');
             });
         }
     });

@@ -1,0 +1,62 @@
+@media (max-width: 768px) {
+  .header {
+    flex-wrap: wrap;
+    justify-content: center !important;
+    gap: 0.75rem;
+  }
+
+  .header a img {
+    height: 56px !important;
+    width: auto !important;
+    max-width: 100%;
+  }
+
+  .header .d-flex {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .login-container,
+  .register-container {
+    min-height: auto;
+    padding: 1rem 0.75rem;
+  }
+
+  #loginForm,
+  #registerForm {
+    max-width: 100%;
+    font-size: 1rem;
+  }
+
+  #loginForm input,
+  #loginForm select,
+  #registerForm input,
+  #registerForm select,
+  #loginForm button,
+  #registerForm button {
+    font-size: 0.95rem;
+  }
+
+  .site-footer .footer-content {
+    text-align: center;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    padding: 0.5rem;
+  }
+
+  .header {
+    padding: 0.75rem !important;
+  }
+
+  .header .btn {
+    width: 100%;
+  }
+
+  .header .d-flex {
+    width: 100%;
+  }
+}

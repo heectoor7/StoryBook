@@ -1,0 +1,171 @@
+/* Hamburger oculto en desktop */
+.nav-hamburger-btn {
+  display: none;
+}
+
+@media (max-width: 992px) {
+  :root {
+    --primary-header-height: 98px;
+    --top-nav-height: 0px;
+  }
+
+  .primary-header {
+    height: auto;
+    min-height: var(--primary-header-height);
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.75rem !important;
+  }
+
+  .primary-header > div {
+    width: auto;
+  }
+
+  .primary-header > div:first-child {
+    order: 1;
+    flex: 0 0 auto;
+  }
+
+  .primary-header > div:last-child {
+    order: 2;
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+
+  .primary-header > div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+
+  .primary-header > div:nth-child(2) {
+    order: 3;
+    flex: 1 0 100%;
+    width: 100%;
+  }
+
+  .primary-header .search-input {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .nav-hamburger-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .top-nav {
+    top: var(--primary-header-height);
+    height: auto;
+    min-height: 0;
+    max-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .top-nav.show {
+    max-height: 320px;
+    overflow-y: auto;
+  }
+
+  .top-nav .nav-btn {
+    flex: 1 1 calc(50% - 0.5rem);
+    min-width: 140px;
+  }
+
+  .content {
+    padding: 0.75rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --primary-header-height: 88px;
+    --top-nav-height: 0px;
+  }
+
+  .primary-header .search-input {
+    display: none;
+  }
+
+  .primary-header > div:nth-child(2) {
+    display: none;
+  }
+
+  .primary-header img {
+    width: 140px;
+    height: auto;
+  }
+
+  .top-nav .nav-btn {
+    flex: 1 1 100%;
+  }
+
+  .primary-header > div:last-child {
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+
+  .primary-header > div:last-child .btn {
+    width: auto;
+  }
+
+  .services-section .row > [class*="col-"],
+  .posts-section .row > [class*="col-"],
+  #servicesContainer > [class*="col-"],
+  #postsContainer > [class*="col-"],
+  #companiesContainer > [class*="col-"] {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .content {
+    padding: 18px !important;
+  }
+
+  .modal-dialog {
+    margin: 1rem auto;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --primary-header-height: 80px;
+  }
+
+  .primary-header {
+    padding: 0.5rem !important;
+  }
+
+  .top-nav {
+    padding: 0.5rem;
+  }
+
+  .content {
+    padding: 0.5rem !important;
+  }
+
+  .btn,
+  .nav-btn {
+    font-size: 0.9rem;
+  }
+
+  .primary-header > div:last-child {
+    width: auto;
+  }
+
+  .nav-hamburger-btn {
+    width: auto;
+  }
+
+  .primary-header > div:last-child .btn {
+    width: auto;
+  }
+}

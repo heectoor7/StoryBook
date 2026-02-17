@@ -21,6 +21,7 @@
 
 .primary-header img {
   height: 36px;
+  width: auto;
 }
 
 .primary-header .search-input {
@@ -91,8 +92,7 @@
   box-shadow: inset 0 -3px 0 var(--primary);
 }
 
-/* Logo en header y footer */
-.primary-header img,
+/* Logo en footer */
 .site-footer img {
   height: 160px;
 }
