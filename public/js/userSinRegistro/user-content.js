@@ -135,7 +135,7 @@ async function loadPublicServices() {
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <h5 class="card-title mb-0">${s.name}</h5>
-                            <small style="color: var(--text-secondary);">${s.category ?? ''}</small>
+                            <small style="color: var(--primary);">${s.category ?? ''}</small>
                         </div>
                         <p class="card-text text-truncate">${s.description ?? ''}</p>
                         <div class="mt-2 d-flex justify-content-between align-items-center">
@@ -330,7 +330,7 @@ async function searchServices(searchTerm) {
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <h5 class="card-title mb-0">${s.name}</h5>
-                            <small style="color: var(--text-secondary);">${s.category ?? ''}</small>
+                            <small style="color: var(--primary);">${s.category ?? ''}</small>
                         </div>
                         <p class="card-text text-truncate">${s.description ?? ''}</p>
                         <div class="mt-2 d-flex justify-content-between align-items-center">

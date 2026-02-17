@@ -8,10 +8,15 @@ async function loadFollowedPosts(token) {
     const t = typeof token !== 'undefined' ? token : localStorage.getItem('auth_token');
     const storiesContainer = document.getElementById('storiesContainer');
     const postsContainer = document.getElementById('postsContainer');
+    const leftBtn = document.getElementById('storiesScrollLeft');
+    const rightBtn = document.getElementById('storiesScrollRight');
     
     if (!t) {
         if (storiesContainer) storiesContainer.innerHTML = '<p style="color: var(--text-secondary);">No autenticado</p>';
         if (postsContainer) postsContainer.innerHTML = '<p style="color: var(--text-secondary);">No autenticado</p>';
+        // Ocultar flechas
+        if (leftBtn) leftBtn.style.display = 'none';
+        if (rightBtn) rightBtn.style.display = 'none';
         return;
     }
 
@@ -26,6 +31,11 @@ async function loadFollowedPosts(token) {
         if (!res.ok) {
             if (storiesContainer) storiesContainer.innerHTML = '<p style="color: var(--text-secondary);">Error al cargar stories</p>';
             if (postsContainer) postsContainer.innerHTML = '<p style="color: var(--text-secondary);">Error al cargar posts</p>';
+            // Ocultar flechas
+            const leftBtn = document.getElementById('storiesScrollLeft');
+            const rightBtn = document.getElementById('storiesScrollRight');
+            if (leftBtn) leftBtn.style.display = 'none';
+            if (rightBtn) rightBtn.style.display = 'none';
             return;
         }
 
@@ -35,9 +45,15 @@ async function loadFollowedPosts(token) {
 
         // Render stories (small, horizontal)
         if (storiesContainer) {
+            const leftBtn = document.getElementById('storiesScrollLeft');
+            const rightBtn = document.getElementById('storiesScrollRight');
+            
             if (stories.length === 0) {
                 storiesContainer.innerHTML = '<p style="color: var(--text-secondary);">No hay stories</p>';
                 window.storiesData = [];
+                // Ocultar flechas cuando no hay stories
+                if (leftBtn) leftBtn.style.display = 'none';
+                if (rightBtn) rightBtn.style.display = 'none';
             } else {
                 window.storiesData = stories;
                 storiesContainer.innerHTML = stories.map((s, i) => {
@@ -55,6 +71,10 @@ async function loadFollowedPosts(token) {
                         <small class="story-label">${s.company_name}</small>
                     </div>
                 `}).join('');
+                
+                // Mostrar flechas cuando hay stories
+                if (leftBtn) leftBtn.style.display = 'block';
+                if (rightBtn) rightBtn.style.display = 'block';
                 
                 // Inicializar flechas de navegación del carrusel
                 initStoriesCarouselNavigation();
@@ -125,6 +145,11 @@ async function loadFollowedPosts(token) {
         console.error(e);
         if (storiesContainer) storiesContainer.innerHTML = '<p class="text-danger">Error al cargar stories</p>';
         if (postsContainer) postsContainer.innerHTML = '<p class="text-danger">Error al cargar posts</p>';
+        // Ocultar flechas
+        const leftBtn = document.getElementById('storiesScrollLeft');
+        const rightBtn = document.getElementById('storiesScrollRight');
+        if (leftBtn) leftBtn.style.display = 'none';
+        if (rightBtn) rightBtn.style.display = 'none';
     }
 }
 
@@ -177,7 +202,7 @@ async function loadFollowedServices(token) {
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
                             <h5 class="card-title mb-0">${s.name}</h5>
-                            <small style="color: var(--text-secondary);">${s.category ?? ''}</small>
+                            <small style="color: var(--primary);">${s.category ?? ''}</small>
                         </div>
                         <p class="card-text text-truncate">${s.description ?? ''}</p>
                         <div class="mt-2 d-flex justify-content-between align-items-center">
@@ -317,7 +342,7 @@ async function loadServices() {
         Object.keys(servicesByCategory).sort().forEach(category => {
             html += `
                 <div class="col-12 mb-4">
-                    <h4 class="mb-3 text-primary">${category}</h4>
+                    <h4 class="mb-3" style="color: var(--primary);">${category}</h4>
                     <div class="row">
             `;
             
@@ -782,7 +807,7 @@ async function searchServices(searchTerm) {
         Object.keys(servicesByCategory).sort().forEach(category => {
             html += `
                 <div class="col-12 mb-4">
-                    <h4 class="mb-3 text-primary">${category}</h4>
+                    <h4 class="mb-3" style="color: var(--primary);">${category}</h4>
                     <div class="row">
             `;
             
@@ -1338,7 +1363,7 @@ async function loadCompanyProfile(companyId, token) {
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between">
                                             <h5 class="card-title mb-0">${s.name}</h5>
-                                            <small style="color: var(--text-secondary);">${s.category || ''}</small>
+                                            <small style="color: var(--primary);">${s.category || ''}</small>
                                         </div>
                                         <p class="card-text text-truncate">${s.description || ''}</p>
                                         <div class="mt-2">
