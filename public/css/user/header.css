@@ -20,7 +20,7 @@
 }
 
 .primary-header img {
-  height: 36px;
+  height: 30px;
   width: auto;
 }
 
@@ -94,7 +94,7 @@
 
 /* Logo en footer */
 .site-footer img {
-  height: 160px;
+  height: 60px;
 }
 
 /* Indicador de barra oculta */

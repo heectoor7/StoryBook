@@ -58,7 +58,7 @@
   }
 
   .sidebar img {
-    max-width: 120px;
+    max-width: 160px;
   }
 
   .sidebar h3 {
@@ -97,18 +97,25 @@
     width: 220px;
   }
 
+  .sidebar img {
+    max-width: 150px;
+  }
+
   .header {
     padding: 12px 15px;
   }
 
   .header .d-flex {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
   }
 
   .header .btn {
-    width: 100%;
+    width: auto;
+    flex: 1 1 auto;
+    min-width: 80px;
   }
 
   #headerActions {
@@ -116,7 +123,7 @@
   }
 
   .company-hamburger-btn {
-    width: 100%;
+    width: auto;
   }
 
   .content {
