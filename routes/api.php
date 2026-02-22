@@ -608,6 +608,7 @@ Route::middleware('auth:sanctum')->group(function () {
         
         // Seguidores
         Route::get('/followers', [CompanyController::class, 'getFollowers']);
+        Route::delete('/followers/{userId}', [CompanyController::class, 'removeFollower']);
     });
     
     // Ratings - Add rating to service (autenticado)

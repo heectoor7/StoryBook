@@ -34,6 +34,15 @@
   font-size: 0.95rem;
 }
 
+.company-card-clickable {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.company-card-clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(3, 186, 182, 0.2);
+}
+
 /* =========================
    BOTONES
 ========================= */

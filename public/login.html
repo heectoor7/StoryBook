@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style_login.css">
     <link rel="stylesheet" href="css/responsive/auth-shared-responsive.css">
+    <link rel="stylesheet" href="css/theme.css">
     <title>Login</title>
     <style>
         /* Estilos locales para el formulario de login */
@@ -56,6 +57,7 @@
     <header class="header d-flex justify-content-between align-items-center p-3">
         <a href="index.html"><img src="assets/img/storybookLOGO.png" alt="logo"></a>
         <div class="d-flex align-items-center">
+            <button id="themeToggle" class="btn btn-outline-primary me-2 theme-toggle" type="button" aria-label="Toggle theme">Theme</button>
             <a href="index.html" class="btn btn-outline-primary me-2 back-home-btn">Back to Home</a>
             <a href="index.html" class="home-link" aria-label="Back to Home">
                 <img src="assets/img/home.png" alt="Back to Home" class="home-icon">
@@ -87,6 +89,7 @@
         </div>
     </footer>
     <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/theme-toggle.js"></script>
     <script>
         const form = document.getElementById('loginForm');
         const formMessage = document.getElementById('formMessage');

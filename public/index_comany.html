@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/company/company-style.css">
+    <link rel="stylesheet" href="css/theme.css">
 </head>
 
 <body>
@@ -21,6 +22,7 @@
             <li id="menuBookings">📅 Bookings</li>
             <li id="menuFollowers">👥 Followers</li>
         </ul>
+        <button id="themeToggle" class="btn btn-outline-primary theme-toggle sidebar-theme-toggle" type="button" aria-label="Toggle theme">Theme</button>
     </aside>
 
     <!-- Main Container -->
@@ -80,7 +82,7 @@
                 <div class="section-header">
                     <h5>My Followers</h5>
                 </div>
-                <div id="companyFollowersContainer">
+                <div id="companyFollowersContainer" class="row">
                     <p style="color: var(--text-secondary);">This feature will be available soon.</p>
                 </div>
             </section>
@@ -163,6 +165,7 @@
     <script src="js/company/company-followers.js"></script>
     <!-- Navegación -->
     <script src="js/company/company-navigation.js"></script>
+    <script src="js/theme-toggle.js"></script>
 </body>
 
 </html>

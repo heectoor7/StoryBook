@@ -19,8 +19,8 @@ html, body {
   overflow-x: hidden;
   overflow-y: auto;
 
-  background-color: #0e1111;
-  color: #fff;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
   font-family: Arial, sans-serif;
 
   /* FLEX COLUMN PARA MANTENER FOOTER ABAJO */

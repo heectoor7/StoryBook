@@ -172,6 +172,29 @@
 }
 
 /* =========================
+   MODALS (THEME)
+========================= */
+.modal-content,
+.modal-content.bg-dark {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.modal-content.text-white {
+  color: var(--text-primary);
+}
+
+.modal-header,
+.modal-footer {
+  border-color: var(--border);
+}
+
+.modal-title {
+  color: var(--text-primary);
+}
+
+/* =========================
    COMMENTS
 ========================= */
 .comment-item {

@@ -64,6 +64,11 @@
   box-shadow: inset 3px 0 0 var(--primary);
 }
 
+.sidebar-theme-toggle {
+  width: 100%;
+  margin-top: 16px;
+}
+
 /* Scrollbar personalizado para sidebar */
 .sidebar::-webkit-scrollbar {
   width: 6px;

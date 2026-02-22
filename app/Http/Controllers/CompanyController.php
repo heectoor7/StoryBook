@@ -473,4 +473,28 @@ class CompanyController extends Controller
 
         return response()->json($followers);
     }
+
+    /**
+     * Eliminar seguidor de la empresa
+     */
+    public function removeFollower(Request $request, $userId)
+    {
+        $user = $request->user();
+        $company = Company::where('user_id', $user->id)->first();
+
+        if (!$company) {
+            return response()->json(['error' => 'No se encontró empresa asociada'], 404);
+        }
+
+        $deleted = \DB::table('followers')
+            ->where('company_id', $company->id)
+            ->where('user_id', $userId)
+            ->delete();
+
+        if (!$deleted) {
+            return response()->json(['error' => 'Seguidor no encontrado'], 404);
+        }
+
+        return response()->json(['message' => 'Follower removed successfully']);
+    }
 }

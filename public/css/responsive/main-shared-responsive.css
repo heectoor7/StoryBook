@@ -87,6 +87,23 @@
     min-width: 140px;
   }
 
+  .top-nav {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .top-nav .nav-btn {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+  }
+
+  .top-nav .theme-toggle {
+    flex: 0 0 100%;
+    width: 52px;
+    max-width: 52px;
+    margin: 8px auto 0;
+  }
+
   .content {
     padding: 0.75rem !important;
     padding-top: 3rem !important;
@@ -153,6 +170,16 @@
 @media (max-width: 480px) {
   :root {
     --primary-header-height: 80px;
+  }
+
+  #userNameDisplay {
+    display: inline-block;
+    max-width: 90px;
+    white-space: normal;
+    line-height: 1.1;
+    text-align: right;
+    word-break: keep-all;
+    overflow-wrap: normal;
   }
 
   .primary-header img,
