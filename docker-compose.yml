@@ -9,11 +9,11 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "8000:80"
+      - "18765:80"
     environment:
       APP_ENV: local
       APP_DEBUG: "true"
-      APP_URL: http://localhost:8000
+      APP_URL: http://localhost:18765
       INIT_DB_WITH_SEED: "true"
       DB_CONNECTION: mysql
       DB_HOST: db
