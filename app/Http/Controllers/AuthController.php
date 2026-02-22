@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use App\Mail\RegistroExitosoMail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Password;
+use Throwable;
 
 class AuthController extends Controller
 {
@@ -28,6 +33,16 @@ class AuthController extends Controller
 
         $role = Role::where('name', $request->role)->firstOrFail(); // ← Falla si no existe
         $user->roles()->attach($role->id);
+
+        try {
+            Mail::to($user->email)->send(new RegistroExitosoMail($user));
+        } catch (Throwable $exception) {
+            Log::error('No se pudo enviar el correo de registro', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'error' => $exception->getMessage(),
+            ]);
+        }
 
         // Iniciar sesión y generar token para APIs (Sanctum)
         Auth::login($user);
@@ -82,5 +97,65 @@ class AuthController extends Controller
         } else {
             return response()->json(['message' => 'Credenciales incorrectas'], 401);
         }
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        try {
+            $status = Password::sendResetLink(
+                $request->only('email')
+            );
+
+            if ($status === Password::RESET_LINK_SENT) {
+                return response()->json([
+                    'message' => 'We have sent you an email to reset your password.'
+                ]);
+            }
+
+            return response()->json([
+                'message' => 'If the email is registered, you will receive a password reset link.'
+            ]);
+        } catch (Throwable $exception) {
+            Log::error('No se pudo enviar el correo de recuperación', [
+                'email' => $request->email,
+                'error' => $exception->getMessage(),
+            ]);
+
+            return response()->json([
+                'message' => 'Email configuration error. Please verify SMTP settings and try again.'
+            ], 500);
+        }
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|string',
+            'email' => 'required|email',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                ])->save();
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return response()->json([
+                'message' => 'Password reset successfully.'
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'The password reset link is invalid or has expired.'
+        ], 422);
     }
 }

@@ -10,6 +10,8 @@ use App\Http\Controllers\CompanyController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 // Rutas públicas (sin autenticación)
 // Posts públicos (todas las publicaciones que no son historias)

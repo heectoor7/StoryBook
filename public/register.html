@@ -115,6 +115,13 @@
             });
 
             const json = await res.json();
+
+            if (!res.ok) {
+                const backendMessage = json.message || json.error || 'Registration error';
+                document.getElementById('message').innerText = backendMessage;
+                return;
+            }
+
             document.getElementById('message').innerText = json.message;
 
             // Si el backend devuelve un token, guardarlo y redirigir según rol
