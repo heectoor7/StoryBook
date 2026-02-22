@@ -16,7 +16,7 @@ class FollowerSeeder extends Seeder
             return;
         }
 
-        // Seleccionar usuarios con rol 'user' (excluir admin)
+        // Seleccionar usuarios con rol 'user'
         $users = User::whereHas('roles', function($q) {
             $q->where('name', 'user');
         })->get();

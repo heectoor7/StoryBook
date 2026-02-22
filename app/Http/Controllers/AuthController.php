@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Company;
 use App\Mail\RegistroExitosoMail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,13 @@ class AuthController extends Controller
 
         $role = Role::where('name', $request->role)->firstOrFail(); // ← Falla si no existe
         $user->roles()->attach($role->id);
+
+        if ($role->name === 'company') {
+            Company::firstOrCreate(
+                ['user_id' => $user->id],
+                ['name' => $user->name]
+            );
+        }
 
         try {
             Mail::to($user->email)->send(new RegistroExitosoMail($user));

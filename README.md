@@ -9,6 +9,104 @@
 
 ## About Laravel
 
+## Despliegue con Docker
+
+Este proyecto incluye `Dockerfile` y `docker-compose.yml` para ejecutar app + MySQL en contenedores con inicialización automática (migraciones + seed en el primer arranque).
+
+### Requisito previo
+
+Si ves `docker: command not found`, instala y abre Docker Desktop antes de continuar.
+
+### Levantar el entorno
+
+```bash
+docker compose up --build -d
+```
+
+Con ese único comando se crea la imagen, se levantan contenedores, se espera a MySQL, se ejecutan migraciones y seed inicial, y queda la app funcionando.
+
+La aplicación quedará en:
+
+- `http://localhost:8000`
+
+MySQL quedará expuesto en:
+
+- Host: `127.0.0.1`
+- Puerto: `3307`
+- BD: `storybook`
+- Usuario: `storybook`
+- Password: `storybook`
+
+### Comandos útiles
+
+```bash
+# Ver logs
+docker compose logs -f app
+
+# Ejecutar seed manualmente
+docker compose exec app php artisan db:seed --force
+
+# Parar contenedores
+docker compose down
+
+# Reiniciar desde cero (borra BD y vuelve a sembrar al levantar)
+docker compose down -v
+docker compose up --build -d
+```
+
+### Modo producción (para compartir)
+
+Usa `docker-compose.prod.yml` para levantar el proyecto sin exponer MySQL hacia fuera.
+
+1. Crea archivo de variables:
+
+```bash
+cp .env.example .env.docker.prod
+```
+
+2. Define variables mínimas (ejemplo):
+
+PowerShell (Windows):
+
+```powershell
+$env:APP_URL="http://localhost:8000"
+$env:APP_PORT="8000"
+$env:DB_DATABASE="storybook"
+$env:DB_USERNAME="storybook"
+$env:DB_PASSWORD="storybook"
+$env:DB_ROOT_PASSWORD="change_this_root_password"
+```
+
+Bash (Linux/macOS):
+
+```bash
+export APP_URL=http://localhost:8000
+export APP_PORT=8000
+export DB_DATABASE=storybook
+export DB_USERNAME=storybook
+export DB_PASSWORD=storybook
+export DB_ROOT_PASSWORD=change_this_root_password
+```
+
+3. Levanta en modo producción:
+
+```bash
+docker compose -f docker-compose.prod.yml up --build -d
+```
+
+4. Compartir imagen por Docker Hub:
+
+```bash
+docker tag storybook_laravel2-app:latest TU_USUARIO/storybook-laravel2:1.0.0
+docker push TU_USUARIO/storybook-laravel2:1.0.0
+```
+
+5. Compartir imagen por archivo:
+
+```bash
+docker save storybook_laravel2-app:latest -o storybook-laravel2.tar
+```
+
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
 - [Simple, fast routing engine](https://laravel.com/docs/routing).

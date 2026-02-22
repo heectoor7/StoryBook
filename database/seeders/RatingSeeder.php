@@ -11,11 +11,9 @@ class RatingSeeder extends Seeder
 {
     public function run()
     {
-        // Solo usuarios normales pueden valorar (no admin ni empresas)
+        // Solo usuarios normales pueden valorar
         $users = User::whereHas('roles', function($q) {
             $q->where('name', 'user');
-        })->whereDoesntHave('roles', function($q) {
-            $q->where('name', 'admin');
         })->get();
         
         $services = Service::all();

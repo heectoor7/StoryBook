@@ -12,7 +12,7 @@ class BookingSeeder extends Seeder
 {
     public function run()
     {
-        // Solo usuarios normales hacen reservas (no admin ni empresas)
+        // Solo usuarios normales hacen reservas
         $users = User::whereHas('roles', function($q) {
             $q->where('name', 'user');
         })->get();

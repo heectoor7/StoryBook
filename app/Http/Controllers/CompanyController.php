@@ -12,6 +12,20 @@ use App\Models\Booking;
 
 class CompanyController extends Controller
 {
+    private function resolveCompanyForPosts(Request $request): ?Company
+    {
+        $user = $request->user()->loadMissing('roles');
+
+        if (! $user->roles->contains('name', 'company')) {
+            return null;
+        }
+
+        return Company::firstOrCreate(
+            ['user_id' => $user->id],
+            ['name' => $user->name]
+        );
+    }
+
     // ========== MÉTODOS DE PERFIL ==========
     
     public function getProfile(Request $request)
@@ -145,11 +159,10 @@ class CompanyController extends Controller
      */
     public function getPosts(Request $request)
     {
-        $user = $request->user();
-        $company = Company::where('user_id', $user->id)->first();
+        $company = $this->resolveCompanyForPosts($request);
         
         if (!$company) {
-            return response()->json(['error' => 'No se encontró empresa asociada'], 404);
+            return response()->json(['error' => 'No autorizado'], 403);
         }
 
         $posts = Post::where('company_id', $company->id)
@@ -164,11 +177,10 @@ class CompanyController extends Controller
      */
     public function createPost(Request $request)
     {
-        $user = $request->user();
-        $company = Company::where('user_id', $user->id)->first();
+        $company = $this->resolveCompanyForPosts($request);
         
         if (!$company) {
-            return response()->json(['error' => 'No se encontró empresa asociada'], 404);
+            return response()->json(['error' => 'No autorizado'], 403);
         }
 
         $request->validate([

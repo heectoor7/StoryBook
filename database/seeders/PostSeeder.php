@@ -172,14 +172,14 @@ class PostSeeder extends Seeder
                 ]);
             }
 
-            // Create stories (expire in 24 hours)
+            // Create stories (expire in 1 month)
             foreach ($data['stories'] as $index => $content) {
                 Post::create([
                     'company_id' => $company->id,
                     'content' => $content,
                     'image' => 'https://picsum.photos/seed/story' . $company->id . $index . '/600/800',
                     'is_story' => true,
-                    'expires_at' => Carbon::now()->addHours(rand(12, 24)),
+                    'expires_at' => Carbon::now()->addMonth(),
                     'created_at' => Carbon::now()->subHours(rand(1, 12))
                 ]);
             }

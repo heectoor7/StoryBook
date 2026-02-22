@@ -12,7 +12,7 @@ class CommentSeeder extends Seeder
 {
     public function run()
     {
-        // Only regular users can comment (not admin or companies)
+        // Only regular users can comment
         $users = User::whereHas('roles', function($q) {
             $q->where('name', 'user');
         })->get();
