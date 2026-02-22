@@ -54,7 +54,35 @@ body {
 }
 
 .header h3 { font-size: 1.2rem; color: var(--text-primary); }
-.header a img { height: 30px; }
+.header > a img { height: 30px; }
+
+.header .back-home-btn {
+  background: transparent;
+  color: rgb(3, 186, 182);
+  border: 1px solid rgb(3, 186, 182);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.header .back-home-btn:hover,
+.header .back-home-btn:focus {
+  background: rgb(3, 186, 182);
+  color: #000000;
+  text-decoration: none;
+}
+
+.header .home-link {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.header .home-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
 
 /* MAIN - se sitúa debajo del header y crece para empujar el footer */
 main.main {
@@ -72,14 +100,14 @@ main.main {
 .register-container { width: 100%; max-width: 560px; }
 
 .register-card {
-  background: #ffffff; /* la página de registro usa fondo blanco para el formulario */
+  background: #00000053;
   color: #04201a;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+  box-shadow: 0 8px 30px rgba(39, 40, 44, 0.6);
 }
 
-.register-card h4 { margin-bottom: 12px; color: #04201a; }
+.register-card h4 { margin-bottom: 12px; color: #ffffff; }
 .register-card input, .register-card select, .register-card button {
   width: 100%;
   padding: 12px 14px;
@@ -91,7 +119,7 @@ main.main {
 
 .register-card button {
   background: var(--primary);
-  color: #04201a;
+  color: #ffffff;
   border: none;
   font-weight: 600;
   cursor: pointer;
@@ -105,7 +133,7 @@ main.main {
 footer.site-footer {
   background: var(--bg-header);
   color: var(--text-muted);
-  padding: 28px 20px;
+  padding: 28px;
   border-top: 1px solid var(--border);
   text-align: center;
   flex-shrink: 0;
@@ -118,18 +146,18 @@ footer.site-footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 5px;
 }
 
 .footer-logo {
-  height: 60px;
+  height: 30px;
+  width: auto;
 }
 
 .site-footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .header a img { height: 40px; }
   .register-container { padding: 0 12px; }
   .header { padding: 0 12px; }
 }

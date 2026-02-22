@@ -54,7 +54,7 @@ body {
 }
 
 .header h3 { font-size: 1.2rem; color: var(--text-primary); }
-.header a img { height: 30px; }
+.header > a img { height: 30px; }
 
 /* MAIN - se sitúa debajo del header y crece para empujar el footer */
 main.main {
@@ -99,20 +99,32 @@ main.main {
 
 .login-card button:hover { background: var(--primary-hover); }
 
-/* Asegurar que el botón outline en el header use el mismo azul que en index.html */
-.header a.btn-outline-primary {
+.header .back-home-btn {
   background: transparent;
   color: rgb(3, 186, 182);
-  border: 1px solid   rgb(3, 186, 182);
+  border: 1px solid rgb(3, 186, 182);
   padding: 8px 12px;
   border-radius: 8px;
 }
 
-.header a.btn-outline-primary:hover,
-.header a.btn-outline-primary:focus {
-  background:  rgb(3, 186, 182);
+.header .back-home-btn:hover,
+.header .back-home-btn:focus {
+  background: rgb(3, 186, 182);
   color: #000000;
   text-decoration: none;
+}
+
+.header .home-link {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.header .home-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
 }
 
 .bg-white { background: #fff; }
@@ -138,7 +150,8 @@ footer.site-footer {
 }
 
 .footer-logo {
-  height: 60px;
+  height: 30px;
+  width: auto;
 }
 
 .site-footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
@@ -153,7 +166,6 @@ footer.site-footer {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .header a img { height: 40px; }
   .login-container { padding: 0 12px; }
   .header { padding: 0 12px; }
 }

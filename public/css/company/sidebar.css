@@ -21,7 +21,8 @@
 .sidebar img {
   display: block;
   margin: 0 auto 20px;
-  max-width: 60px;
+  height: 30px;
+  width: auto;
 }
 
 .sidebar h3 {
