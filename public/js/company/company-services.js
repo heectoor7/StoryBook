@@ -29,7 +29,7 @@ async function loadCompanyServices() {
         });
 
         if (!res.ok) {
-            throw new Error('Error al cargar servicios');
+            throw new Error('Error loading services');
         }
 
         const services = await res.json();
@@ -63,7 +63,7 @@ async function loadCompanyServices() {
             </div>
         `).join('');
     } catch (err) {
-        console.error('[Services] Error al cargar:', err);
+        console.error('[Services] Error loading:', err);
         servicesContainer.innerHTML = '<p class="text-danger">Error loading services</p>';
     }
 }
@@ -115,7 +115,7 @@ async function editService(serviceId) {
         const modal = new bootstrap.Modal(document.getElementById('serviceModal'));
         modal.show();
     } catch (err) {
-        console.error('[Services] Error al cargar servicio:', err);
+        console.error('[Services] Error loading service:', err);
         alert('Error loading service');
     }
 }
@@ -175,7 +175,7 @@ async function saveService() {
         }
 
         if (!res.ok) {
-            throw new Error('Error al guardar servicio');
+            throw new Error('Error saving service');
         }
 
         // Cerrar modal
@@ -188,7 +188,7 @@ async function saveService() {
         alert(editingServiceId ? 'Service updated successfully' : 'Service created successfully');
         editingServiceId = null;
     } catch (err) {
-        console.error('[Services] Error al guardar:', err);
+        console.error('[Services] Error saving:', err);
         alert('Error saving service');
     }
 }
@@ -222,7 +222,7 @@ async function deleteService(serviceId) {
         await loadCompanyServices();
         alert('Service deleted successfully');
     } catch (err) {
-        console.error('[Services] Error al eliminar:', err);
+        console.error('[Services] Error deleting:', err);
         alert('Error deleting service');
     }
 }

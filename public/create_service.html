@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/responsive/basic-shared-responsive.css">
-    <title>Crear Servicio</title>
+    <title>Create Service</title>
 </head>
 <body>
-<h2>Crear Servicio</h2>
+<h2>Create Service</h2>
 <form id="serviceForm">
-    <input type="text" name="name" placeholder="Nombre servicio" required><br>
-    <textarea name="description" placeholder="Descripción"></textarea><br>
-    <input type="number" step="0.01" name="price" placeholder="Precio" required><br>
-    <input type="number" name="category_id" placeholder="ID Categoría" required><br>
-    <button type="submit">Crear</button>
+    <input type="text" name="name" placeholder="Service name" required><br>
+    <textarea name="description" placeholder="Description"></textarea><br>
+    <input type="number" step="0.01" name="price" placeholder="Price" required><br>
+    <input type="number" name="category_id" placeholder="Category ID" required><br>
+    <button type="submit">Create</button>
 </form>
 
 <div id="message"></div>
@@ -41,7 +41,7 @@ form.addEventListener('submit', async (e) => {
         console.log(json.service);
 
     } catch (err) {
-        document.getElementById('message').innerText = 'Error al crear servicio';
+        document.getElementById('message').innerText = 'Error creating service';
         console.error(err);
     }
 });

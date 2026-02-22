@@ -123,11 +123,11 @@
                 localStorage.setItem('user', JSON.stringify(json.user));
 
                 if (json.role === 'admin') {
-                    window.location.href = '/index_admin.php';
+                    window.location.href = '/index_admin.html';
                 } else if (json.role === 'company') {
-                    window.location.href = '/index_comany.php';
+                    window.location.href = '/index_comany.html';
                 } else {
-                    window.location.href = '/index_user.php';
+                    window.location.href = '/index_user.html';
                 }
             }
         } catch (err) {

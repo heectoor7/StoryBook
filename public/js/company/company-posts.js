@@ -26,7 +26,7 @@ async function loadCompanyPosts() {
         });
 
         if (!res.ok) {
-            throw new Error('Error al cargar posts');
+            throw new Error('Error loading posts');
         }
 
         const posts = await res.json();
@@ -58,7 +58,7 @@ async function loadCompanyPosts() {
             </div>
         `).join('');
     } catch (err) {
-        console.error('[Posts] Error al cargar:', err);
+        console.error('[Posts] Error loading:', err);
         postsContainer.innerHTML = '<p class="text-danger">Error loading posts</p>';
     }
 }
@@ -98,7 +98,7 @@ async function createPost(isStory = false) {
         });
 
         if (!res.ok) {
-            throw new Error('Error al crear publicación');
+            throw new Error('Error creating post');
         }
 
         // Limpiar formulario
@@ -114,7 +114,7 @@ async function createPost(isStory = false) {
         
         alert(isStory ? 'Story created successfully' : 'Post created successfully');
     } catch (err) {
-        console.error('[Posts] Error al crear:', err);
+        console.error('[Posts] Error creating:', err);
         alert('Error creating post');
     }
 }
@@ -142,13 +142,13 @@ async function deletePost(postId) {
         });
 
         if (!res.ok) {
-            throw new Error('Error al eliminar post');
+            throw new Error('Error deleting post');
         }
 
         await loadCompanyPosts();
         alert('Post deleted successfully');
     } catch (err) {
-        console.error('[Posts] Error al eliminar:', err);
+        console.error('[Posts] Error deleting:', err);
         alert('Error deleting post');
     }
 }

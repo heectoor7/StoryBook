@@ -88,9 +88,9 @@
         const textEl = document.getElementById('placeholderText');
         
         if (titleEl) {
-            titleEl.innerText = action === 'reservas' ? 'Reservas' : 
-                               action === 'ayuda' ? 'Ayuda' : 
-                               action === 'configuracion' ? 'Configuración' : 
+            titleEl.innerText = action === 'reservas' ? 'Bookings' : 
+                               action === 'ayuda' ? 'Help' : 
+                               action === 'configuracion' ? 'Settings' : 
                                action;
         }
         
@@ -128,7 +128,7 @@
                         await loadServices();
                     }
                     showOnlySection('services-section');
-                    if (userTitle) userTitle.innerText = 'Todos los servicios';
+                    if (userTitle) userTitle.innerText = 'All Services';
                     
                 } else if (action === 'inicio') {
                     const token = localStorage.getItem('auth_token');
@@ -139,7 +139,7 @@
                         await loadUserBookings(token);
                     }
                     showMultipleSections(['stories-section','services-section','reservas-section']);
-                    if (userTitle) userTitle.innerText = 'Página del usuario';
+                    if (userTitle) userTitle.innerText = 'User Dashboard';
                     
                 } else if (action === 'publicaciones') {
                     const token = localStorage.getItem('auth_token');
@@ -147,7 +147,7 @@
                         await loadFollowedPosts(token);
                     }
                     showOnlySection('posts-section');
-                    if (userTitle) userTitle.innerText = 'Publicaciones';
+                    if (userTitle) userTitle.innerText = 'Posts';
                     
                 } else if (action === 'companies') {
                     const token = localStorage.getItem('auth_token');

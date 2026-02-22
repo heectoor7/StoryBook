@@ -26,7 +26,7 @@ async function loadCompanyBookings() {
         });
 
         if (!res.ok) {
-            throw new Error('Error al cargar reservas');
+            throw new Error('Error loading bookings');
         }
 
         const bookings = await res.json();
@@ -69,7 +69,7 @@ async function loadCompanyBookings() {
             </div>
         `;
     } catch (err) {
-        console.error('[Bookings] Error al cargar:', err);
+        console.error('[Bookings] Error loading:', err);
         bookingsContainer.innerHTML = '<p class="text-danger">Error loading bookings</p>';
     }
 }
@@ -131,7 +131,7 @@ async function updateBookingStatus(bookingId, newStatus) {
         });
 
         if (!res.ok) {
-            throw new Error('Error al actualizar reserva');
+            throw new Error('Error updating booking');
         }
 
         await loadCompanyBookings();
@@ -143,7 +143,7 @@ async function updateBookingStatus(bookingId, newStatus) {
         
         alert(statusMessages[newStatus] || 'Booking updated successfully');
     } catch (err) {
-        console.error('[Bookings] Error al actualizar estado:', err);
+        console.error('[Bookings] Error updating status:', err);
         alert('Error updating booking');
     }
 }

@@ -12,8 +12,8 @@ async function loadFollowedPosts(token) {
     const rightBtn = document.getElementById('storiesScrollRight');
     
     if (!t) {
-        if (storiesContainer) storiesContainer.innerHTML = '<p style="color: var(--text-secondary);">No autenticado</p>';
-        if (postsContainer) postsContainer.innerHTML = '<p style="color: var(--text-secondary);">No autenticado</p>';
+        if (storiesContainer) storiesContainer.innerHTML = '<p style="color: var(--text-secondary);">Not authenticated</p>';
+        if (postsContainer) postsContainer.innerHTML = '<p style="color: var(--text-secondary);">Not authenticated</p>';
         // Ocultar flechas
         if (leftBtn) leftBtn.style.display = 'none';
         if (rightBtn) rightBtn.style.display = 'none';
@@ -29,8 +29,8 @@ async function loadFollowedPosts(token) {
         });
 
         if (!res.ok) {
-            if (storiesContainer) storiesContainer.innerHTML = '<p style="color: var(--text-secondary);">Error al cargar stories</p>';
-            if (postsContainer) postsContainer.innerHTML = '<p style="color: var(--text-secondary);">Error al cargar posts</p>';
+            if (storiesContainer) storiesContainer.innerHTML = '<p style="color: var(--text-secondary);">Error loading stories</p>';
+            if (postsContainer) postsContainer.innerHTML = '<p style="color: var(--text-secondary);">Error loading posts</p>';
             // Ocultar flechas
             const leftBtn = document.getElementById('storiesScrollLeft');
             const rightBtn = document.getElementById('storiesScrollRight');
@@ -49,7 +49,7 @@ async function loadFollowedPosts(token) {
             const rightBtn = document.getElementById('storiesScrollRight');
             
             if (stories.length === 0) {
-                storiesContainer.innerHTML = '<p style="color: var(--text-secondary);">No hay stories</p>';
+                storiesContainer.innerHTML = '<p style="color: var(--text-secondary);">No stories available</p>';
                 window.storiesData = [];
                 // Ocultar flechas cuando no hay stories
                 if (leftBtn) leftBtn.style.display = 'none';
@@ -84,7 +84,7 @@ async function loadFollowedPosts(token) {
         // Render regular posts (horizontal carousel by company)
         if (postsContainer) {
             if (regular.length === 0) {
-                postsContainer.innerHTML = '<p style="color: var(--text-secondary);">No hay posts disponibles</p>';
+                postsContainer.innerHTML = '<p style="color: var(--text-secondary);">No posts available</p>';
             } else {
                 // Agrupar posts por empresa
                 const postsByCompany = {};
@@ -143,8 +143,8 @@ async function loadFollowedPosts(token) {
 
     } catch (e) {
         console.error(e);
-        if (storiesContainer) storiesContainer.innerHTML = '<p class="text-danger">Error al cargar stories</p>';
-        if (postsContainer) postsContainer.innerHTML = '<p class="text-danger">Error al cargar posts</p>';
+        if (storiesContainer) storiesContainer.innerHTML = '<p class="text-danger">Error loading stories</p>';
+        if (postsContainer) postsContainer.innerHTML = '<p class="text-danger">Error loading posts</p>';
         // Ocultar flechas
         const leftBtn = document.getElementById('storiesScrollLeft');
         const rightBtn = document.getElementById('storiesScrollRight');
@@ -159,7 +159,7 @@ async function loadFollowedServices(token) {
     const servicesContainer = document.getElementById('servicesContainer');
     
     if (servicesContainer) {
-        servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">Cargando servicios...</p>';
+        servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">Loading services...</p>';
     }
     
     console.debug('[debug] loadFollowedServices token=', !!t);
@@ -180,7 +180,7 @@ async function loadFollowedServices(token) {
             const text = await res.text().catch(() => 'no body');
             console.warn('[debug] services error body:', text);
             if (servicesContainer) {
-                servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">Error al cargar servicios (ver consola)</p>';
+                servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">Error loading services (see console)</p>';
             }
             return;
         }
@@ -191,7 +191,7 @@ async function loadFollowedServices(token) {
         if (!servicesContainer) return;
         
         if (!Array.isArray(services) || services.length === 0) {
-            servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">No hay servicios de las empresas que sigues. Si crees que esto es un error, comprueba que sigues a empresas o revisa la consola para detalles.</p>';
+            servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">No services from companies you follow. If you think this is an error, make sure you follow companies or check the console for details.</p>';
             return;
         }
         
@@ -216,7 +216,7 @@ async function loadFollowedServices(token) {
     } catch (err) {
         console.error('[debug] loadFollowedServices exception', err);
         if (servicesContainer) {
-            servicesContainer.innerHTML = '<p class="text-danger">Error al cargar servicios (ver consola)</p>';
+            servicesContainer.innerHTML = '<p class="text-danger">Error loading services (see console)</p>';
         }
     }
 }
@@ -240,10 +240,10 @@ async function loadUserBookings(token) {
     
     if (!reservasContainer) return;
     
-    reservasContainer.innerHTML = '<p style="color: var(--text-secondary);">Cargando reservas...</p>';
+    reservasContainer.innerHTML = '<p style="color: var(--text-secondary);">Loading bookings...</p>';
     
     if (!t) {
-        reservasContainer.innerHTML = '<p style="color: var(--text-secondary);">No autenticado</p>';
+        reservasContainer.innerHTML = '<p style="color: var(--text-secondary);">Not authenticated</p>';
         return;
     }
 
@@ -258,7 +258,7 @@ async function loadUserBookings(token) {
         console.debug('[debug] bookings response', res.status, res.ok);
         
         if (!res.ok) {
-            reservasContainer.innerHTML = '<p style="color: var(--text-secondary);">Error al cargar reservas</p>';
+            reservasContainer.innerHTML = '<p style="color: var(--text-secondary);">Error loading bookings</p>';
             return;
         }
         
@@ -266,7 +266,7 @@ async function loadUserBookings(token) {
         console.debug('[debug] bookings json length=', Array.isArray(bookings) ? bookings.length : 'not array', bookings);
         
         if (!Array.isArray(bookings) || bookings.length === 0) {
-            reservasContainer.innerHTML = '<p style="color: var(--text-secondary);">No tienes reservas</p>';
+            reservasContainer.innerHTML = '<p style="color: var(--text-secondary);">You have no bookings</p>';
             return;
         }
 
@@ -275,7 +275,7 @@ async function loadUserBookings(token) {
             <div class="card">
                 <div class="card-body d-flex justify-content-between align-items-center">
                 <div>
-                    <div><strong>${b.service_name ?? 'Servicio'}</strong> <small style="color: var(--text-secondary);">- ${b.company_name ?? ''}</small></div>
+                    <div><strong>${b.service_name ?? 'Service'}</strong> <small style="color: var(--text-secondary);">- ${b.company_name ?? ''}</small></div>
                     <div><small style="color: var(--text-secondary);">Date: ${b.date} &nbsp; Time: ${b.time ? b.time.substring(0, 5) : ''}</small></div>
                 </div>
                 <div>
@@ -292,7 +292,7 @@ async function loadUserBookings(token) {
         initBookingModal();
     } catch (err) {
         console.error('[debug] loadUserBookings exception', err);
-        reservasContainer.innerHTML = '<p class="text-danger">Error al cargar reservas (ver consola)</p>';
+        reservasContainer.innerHTML = '<p class="text-danger">Error loading bookings (see console)</p>';
     }
 }
 
@@ -303,7 +303,7 @@ async function loadServices() {
     
     if (!servicesContainer) return;
     
-    servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">Cargando servicios...</p>';
+    servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">Loading services...</p>';
     
     try {
         const res = await fetch('/api/services', {
@@ -316,14 +316,14 @@ async function loadServices() {
         });
         
         if (!res.ok) {
-            servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">Error al cargar servicios</p>';
+            servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">Error loading services</p>';
             return;
         }
         
         const services = await res.json();
         
         if (!services.length) {
-            servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">No hay servicios</p>';
+            servicesContainer.innerHTML = '<p style="color: var(--text-secondary);">No services available</p>';
             return;
         }
         
@@ -378,7 +378,7 @@ async function loadServices() {
         // porque las tarjetas ahora abren el modal directamente
     } catch (err) {
         console.error(err);
-        servicesContainer.innerHTML = '<p class="text-danger">Error al cargar servicios</p>';
+        servicesContainer.innerHTML = '<p class="text-danger">Error loading services</p>';
     }
 }
 
@@ -407,7 +407,7 @@ function openPostModal(postData) {
     // Llenar comentarios
     const commentsList = document.getElementById('postCommentsList');
     if (postData.comments.length === 0) {
-        commentsList.innerHTML = '<p style="color: var(--text-secondary);">No hay comentarios aún</p>';
+        commentsList.innerHTML = '<p style="color: var(--text-secondary);">No comments yet</p>';
     } else {
         commentsList.innerHTML = postData.comments.map(c => `
             <div class="comment-item mb-3 p-2" style="background:var(--bg-hover);border-radius:8px;">
@@ -444,7 +444,7 @@ async function addCommentToPost() {
         });
         
         if (!res.ok) {
-            alert('Error al agregar comentario');
+            alert('Error adding comment');
             return;
         }
         
@@ -475,7 +475,7 @@ async function addCommentToPost() {
         await loadFollowedPosts(token);
     } catch (err) {
         console.error('Error adding comment:', err);
-        alert('Error al agregar comentario');
+        alert('Error adding comment');
     }
 }
 
@@ -530,13 +530,13 @@ async function updateBooking() {
     const newTime = document.getElementById('modalTimeInput').value;
     
     if (!newDate || !newTime) {
-        alert('Por favor completa fecha y hora');
+        alert('Please complete date and time');
         return;
     }
     
     const token = localStorage.getItem('auth_token');
     if (!token) {
-        alert('No autenticado');
+        alert('Not authenticated');
         return;
     }
     
@@ -555,17 +555,17 @@ async function updateBooking() {
         });
         
         if (res.ok) {
-            alert('Reserva actualizada correctamente');
+            alert('Booking updated successfully');
             if (bookingModal) bookingModal.hide();
             // Recargar reservas
             await loadUserBookings(token);
         } else {
-            const error = await res.json().catch(() => ({ message: 'Error desconocido' }));
-            alert('Error al actualizar la reserva: ' + (error.message || 'Error desconocido'));
+            const error = await res.json().catch(() => ({ message: 'Unknown error' }));
+            alert('Error updating booking: ' + (error.message || 'Unknown error'));
         }
     } catch (err) {
         console.error('Error updating booking:', err);
-        alert('Error al actualizar la reserva');
+        alert('Error updating booking');
     }
 }
 
@@ -573,13 +573,13 @@ async function updateBooking() {
 async function deleteBooking() {
     if (!currentBookingId) return;
     
-    if (!confirm('¿Estás seguro de que quieres eliminar esta reserva?')) {
+    if (!confirm('Are you sure you want to delete this booking?')) {
         return;
     }
     
     const token = localStorage.getItem('auth_token');
     if (!token) {
-        alert('No autenticado');
+        alert('Not authenticated');
         return;
     }
     
@@ -593,16 +593,16 @@ async function deleteBooking() {
         });
         
         if (res.ok) {
-            alert('Reserva eliminada correctamente');
+            alert('Booking deleted successfully');
             if (bookingModal) bookingModal.hide();
             // Recargar reservas
             await loadUserBookings(token);
         } else {
-            alert('Error al eliminar la reserva');
+            alert('Error deleting booking');
         }
     } catch (err) {
         console.error('Error deleting booking:', err);
-        alert('Error al eliminar la reserva');
+        alert('Error deleting booking');
     }
 }
 
@@ -657,7 +657,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
     
     const userTitle = document.getElementById('userTitle');
-    if (userTitle) userTitle.innerText = 'Página del usuario';
+    if (userTitle) userTitle.innerText = 'User Dashboard';
 
     if (!token) return;
 
@@ -1074,7 +1074,7 @@ async function loadFollowedCompanies(token) {
     if (!container) return;
     
     if (!t) {
-        container.innerHTML = '<p style="color: var(--text-secondary);">No autenticado</p>';
+        container.innerHTML = '<p style="color: var(--text-secondary);">Not authenticated</p>';
         return;
     }
     
@@ -1087,14 +1087,14 @@ async function loadFollowedCompanies(token) {
         });
         
         if (!res.ok) {
-            container.innerHTML = '<p class="text-danger">Error al cargar empresas</p>';
+            container.innerHTML = '<p class="text-danger">Error loading companies</p>';
             return;
         }
         
         const companies = await res.json();
         
         if (!Array.isArray(companies) || companies.length === 0) {
-            container.innerHTML = '<p style="color: var(--text-secondary);">No sigues ninguna empresa todavía</p>';
+            container.innerHTML = '<p style="color: var(--text-secondary);">You are not following any companies yet</p>';
             return;
         }
         
@@ -1123,7 +1123,7 @@ async function loadFollowedCompanies(token) {
         attachFollowButtonListeners();
     } catch (err) {
         console.error(err);
-        container.innerHTML = '<p class="text-danger">Error al cargar empresas</p>';
+        container.innerHTML = '<p class="text-danger">Error loading companies</p>';
     }
 }
 
@@ -1135,7 +1135,7 @@ async function loadAllCompanies(token, searchQuery = '') {
     if (!container) return;
     
     if (!t) {
-        container.innerHTML = '<p style="color: var(--text-secondary);">No autenticado</p>';
+        container.innerHTML = '<p style="color: var(--text-secondary);">Not authenticated</p>';
         return;
     }
     
@@ -1149,14 +1149,14 @@ async function loadAllCompanies(token, searchQuery = '') {
         });
         
         if (!res.ok) {
-            container.innerHTML = '<p class="text-danger">Error al cargar empresas</p>';
+            container.innerHTML = '<p class="text-danger">Error loading companies</p>';
             return;
         }
         
         const companies = await res.json();
         
         if (!Array.isArray(companies) || companies.length === 0) {
-            container.innerHTML = '<p style="color: var(--text-secondary);">No se encontraron empresas</p>';
+            container.innerHTML = '<p style="color: var(--text-secondary);">No companies found</p>';
             return;
         }
         
@@ -1185,7 +1185,7 @@ async function loadAllCompanies(token, searchQuery = '') {
         attachFollowButtonListeners();
     } catch (err) {
         console.error(err);
-        container.innerHTML = '<p class="text-danger">Error al cargar empresas</p>';
+        container.innerHTML = '<p class="text-danger">Error loading companies</p>';
     }
 }
 
@@ -1194,7 +1194,7 @@ async function toggleFollowCompany(companyId, buttonElement) {
     const token = localStorage.getItem('auth_token');
     
     if (!token) {
-        alert('Debes estar autenticado');
+        alert('You must be logged in');
         return;
     }
     
@@ -1216,7 +1216,7 @@ async function toggleFollowCompany(companyId, buttonElement) {
         if (!res.ok) {
             const errorData = await res.json().catch(() => ({}));
             console.error('Error response:', errorData);
-            alert('Error al seguir/dejar de seguir empresa');
+            alert('Error following/unfollowing company');
             buttonElement.innerText = originalText;
             buttonElement.disabled = false;
             return;
@@ -1240,7 +1240,7 @@ async function toggleFollowCompany(companyId, buttonElement) {
         
     } catch (err) {
         console.error('Error in toggleFollowCompany:', err);
-        alert('Error al seguir/dejar de seguir empresa');
+        alert('Error following/unfollowing company');
         buttonElement.innerText = originalText;
         buttonElement.disabled = false;
     }
@@ -1285,7 +1285,7 @@ async function openCompanyProfile(companyId) {
     const token = localStorage.getItem('auth_token');
     
     if (!token) {
-        alert('Debes estar autenticado');
+        alert('You must be logged in');
         return;
     }
     
@@ -1315,7 +1315,7 @@ async function loadCompanyProfile(companyId, token) {
         });
         
         if (!res.ok) {
-            container.innerHTML = '<p class="text-danger">Error al cargar el perfil de la empresa</p>';
+            container.innerHTML = '<p class="text-danger">Error loading company profile</p>';
             return;
         }
         
@@ -1400,7 +1400,7 @@ async function loadCompanyProfile(companyId, token) {
         
     } catch (err) {
         console.error(err);
-        container.innerHTML = '<p class="text-danger">Error al cargar el perfil de la empresa</p>';
+        container.innerHTML = '<p class="text-danger">Error loading company profile</p>';
     }
 }
 
@@ -1471,7 +1471,7 @@ async function saveUserSettings() {
     const token = localStorage.getItem('auth_token');
     
     if (!token) {
-        alert('Debes estar autenticado');
+        alert('You must be logged in');
         return;
     }
     

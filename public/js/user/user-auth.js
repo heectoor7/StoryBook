@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const token = localStorage.getItem('auth_token');
     
     if (!token) {
-        if (h3) h3.innerText += ' (no autenticado)';
+        if (h3) h3.innerText += ' (not authenticated)';
         if (userNameDisplay) userNameDisplay.innerText = 'Guest';
         return;
     }
@@ -24,14 +24,14 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
         
         if (!res.ok) {
-            if (h3) h3.innerText += ' (no autenticado)';
+            if (h3) h3.innerText += ' (not authenticated)';
             if (userNameDisplay) userNameDisplay.innerText = 'Guest';
             return;
         }
         
         const user = await res.json();
         if (h3) {
-            h3.innerText += user && user.id ? ' ' + user.id : ' (sin id)';
+            h3.innerText += user && user.id ? ' ' + user.id : ' (no id)';
         }
         if (userNameDisplay) {
             userNameDisplay.innerText = user && user.name ? user.name : 'User';
